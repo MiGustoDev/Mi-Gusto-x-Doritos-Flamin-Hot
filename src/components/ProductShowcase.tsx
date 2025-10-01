@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Reveal from './Reveal';
 import SteamOverlay from './SteamOverlay';
 import FlameCanvas from './FlameCanvas';
-import Confetti from './Confetti';
+import ConfettiFromLogo from './ConfettiFromLogo';
 // import { Bell } from 'lucide-react';
 
 const ProductShowcase: React.FC = () => {
@@ -23,7 +23,7 @@ const ProductShowcase: React.FC = () => {
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [logoRevealed, setLogoRevealed] = useState(false);
   const [logoFlash, setLogoFlash] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  // Elimina toda la lógica de showConfetti en useEffect, IntersectionObserver, y renders
 
   useEffect(() => {
     const launchDate = new Date('2025-10-16T00:00:00');
@@ -49,9 +49,8 @@ const ProductShowcase: React.FC = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !logoRevealed) {
             setLogoRevealed(true);
-            setShowConfetti(true);
             // Reset confetti después de 3 segundos
-            setTimeout(() => setShowConfetti(false), 3000);
+            // setTimeout(() => setShowConfetti(false), 3000); // Eliminado
           }
         });
       },
@@ -70,7 +69,7 @@ const ProductShowcase: React.FC = () => {
         observer.unobserve(logoRef.current);
       }
     };
-  }, [logoRevealed]);
+  }, [logoRevealed]); // Eliminado showConfetti
 
   // Función para el click del logo
   const handleLogoClick = () => {
@@ -105,6 +104,13 @@ const ProductShowcase: React.FC = () => {
         // Gate: que empiece a 0 y recién se active cerca del LogoEmp
         const gated = Math.max(0, Math.min(1, (rawLogo - 0.8) / 0.2)); // activa ~80%→100%
         setEdgeProgress(gated);
+        
+        // Disparar confetti cuando los tubitos laterales aparezcan
+        // if (gated > 0.3 && !showConfetti) { // Eliminado
+        //   setShowConfetti(true); // Eliminado
+        //   // Reset confetti después de 4 segundos // Eliminado
+        //   setTimeout(() => setShowConfetti(false), 4000); // Eliminado
+        // } // Eliminado
       }
     };
     const onScroll = () => requestAnimationFrame(update);
@@ -141,46 +147,42 @@ const ProductShowcase: React.FC = () => {
                 logoRevealed ? 'opacity-100 translate-y-0 scale-100 shine logo-float' : 'opacity-0 translate-y-10 scale-95'
               } ${logoFlash ? 'logo-flash' : ''}`}
             />
-            {/* Confetti con Tubito.png - por encima del logo */}
-            <div className="absolute inset-0 z-50">
-              <Confetti 
-                trigger={showConfetti} 
-                imageSrc="/Tubito.png" 
-                count={15} 
-                duration={2500} 
-              />
-            </div>
+            <ConfettiFromLogo trigger={logoRevealed} duration={5000} />
             {/* Imágenes a bordes de pantalla que aparecen tras el logo */}
             <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 w-screen -z-[1]">
               {/* Izquierda: TubitoDinamita2 */}
               <Reveal effect="fade" className="hidden md:block absolute left-0 -translate-y-1/2">
-                <img
-                  src="/TubitoDinamita2.png"
-                  alt="Tubito Dinamita (izquierda)"
-                  className="w-40 md:w-48 lg:w-56 will-change-transform"
-                  style={{
-                    filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))',
-                    transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
-                    opacity: 0.1 + edgeProgress * 0.9,
-                    transform: `translateX(${(-120 + edgeProgress * 90)}%)`
-                  }}
-                  loading="lazy"
-                />
+                <div className="relative">
+                  <img
+                    src="/TubitoDinamita2.png"
+                    alt="Tubito Dinamita (izquierda)"
+                    className="w-40 md:w-48 lg:w-56 will-change-transform"
+                    style={{
+                      filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))',
+                      transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
+                      opacity: 0.1 + edgeProgress * 0.9,
+                      transform: `translateX(${(-120 + edgeProgress * 90)}%)`
+                    }}
+                    loading="lazy"
+                  />
+                </div>
               </Reveal>
               {/* Derecha: TubitoDinamita */}
               <Reveal effect="fade" delay={1} className="hidden md:block absolute right-0 -translate-y-1/2">
-                <img
-                  src="/TubitoDinamita.png"
-                  alt="Tubito Dinamita (derecha)"
-                  className="w-44 md:w-52 lg:w-60 will-change-transform"
-                  style={{
-                    filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))',
-                    transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
-                    opacity: 0.1 + edgeProgress * 0.9,
-                    transform: `translateX(${(120 - edgeProgress * 90)}%)`
-                  }}
-                  loading="lazy"
-                />
+                <div className="relative">
+                  <img
+                    src="/TubitoDinamita.png"
+                    alt="Tubito Dinamita (derecha)"
+                    className="w-44 md:w-52 lg:w-60 will-change-transform"
+                    style={{
+                      filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))',
+                      transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
+                      opacity: 0.1 + edgeProgress * 0.9,
+                      transform: `translateX(${(120 - edgeProgress * 90)}%)`
+                    }}
+                    loading="lazy"
+                  />
+                </div>
               </Reveal>
             </div>
           </div>

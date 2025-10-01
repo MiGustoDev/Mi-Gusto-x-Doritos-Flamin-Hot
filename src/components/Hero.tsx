@@ -264,37 +264,14 @@ const Hero: React.FC = () => {
               className="group relative transition-all duration-500 transform hover:scale-110 hover:rotate-3 focus:outline-none focus:ring-4 focus:ring-fuchsia-500/50 rounded-full"
               onClick={() => window.open('https://pedir.migusto.com.ar/index.php', '_blank')}
             >
-              {/* Efectos de fondo y glow reducidos */}
-              <div className="absolute inset-0 -m-6 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700">
-                {/* Glow principal suave */}
-                <div className="absolute inset-0 rounded-full blur-lg" 
+              {/* Efectos de fondo muy reducidos */}
+              <div className="absolute inset-0 -m-2 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-500">
+                {/* Glow muy sutil */}
+                <div className="absolute inset-0 rounded-full blur-md" 
                      style={{
-                       background: 'radial-gradient(circle, rgba(255,0,128,0.3) 0%, rgba(255,0,64,0.2) 30%, rgba(255,94,0,0.1) 60%, transparent 100%)',
-                       animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                       background: 'radial-gradient(circle, rgba(255,0,128,0.08) 0%, rgba(255,0,64,0.05) 40%, transparent 70%)'
                      }}
                 />
-                {/* Glow secundario sutil */}
-                <div className="absolute inset-0 rounded-full blur-xl opacity-40"
-                     style={{
-                       background: 'radial-gradient(circle, rgba(255,94,0,0.4) 0%, rgba(255,0,64,0.3) 40%, rgba(255,0,128,0.2) 70%, transparent 100%)',
-                       animation: 'pulse 2.5s ease-in-out infinite alternate'
-                     }}
-                />
-                {/* Partículas flotantes reducidas */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-1000">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-1 h-1 bg-yellow-400 rounded-full animate-ping"
-                      style={{
-                        left: `${25 + i * 20}%`,
-                        top: `${35 + (i % 2) * 30}%`,
-                        animationDelay: `${i * 0.3}s`,
-                        animationDuration: '2s'
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
 
               {/* Imagen principal del Tubito */}
