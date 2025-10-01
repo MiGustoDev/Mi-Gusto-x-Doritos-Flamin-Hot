@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-75"
-          src="/BMW M3.mp4"
+          src="/Main-video.mov"
           autoPlay
           muted
           loop
@@ -258,29 +258,117 @@ const Hero: React.FC = () => {
             />
           </div>
 
-          {/* CTA Button - Reemplazado por imagen Tubito */}
+          {/* CTA Button - Tubito con efectos impresionantes */}
           <div className="relative flex flex-col items-center gap-4">
-            <button className="group relative transition-all duration-300 transform hover:scale-110 hover:rotate-3">
-              <img 
-                src="/Tubito.png" 
-                alt="Descubrir Ahora" 
-                className="w-40 h-40 md:w-52 md:h-52 transition-all duration-300 drop-shadow-2xl"
-                style={{ 
-                  filter: 'brightness(1.1) contrast(1.2) drop-shadow(0 8px 16px rgba(255,0,64,0.4))',
-                  cursor: 'pointer'
-                }}
-                title="Descubrir Ahora"
-              />
-              <span className="absolute top-[5.25rem] left-1/2 text-white font-bold text-sm md:text-base tracking-wide whitespace-nowrap pointer-events-none transition-colors duration-200 group-hover:text-black font-['Montserrat']"
-                style={{
-                  textShadow: '0 1px 4px rgba(0,0,0,0.6), 0 0 12px rgba(255,0,64,0.35)',
-                  transform: 'translateX(-52%) rotate(-25deg)',
-                  lineHeight: '3.5rem',
-                  letterSpacing: '0.02em'
-                }}
-              >
-                Descubrilo Ahora
-              </span>
+            <button 
+              className="group relative transition-all duration-500 transform hover:scale-110 hover:rotate-3 focus:outline-none focus:ring-4 focus:ring-fuchsia-500/50 rounded-full"
+              onClick={() => window.open('https://pedir.migusto.com.ar/index.php', '_blank')}
+            >
+              {/* Efectos de fondo y glow reducidos */}
+              <div className="absolute inset-0 -m-6 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700">
+                {/* Glow principal suave */}
+                <div className="absolute inset-0 rounded-full blur-lg" 
+                     style={{
+                       background: 'radial-gradient(circle, rgba(255,0,128,0.3) 0%, rgba(255,0,64,0.2) 30%, rgba(255,94,0,0.1) 60%, transparent 100%)',
+                       animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                     }}
+                />
+                {/* Glow secundario sutil */}
+                <div className="absolute inset-0 rounded-full blur-xl opacity-40"
+                     style={{
+                       background: 'radial-gradient(circle, rgba(255,94,0,0.4) 0%, rgba(255,0,64,0.3) 40%, rgba(255,0,128,0.2) 70%, transparent 100%)',
+                       animation: 'pulse 2.5s ease-in-out infinite alternate'
+                     }}
+                />
+                {/* Partículas flotantes reducidas */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-1000">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 bg-yellow-400 rounded-full animate-ping"
+                      style={{
+                        left: `${25 + i * 20}%`,
+                        top: `${35 + (i % 2) * 30}%`,
+                        animationDelay: `${i * 0.3}s`,
+                        animationDuration: '2s'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Imagen principal del Tubito */}
+              <div className="relative z-10">
+                <img 
+                  src="/Tubito.png" 
+                  alt="Descubrir Ahora" 
+                  className="w-48 h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
+                  style={{ 
+                    filter: `
+                      brightness(1.1) 
+                      contrast(1.2) 
+                      saturate(1.2)
+                      drop-shadow(0 0 15px rgba(255,0,64,0.4))
+                      drop-shadow(0 0 25px rgba(255,94,0,0.3))
+                      drop-shadow(0 0 35px rgba(255,0,128,0.2))
+                    `,
+                    cursor: 'pointer'
+                  }}
+                  title="Descubrir Ahora"
+                />
+                
+                {/* Efecto de resplandor interno reducido */}
+                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-70 transition-opacity duration-500"
+                     style={{
+                       background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,0,64,0.2) 50%, transparent 70%)',
+                       filter: 'blur(6px)'
+                     }}
+                />
+
+                {/* Texto posicionado más a la izquierda y más grande */}
+                <span className="absolute text-white font-bold text-2xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none transition-all duration-300 group-hover:scale-110 font-['Bebas_Neue'] z-50 flame-fire"
+                      style={{
+                        top: '55%',
+                        left: '15%',
+                        right: '15%',
+                        background: 'linear-gradient(45deg, #FF0040, #FF6B00, #FFFF00, #FF0080)',
+                        backgroundSize: '400% 400%',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        color: '#ffffff',
+                        animation: 'flameGradient 2s ease-in-out infinite, fireFlicker 0.1s ease-in-out infinite alternate',
+                        textShadow: `
+                          0 0 5px rgba(255, 0, 64, 0.8),
+                          0 0 10px rgba(255, 94, 0, 0.7),
+                          0 0 15px rgba(255, 145, 0, 0.6),
+                          0 0 20px rgba(255, 0, 128, 0.5),
+                          0 0 30px rgba(255, 94, 0, 0.4),
+                          0 0 40px rgba(255, 0, 64, 0.3)
+                        `,
+                        position: 'absolute',
+                        filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6))',
+                        transform: 'translateY(-50%) rotate(-25deg)',
+                        lineHeight: '4.5rem',
+                        letterSpacing: '0.05em',
+                        zIndex: 10,
+                        textAlign: 'center'
+                      }}
+                >
+                  DESCUBRILA
+                </span>
+              </div>
+
+
+              {/* Efecto de ondas concéntricas al hacer hover */}
+              <div className="absolute inset-0 -m-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <div className="absolute inset-0 border-2 border-fuchsia-500/30 rounded-full animate-ping" 
+                     style={{ animationDuration: '2s' }}
+                />
+                <div className="absolute inset-0 border border-orange-400/20 rounded-full animate-ping" 
+                     style={{ animationDelay: '0.5s', animationDuration: '2s' }}
+                />
+              </div>
             </button>
           </div>
         </div>
@@ -353,29 +441,6 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Indicador de scroll cinematográfico */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-10 text-white/90 transition-all duration-500"
-        style={{ 
-          opacity: Math.max(0, 1 - scrollFade * 2),
-          transform: `translateY(${curtainProgress * 20}px)`
-        }}
-      >
-        <div className="flex flex-col items-center gap-3 text-xs tracking-widest">
-          <span className="font-semibold">DESCUBRE</span>
-          <div className="relative">
-            <div className="w-[1px] h-8 bg-gradient-to-b from-white/90 via-white/60 to-transparent" />
-            <div 
-              className="absolute top-0 left-0 w-[1px] bg-white/90 transition-all duration-1000"
-              style={{ 
-                height: `${Math.min(100, (1 - scrollFade) * 100)}%`,
-                boxShadow: '0 0 10px rgba(255,255,255,0.5)'
-              }}
-            />
-          </div>
-          <span className="text-[10px] opacity-70">SCROLL</span>
-        </div>
-      </div>
     </section>
   );
 };

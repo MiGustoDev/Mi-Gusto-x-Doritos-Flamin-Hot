@@ -162,7 +162,7 @@ const ProductShowcase: React.FC = () => {
                     filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))',
                     transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
                     opacity: 0.1 + edgeProgress * 0.9,
-                    transform: `translateX(${(-80 + edgeProgress * 56)}%)`
+                    transform: `translateX(${(-120 + edgeProgress * 90)}%)`
                   }}
                   loading="lazy"
                 />
@@ -177,7 +177,7 @@ const ProductShowcase: React.FC = () => {
                     filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))',
                     transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
                     opacity: 0.1 + edgeProgress * 0.9,
-                    transform: `translateX(${(80 - edgeProgress * 56)}%)`
+                    transform: `translateX(${(120 - edgeProgress * 90)}%)`
                   }}
                   loading="lazy"
                 />
@@ -248,7 +248,15 @@ const ProductShowcase: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+            {/* Marquee: Pican, pero rico! */}
+            <div className="hidden">
+              <div className="marquee bg-gradient-to-r from-red-600 via-orange-600 to-red-600 border-y border-fuchsia-500/30 py-3">
+                <div className="marquee-track text-black font-bold tracking-wide">
+                  <span className="text-2xl md:text-3xl font-['Bebas_Neue'] px-6 whitespace-nowrap">Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!</span>
+                  <span className="text-2xl md:text-3xl font-['Bebas_Neue'] px-6 whitespace-nowrap">Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!  a0 a0 a0 a0 Pican, pero rico!</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Detalles del producto a la derecha del 3D */}
@@ -321,13 +329,14 @@ const ProductShowcase: React.FC = () => {
               // Al inicio (reveal=0) quedan exactamente DETRÁS de la empanada y no se ven
               const reveal = Math.max(0, Math.min(1, (postArrivalProgress - 0.05) / 0.95));
               const empanadaX = -56 + 44 * scrollProgress; // posición de la empanada (más cerca del contador)
-              const tubitosX = empanadaX - (6 * Math.max(0, reveal)); // desplazamiento lateral levemente mayor
+              // Los tubitos empiezan detrás de la empanada y solo se asoman ligeramente hacia la izquierda
+              const tubitosX = empanadaX - (5 * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
               const tubitosY = -50 - 2 * Math.max(0, reveal); // ligera subida
               return (
                 <img
                   src="/TubitoDinamita.png"
                   alt="Doritos Dinamita"
-                  className="pointer-events-none hidden md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-56 lg:w-64 will-change-transform z-[5]"
+                  className="pointer-events-none hidden md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-56 lg:w-64 will-change-transform z-[2]"
                   style={{
                     transform: `translate(-0%, ${tubitosY}%) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
                     opacity: Math.max(0, reveal),
@@ -337,19 +346,20 @@ const ProductShowcase: React.FC = () => {
                 />
               );
             })()}
-
-            {/* Tubito Dinamita derecho: detrás del Flamin Hot */}
+            {/* Tubito Dinamita derecho: coreografía espejada del izquierdo, tamaño menor y detrás del Flamin Hot */}
             {(() => {
               const reveal = Math.max(0, Math.min(1, (postArrivalProgress - 0.05) / 0.95));
-              const flaminX = 52 - 40 * scrollProgress; // referencia lado derecho
-              const tubitosXRight = flaminX + (6 * reveal);
+              // Posición de referencia para el lado derecho (espejo del cálculo de la empanada izquierda)
+              const flaminX = 52 - 40 * scrollProgress;
+              // Los tubitos empiezan detrás del Flamin Hot y solo se asoman ligeramente hacia la derecha
+              const tubitosXRight = flaminX + (5 * reveal); // movimiento muy sutil, solo para asomarse
               const tubitosYRight = -50 - 2 * reveal;
-              const scaleRight = 0.82 + 0.16 * reveal;
+              const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
               return (
                 <img
                   src="/TubitoDinamita2.png"
                   alt="Tubito Dinamita"
-                  className="pointer-events-none hidden md:block absolute -right-6 md:-right-16 top-1/2 w-36 md:w-44 lg:w-56 will-change-transform z-10"
+                  className="pointer-events-none hidden md:block absolute -right-6 md:-right-16 top-1/2 w-36 md:w-44 lg:w-56 will-change-transform z-[2]"
                   style={{
                     transform: `translate(-0%, ${tubitosYRight}%) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
                     opacity: Math.max(0, reveal),
@@ -359,7 +369,7 @@ const ProductShowcase: React.FC = () => {
                 />
               );
             })()}
-
+            
             {/* Imagen derecha - Flamin Hot */}
             <img
               src="/FlaminHot.png"
@@ -371,81 +381,82 @@ const ProductShowcase: React.FC = () => {
               }}
               loading="lazy"
             />
-
-            {/* Countdown */}
+            {/* Countdown movido aquí (mismo tamaño que el original) */}
             <Reveal effect="slide-up">
-              <div className="relative z-40 mt-24 md:mt-28 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-3xl p-10 lg:p-14 border border-fuchsia-500/20 mb-16 inline-block">
+              <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-3xl p-10 lg:p-14 border border-fuchsia-500/20 mb-16 inline-block">
                 <div className="grid grid-cols-4 gap-8">
-                  {[
-                    { value: timeLeft.days, label: 'DÍAS' },
-                    { value: timeLeft.hours, label: 'HORAS' },
-                    { value: timeLeft.minutes, label: 'MINUTOS' },
-                    { value: timeLeft.seconds, label: 'SEGUNDOS' }
-                  ].map((item, index) => (
-                    <div key={index} className="text-center">
-                      <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-2xl p-8 mb-4 pulse-glow">
-                        <div className="text-5xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
-                          {item.value.toString().padStart(2, '0')}
-                        </div>
-                      </div>
-                      <div className="text-fuchsia-300 font-semibold text-base tracking-wider">
-                        {item.label}
+                {[
+                  { value: timeLeft.days, label: 'DÍAS' },
+                  { value: timeLeft.hours, label: 'HORAS' },
+                  { value: timeLeft.minutes, label: 'MINUTOS' },
+                  { value: timeLeft.seconds, label: 'SEGUNDOS' }
+                ].map((item, index) => (
+                  <div key={index} className="text-center">
+                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-2xl p-8 mb-4 pulse-glow">
+                      <div className="text-5xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
+                        {item.value.toString().padStart(2, '0')}
                       </div>
                     </div>
-                  ))}
-                </div>
-                {/* Newsletter */}
-                <div className="mt-12 md:mt-14 max-w-xl mx-auto">
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <input
-                      type="email"
-                      inputMode="email"
-                      value={newsletterEmail}
-                      onChange={(e) => {
-                        setNewsletterEmail(e.target.value);
-                        if (newsletterStatus !== 'idle') setNewsletterStatus('idle');
-                      }}
-                      placeholder="example@gmail.com"
-                      className="flex-1 px-4 py-3 bg-black/50 border border-purple-600/60 rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none"
-                    />
-                    <button
-                      onClick={async () => {
-                        const email = newsletterEmail.trim();
-                        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                        if (!isEmailValid) {
-                          setNewsletterStatus('error');
-                          return;
-                        }
-                        setNewsletterStatus('success');
-                      }}
-                      className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors"
-                    >
-                      Avisame
-                    </button>
+                    <div className="text-fuchsia-300 font-semibold text-base tracking-wider">
+                      {item.label}
+                    </div>
                   </div>
-                  <div className="mt-2 min-h-[1.25rem]">
-                    {newsletterStatus === 'error' && (
-                      <p className="text-sm text-red-400">Por favor ingresa un correo válido.</p>
-                    )}
-                    {newsletterStatus === 'success' && (
-                      <p className="text-sm text-fuchsia-300">¡Listo! Te avisaremos con las últimas novedades.</p>
-                    )}
-                  </div>
+                ))}
+              </div>
+              {/* Newsletter: suscripción para recibir novedades y notificaciones */}
+              <div className="mt-12 md:mt-14 max-w-xl mx-auto">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    inputMode="email"
+                    value={newsletterEmail}
+                    onChange={(e) => {
+                      setNewsletterEmail(e.target.value);
+                      if (newsletterStatus !== 'idle') setNewsletterStatus('idle');
+                    }}
+                    placeholder="example@gmail.com"
+                    className="flex-1 px-4 py-3 bg-black/50 border border-purple-600/60 rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none"
+                  />
+                  <button
+                    onClick={async () => {
+                      const email = newsletterEmail.trim();
+                      const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                      if (!isEmailValid) {
+                        setNewsletterStatus('error');
+                        return;
+                      }
+                      // Aquí luego integraremos el guardado en Google Sheets
+                      setNewsletterStatus('success');
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors"
+                  >
+                    Avisame
+                  </button>
                 </div>
+                <div className="mt-2 min-h-[1.25rem]">
+                  {newsletterStatus === 'error' && (
+                    <p className="text-sm text-red-400">Por favor ingresa un correo válido.</p>
+                  )}
+                  {newsletterStatus === 'success' && (
+                    <p className="text-sm text-fuchsia-300">¡Listo! Te avisaremos con las últimas novedades.</p>
+                  )}
+                </div>
+              </div>
               </div>
             </Reveal>
           </div>
         </div>
 
-        {/* Marquee: Pican, pero rico! — Debajo del contador (fuera del header épico) */}
-        <div className="relative z-10 mt-6">
-          <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-6 md:py-7">
-            <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-              <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
-              <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
-            </div>
+      {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) */}
+      <div className="relative z-10 mt-6">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-6 md:py-7">
+          <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+            <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
           </div>
         </div>
+      </div>
+
 
       </div>
     </section>
