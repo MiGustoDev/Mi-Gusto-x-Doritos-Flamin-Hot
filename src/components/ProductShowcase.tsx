@@ -20,7 +20,7 @@ const ProductShowcase: React.FC = () => {
   const [edgeProgress, setEdgeProgress] = useState(0); // progreso para imágenes a los bordes tras el logo
   // Notificaciones eliminadas por solicitud
   const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error' | 'loading'>('idle');
   const [logoRevealed, setLogoRevealed] = useState(false);
   const [logoFlash, setLogoFlash] = useState(false);
   // Elimina toda la lógica de showConfetti en useEffect, IntersectionObserver, y renders
@@ -75,6 +75,32 @@ const ProductShowcase: React.FC = () => {
   const handleLogoClick = () => {
     setLogoFlash(true);
     setTimeout(() => setLogoFlash(false), 2000); // Reset después de 2 segundos
+  };
+
+  const handleNewsletter = async () => {
+    const email = newsletterEmail.trim();
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!isEmailValid) {
+      setNewsletterStatus('error');
+      return;
+    }
+    setNewsletterStatus('loading');
+    try {
+      const form = new URLSearchParams();
+      form.append('email', email);
+      const res = await fetch('https://script.google.com/macros/s/AKfycbzUnBSimRbErqEUMDCjn2PwZr5drsdLazhGAeFyqW8kpf6xrM-8JGsMWmy6rzaOvlAYRA/exec', {
+        method: 'POST',
+        body: form,
+      });
+      if (res.ok) {
+        setNewsletterStatus('success');
+        setNewsletterEmail('');
+      } else {
+        setNewsletterStatus('error');
+      }
+    } catch (e) {
+      setNewsletterStatus('error');
+    }
   };
 
   useEffect(() => {
@@ -418,26 +444,19 @@ const ProductShowcase: React.FC = () => {
                     }}
                     placeholder="example@gmail.com"
                     className="flex-1 px-4 py-3 bg-black/50 border border-purple-600/60 rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none"
+                    disabled={newsletterStatus === 'loading'}
                   />
                   <button
-                    onClick={async () => {
-                      const email = newsletterEmail.trim();
-                      const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                      if (!isEmailValid) {
-                        setNewsletterStatus('error');
-                        return;
-                      }
-                      // Aquí luego integraremos el guardado en Google Sheets
-                      setNewsletterStatus('success');
-                    }}
+                    onClick={handleNewsletter}
+                    disabled={newsletterStatus === 'loading'}
                     className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors"
                   >
-                    Avisame
+                    {newsletterStatus === 'loading' ? 'Enviando...' : 'Avisame'}
                   </button>
                 </div>
                 <div className="mt-2 min-h-[1.25rem]">
                   {newsletterStatus === 'error' && (
-                    <p className="text-sm text-red-400">Por favor ingresa un correo válido.</p>
+                    <p className="text-sm text-red-400">Hubo un error. Intenta de nuevo.</p>
                   )}
                   {newsletterStatus === 'success' && (
                     <p className="text-sm text-fuchsia-300">¡Listo! Te avisaremos con las últimas novedades.</p>
