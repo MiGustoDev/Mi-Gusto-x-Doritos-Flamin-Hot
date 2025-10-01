@@ -88,7 +88,7 @@ const ProductShowcase: React.FC = () => {
     try {
       const form = new URLSearchParams();
       form.append('email', email);
-      const res = await fetch('https://script.google.com/macros/s/AKfycbzUnBSimRbErqEUMDCjn2PwZr5drsdLazhGAeFyqW8kpf6xrM-8JGsMWmy6rzaOvlAYRA/exec', {
+      const res = await fetch('https://script.google.com/macros/s/AKfycbwVkh5MdZnytNzPXGfV_sM1qcPY5RwR7Y06KHGTgCd7W1T1bUAkb0f367CK2SlP0GTG/exec', {
         method: 'POST',
         body: form,
       });
