@@ -86,11 +86,14 @@ const ProductShowcase: React.FC = () => {
     }
     setNewsletterStatus('loading');
     try {
-      const form = new URLSearchParams();
-      form.append('email', email);
-      const res = await fetch('https://script.google.com/macros/s/AKfycbwVkh5MdZnytNzPXGfV_sM1qcPY5RwR7Y06KHGTgCd7W1T1bUAkb0f367CK2SlP0GTG/exec', {
+      const res = await fetch('https://sheetdb.io/api/v1/baeccpkjv9yb4', {
         method: 'POST',
-        body: form,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: [
+            { email, fecha: new Date().toISOString() }
+          ]
+        }),
       });
       if (res.ok) {
         setNewsletterStatus('success');
@@ -459,7 +462,7 @@ const ProductShowcase: React.FC = () => {
                     <p className="text-sm text-red-400">Hubo un error. Intenta de nuevo.</p>
                   )}
                   {newsletterStatus === 'success' && (
-                    <p className="text-sm text-fuchsia-300">¡Listo! Te avisaremos con las últimas novedades.</p>
+                    <p className="text-sm text-fuchsia-300">¡Listo! Te enviaremos un correo cuando sea el lanzamiento.</p>
                   )}
                 </div>
               </div>
