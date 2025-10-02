@@ -274,12 +274,12 @@ const Hero: React.FC = () => {
                 />
               </div>
 
-              {/* Imagen principal del Tubito - Optimizada para mobile */}
+              {/* Imagen principal del Tubito - Optimizada para mobile (ligeramente más grande) */}
               <div className="relative z-10">
                 <img 
                   src="/Tubito.png" 
                   alt="Descubrir Ahora" 
-                  className="w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
+                  className="w-48 h-48 sm:w-48 sm:h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
                   style={{ 
                     filter: `
                       brightness(1.1) 
