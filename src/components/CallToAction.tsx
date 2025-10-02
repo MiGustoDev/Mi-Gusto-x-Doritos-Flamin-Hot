@@ -75,8 +75,8 @@ const CallToAction: React.FC = () => {
               </div>
               
               {/* Redes Sociales */}
-              <div className="text-right mb-3">
-                <h4 className="text-white font-bold text-sm mb-3 flex items-center justify-end gap-2">
+              <div className="text-right mb-2 -mt-20">
+                <h4 className="text-white font-bold text-sm mb-2 flex items-center justify-end gap-2">
                   <Instagram className="w-4 h-4" style={{ stroke: 'url(#flame-stroke)', fill: 'none', strokeWidth: 2 }} />
                   Síguenos en Redes
                 </h4>
@@ -112,7 +112,7 @@ const CallToAction: React.FC = () => {
               </div>
               
               {/* Copyright */}
-              <div className="text-center">
+              <div className="text-center mt-8">
                 <p className="text-purple-400 text-sm">© 2025 Mi Gusto. Todos los derechos reservados.</p>
                 <p className="text-purple-400 text-xs mt-1">Doritos es una marca registrada de PepsiCo.</p>
               </div>

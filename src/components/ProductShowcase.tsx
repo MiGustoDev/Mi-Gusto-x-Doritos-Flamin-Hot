@@ -120,9 +120,10 @@ const ProductShowcase: React.FC = () => {
 
       // progreso adicional una vez que rect.top pasó por debajo de "end" (empanada ya llegó)
       // En mobile, activar más temprano para que los TubitosDinamita aparezcan antes
+      // En desktop, también activar más temprano para que aparezcan antes
       const isMobile = window.innerWidth < 768;
-      const overshootMultiplier = isMobile ? 0.2 : 0.35; // En mobile, activar con menos scroll
-      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport en mobile
+      const overshootMultiplier = isMobile ? 0.2 : 0.15; // En desktop, activar con menos scroll (0.15 vs 0.35)
+      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport
       const overshootClamped = Math.max(0, Math.min(1, overshoot));
       setPostArrivalProgress(overshootClamped);
 
@@ -352,7 +353,7 @@ const ProductShowcase: React.FC = () => {
               alt="Empanada abierta"
               className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
-                transform: `translateY(${window.innerWidth < 768 ? '45%' : '-50%'}) translateX(${(-56 + 44 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
+                transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${(-56 + 44 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
                 opacity: Math.min(1, Math.max(0, scrollProgress))
               }}
               loading="lazy"
@@ -371,7 +372,7 @@ const ProductShowcase: React.FC = () => {
                   alt="Doritos Dinamita"
                   className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-32 md:w-56 lg:w-64 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${window.innerWidth < 768 ? '45%' : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
+                    transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
                     opacity: Math.max(0, reveal),
                     filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))'
                   }}
@@ -393,7 +394,7 @@ const ProductShowcase: React.FC = () => {
                   alt="Tubito Dinamita"
                   className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-28 md:w-44 lg:w-56 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
+                    transform: `translateY(${window.innerWidth < 768 ? '65%' : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
                     opacity: Math.max(0, reveal),
                     filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))'
                   }}
@@ -408,7 +409,7 @@ const ProductShowcase: React.FC = () => {
               alt="Doritos Flamin' Hot"
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
-                transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${(52 - 40 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
+                transform: `translateY(${window.innerWidth < 768 ? '65%' : '-50%'}) translateX(${(52 - 40 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
                 opacity: Math.min(1, Math.max(0, scrollProgress))
               }}
               loading="lazy"
