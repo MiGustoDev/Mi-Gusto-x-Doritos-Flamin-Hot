@@ -164,15 +164,15 @@ const ProductShowcase: React.FC = () => {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4">
-        {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) */}
-        <div className="text-center mb-14 md:mb-16">
-          {/* Logo grande arriba del título */}
-          <div ref={logoRef} className="mb-2 -mt-16 md:-mt-20 lg:-mt-24 relative">
+        {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) - Optimizado para mobile */}
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          {/* Logo grande arriba del título - Optimizado para mobile */}
+          <div ref={logoRef} className="mb-2 -mt-8 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-4">
             <img
               src="/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
-              className={`mx-auto w-96 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
+              className={`mx-auto w-72 sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
                 logoRevealed ? 'opacity-100 translate-y-0 scale-100 shine logo-float' : 'opacity-0 translate-y-10 scale-95'
               } ${logoFlash ? 'logo-flash' : ''}`}
             />
@@ -216,30 +216,30 @@ const ProductShowcase: React.FC = () => {
             </div>
           </div>
           <Reveal effect="slide-up">
-            <h2 className="text-5xl md:text-6xl font-black flame-text font-['Bebas_Neue'] mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
               EMPANADA REVOLUCIONARIA
             </h2>
           </Reveal>
           <Reveal effect="fade" delay={1}>
-            <p className="text-purple-200 text-xl max-w-3xl mx-auto">
+            <p className="text-purple-200 text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-4 leading-relaxed">
               Cada mordida es una explosión de sabor que combina la tradición argentina con la intensidad única de Doritos Flamin' Hot
             </p>
           </Reveal>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-center mb-20">
-          {/* Main Product 3D */}
+        {/* Product Grid - Optimizado para mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 items-center mb-16 sm:mb-20">
+          {/* Main Product 3D - Optimizado para mobile */}
           <div className="lg:col-span-2">
             <div className="relative">
-              <div className="relative rounded-3xl p-2 md:p-4 border border-fuchsia-500/20 overflow-visible bg-transparent">
+              <div className="relative rounded-2xl sm:rounded-3xl p-2 md:p-4 border border-fuchsia-500/20 overflow-visible bg-transparent">
                 {/* FlameCanvas de toda la card (único, desde el borde inferior) */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
                   <FlameCanvas className="absolute inset-0" density={2.5} colorAlpha={1.2} shadowBlur={25} />
                 </div>
                 
-                {/* Contenedor del modelo 3D - se extiende sin límites */}
-                <div className="relative z-5 w-full h-[600px] md:h-[700px] lg:h-[800px] -m-2 md:-m-4">
+                {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
+                <div className="relative z-5 w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[800px] -m-2 md:-m-4">
                   {/* Vapor detras */}
                   <div className="pointer-events-none absolute inset-0 z-0">
                     <SteamOverlay intensity={0.85} className="absolute inset-0" />
@@ -272,10 +272,10 @@ const ProductShowcase: React.FC = () => {
                   />
                 </div>
                 
-                {/* Textos superpuestos: el modelo queda por detrás */}
-                <div className="absolute left-0 right-0 bottom-6 md:bottom-8 z-20 text-center px-4">
-                  <h3 className="text-2xl font-bold text-white mb-1 md:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Empanada Premium</h3>
-                  <p className="text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Doritos Flamin' Hot</p>
+                {/* Textos superpuestos: el modelo queda por detrás - Optimizado para mobile */}
+                <div className="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 text-center px-4">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Empanada Premium</h3>
+                  <p className="text-sm sm:text-base text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Doritos Flamin' Hot</p>
                 </div>
               </div>
             </div>
@@ -290,8 +290,8 @@ const ProductShowcase: React.FC = () => {
             </div>
           </div>
 
-          {/* Detalles del producto a la derecha del 3D */}
-          <div className="features-epic space-y-6 lg:mt-0 lg:pl-12 lg:border-l lg:border-fuchsia-500/20 lg:self-stretch lg:flex lg:flex-col lg:justify-center">
+          {/* Detalles del producto a la derecha del 3D - Optimizado para mobile */}
+          <div className="features-epic space-y-4 sm:space-y-6 lg:mt-0 lg:pl-12 lg:border-l lg:border-fuchsia-500/20 lg:self-stretch lg:flex lg:flex-col lg:justify-center px-4 sm:px-0">
             {[ 
               {
                 title: "Masa Artesanal",
@@ -310,7 +310,7 @@ const ProductShowcase: React.FC = () => {
                   <img
                     src="/dorito.png"
                     alt="Dorito"
-                    className="w-12 h-12 md:w-14 md:h-14 inline-block"
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 inline-block"
                     loading="lazy"
                   />
                 )
@@ -318,17 +318,17 @@ const ProductShowcase: React.FC = () => {
             ].map((item, index) => (
               <Reveal key={index} effect="scale" delay={(index % 3) as 0 | 1 | 2}>
                 <div className="feature-card-pro">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4">
                   <div className="feature-icon-pro">
                     {typeof item.icon === 'string' ? (
-                      <span className="text-3xl md:text-4xl">{item.icon}</span>
+                      <span className="text-2xl sm:text-3xl md:text-4xl">{item.icon}</span>
                     ) : (
                       item.icon
                     )}
                   </div>
                   <div>
-                    <h4 className="text-white font-bold text-lg md:text-xl mb-1 leading-tight tracking-wide">{item.title}</h4>
-                    <p className="text-purple-200 leading-relaxed text-sm md:text-base max-w-sm">{item.description}</p>
+                    <h4 className="text-white font-bold text-base sm:text-lg md:text-xl mb-1 leading-tight tracking-wide">{item.title}</h4>
+                    <p className="text-purple-200 leading-relaxed text-xs sm:text-sm md:text-base max-w-sm">{item.description}</p>
                   </div>
                 </div>
                 </div>
@@ -337,10 +337,10 @@ const ProductShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Section Header (badge removido) */}
-        <div className="text-center mb-14 md:mb-16">
+        {/* Section Header (badge removido) - Optimizado para mobile */}
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <div ref={epicRef} className="relative inline-block">
-            <h3 className="text-6xl md:text-7xl lg:text-8xl leading-none tracking-wide font-black flame-text text-shadow-glow font-['Bebas_Neue'] mb-8">
+            <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl leading-none tracking-wide font-black flame-text text-shadow-glow font-['Bebas_Neue'] mb-6 sm:mb-8 px-4">
               ALGO EPICO ESTA LLEGANDO
             </h3>
             {/* Imagen izquierda */}
@@ -412,10 +412,10 @@ const ProductShowcase: React.FC = () => {
               }}
               loading="lazy"
             />
-            {/* Countdown movido aquí (mismo tamaño que el original) */}
+            {/* Countdown movido aquí - Optimizado para mobile */}
             <Reveal effect="slide-up">
-              <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-3xl p-10 lg:p-14 border border-fuchsia-500/20 mb-16 inline-block">
-                <div className="grid grid-cols-4 gap-8">
+              <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                 {[
                   { value: timeLeft.days, label: 'DÍAS' },
                   { value: timeLeft.hours, label: 'HORAS' },
@@ -423,19 +423,19 @@ const ProductShowcase: React.FC = () => {
                   { value: timeLeft.seconds, label: 'SEGUNDOS' }
                 ].map((item, index) => (
                   <div key={index} className="text-center">
-                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-2xl p-8 mb-4 pulse-glow">
-                      <div className="text-5xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
+                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-3 sm:mb-4 pulse-glow">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
                         {item.value.toString().padStart(2, '0')}
                       </div>
                     </div>
-                    <div className="text-fuchsia-300 font-semibold text-base tracking-wider">
+                    <div className="text-fuchsia-300 font-semibold text-xs sm:text-sm md:text-base tracking-wider">
                       {item.label}
                     </div>
                   </div>
                 ))}
               </div>
-              {/* Newsletter: suscripción para recibir novedades y notificaciones */}
-              <div className="mt-12 md:mt-14 max-w-xl mx-auto">
+              {/* Newsletter: suscripción para recibir novedades y notificaciones - Optimizado para mobile */}
+              <div className="mt-8 sm:mt-10 md:mt-14 max-w-xl mx-auto px-4">
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="email"
@@ -446,23 +446,23 @@ const ProductShowcase: React.FC = () => {
                       if (newsletterStatus !== 'idle') setNewsletterStatus('idle');
                     }}
                     placeholder="example@gmail.com"
-                    className="flex-1 px-4 py-3 bg-black/50 border border-purple-600/60 rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none"
+                    className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-purple-600/60 rounded-lg sm:rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none text-sm sm:text-base"
                     disabled={newsletterStatus === 'loading'}
                   />
                   <button
                     onClick={handleNewsletter}
                     disabled={newsletterStatus === 'loading'}
-                    className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors"
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors text-sm sm:text-base"
                   >
                     {newsletterStatus === 'loading' ? 'Enviando...' : 'Avisame'}
                   </button>
                 </div>
                 <div className="mt-2 min-h-[1.25rem]">
                   {newsletterStatus === 'error' && (
-                    <p className="text-sm text-red-400">Hubo un error. Intenta de nuevo.</p>
+                    <p className="text-xs sm:text-sm text-red-400">Hubo un error. Intenta de nuevo.</p>
                   )}
                   {newsletterStatus === 'success' && (
-                    <p className="text-sm text-fuchsia-300">¡Listo! Te enviaremos un correo cuando sea el lanzamiento.</p>
+                    <p className="text-xs sm:text-sm text-fuchsia-300">¡Listo! Te enviaremos un correo cuando sea el lanzamiento.</p>
                   )}
                 </div>
               </div>
@@ -471,12 +471,12 @@ const ProductShowcase: React.FC = () => {
           </div>
         </div>
 
-      {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) */}
-      <div className="relative z-10 mt-6">
-        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-6 md:py-7">
+      {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) - Optimizado para mobile */}
+      <div className="relative z-10 mt-4 sm:mt-6">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-6 md:py-7">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-            <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
-            <span className="text-5xl md:text-7xl lg:text-8xl font-['Bebas_Neue'] uppercase px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-2xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-2xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
           </div>
         </div>
       </div>

@@ -178,8 +178,8 @@ const Hero: React.FC = () => {
       >
         <div className={`transition-all duration-1000 ${isLoaded ? 'fade-in-up' : 'opacity-0 translate-y-10'}`}>
 
-          {/* Main Title - CON DEGRADADO */}
-          <h1 className="relative z-50 font-black text-6xl md:text-8xl lg:text-9xl mb-8 leading-none tracking-wide">
+          {/* Main Title - CON DEGRADADO - Optimizado para mobile */}
+          <h1 className="relative z-50 font-black text-7xl sm:text-8xl md:text-8xl lg:text-9xl mb-6 sm:mb-8 leading-none tracking-wide px-4">
             <span 
               className="block font-['Bebas_Neue']"
               style={{
@@ -194,7 +194,7 @@ const Hero: React.FC = () => {
             >
               Mi Gusto
             </span>
-            <span className="block text-white font-['Bebas_Neue']">×</span>
+            <span className="block text-white font-['Bebas_Neue'] text-6xl sm:text-7xl md:text-6xl">×</span>
             <span 
               className="block font-['Bebas_Neue']"
               style={{
@@ -211,9 +211,9 @@ const Hero: React.FC = () => {
             </span>
           </h1>
 
-          {/* Subtitle - CON DEGRADADO */}
-          <div className="mb-10 relative z-50">
-            <h2 className="relative z-50 text-2xl md:text-4xl font-bold text-white mb-4 tracking-wide">
+          {/* Subtitle - CON DEGRADADO - Optimizado para mobile */}
+          <div className="mb-8 sm:mb-10 relative z-50 px-4">
+            <h2 className="relative z-50 text-2xl sm:text-4xl md:text-4xl font-bold text-white mb-3 sm:mb-4 tracking-wide leading-tight whitespace-nowrap">
               EMPANADA <span 
                 className="flame-fire"
                 style={{
@@ -241,17 +241,17 @@ const Hero: React.FC = () => {
                 FLAMIN' HOT
               </span>
             </h2>
-            {/* Fuego saliendo desde el subtítulo */}
-            <div className="pointer-events-none absolute inset-x-0 -bottom-1 h-16 md:h-20">
-              <FlameCanvas className="absolute inset-0" density={1.2} colorAlpha={1.0} shadowBlur={30} />
+            {/* Fuego saliendo desde el subtítulo - Optimizado para mobile */}
+            <div className="pointer-events-none absolute inset-x-0 -bottom-1 h-12 sm:h-16 md:h-20">
+              <FlameCanvas className="absolute inset-0" density={0.8} colorAlpha={0.8} shadowBlur={20} />
             </div>
             
-            {/* Efecto de fuego adicional para FLAMIN' HOT */}
+            {/* Efecto de fuego adicional para FLAMIN' HOT - Optimizado para mobile */}
             <div 
               className="pointer-events-none absolute inset-0"
               style={{
-                background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.3) 0%, rgba(255, 0, 64, 0.2) 30%, transparent 70%)',
-                filter: 'blur(8px)',
+                background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.2) 0%, rgba(255, 0, 64, 0.15) 30%, transparent 70%)',
+                filter: 'blur(6px)',
                 animation: 'firePulse 1.5s ease-in-out infinite alternate',
                 zIndex: 5
               }}
@@ -274,12 +274,12 @@ const Hero: React.FC = () => {
                 />
               </div>
 
-              {/* Imagen principal del Tubito */}
+              {/* Imagen principal del Tubito - Optimizada para mobile */}
               <div className="relative z-10">
                 <img 
                   src="/Tubito.png" 
                   alt="Descubrir Ahora" 
-                  className="w-48 h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
+                  className="w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
                   style={{ 
                     filter: `
                       brightness(1.1) 
@@ -302,8 +302,8 @@ const Hero: React.FC = () => {
                      }}
                 />
 
-                {/* Texto posicionado más a la izquierda y más grande */}
-                <span className="absolute text-white font-bold text-2xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none transition-all duration-300 group-hover:scale-110 font-['Bebas_Neue'] z-50 flame-fire"
+                {/* Texto posicionado más a la izquierda y más grande - Optimizado para mobile */}
+                <span className="absolute text-white font-bold text-lg sm:text-xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none transition-all duration-300 group-hover:scale-110 font-['Bebas_Neue'] z-50 flame-fire"
                       style={{
                         top: '55%',
                         left: '15%',
@@ -326,7 +326,7 @@ const Hero: React.FC = () => {
                         position: 'absolute',
                         filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6))',
                         transform: 'translateY(-50%) rotate(-25deg)',
-                        lineHeight: '4.5rem',
+                        lineHeight: '2.5rem',
                         letterSpacing: '0.05em',
                         zIndex: 10,
                         textAlign: 'center'
