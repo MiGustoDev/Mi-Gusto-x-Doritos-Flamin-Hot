@@ -119,7 +119,10 @@ const ProductShowcase: React.FC = () => {
       setScrollProgress(clamped);
 
       // progreso adicional una vez que rect.top pasó por debajo de "end" (empanada ya llegó)
-      const overshoot = (end - rect.top) / (vh * 0.35); // 0→1 en ~35% del viewport adicional
+      // En mobile, activar más temprano para que los TubitosDinamita aparezcan antes
+      const isMobile = window.innerWidth < 768;
+      const overshootMultiplier = isMobile ? 0.2 : 0.35; // En mobile, activar con menos scroll
+      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport en mobile
       const overshootClamped = Math.max(0, Math.min(1, overshoot));
       setPostArrivalProgress(overshootClamped);
 
@@ -343,13 +346,13 @@ const ProductShowcase: React.FC = () => {
             <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl leading-none tracking-wide font-black flame-text text-shadow-glow font-['Bebas_Neue'] mb-6 sm:mb-8 px-4">
               ALGO EPICO ESTA LLEGANDO
             </h3>
-            {/* Imagen izquierda */}
+            {/* Imagen izquierda - Visible en mobile */}
             <img
               src="/CRUNCHY.png"
               alt="Empanada abierta"
-              className="pointer-events-none hidden md:block absolute -left-6 md:-left-16 top-1/2 w-72 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
+              className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
-                transform: `translateY(-50%) translateX(${(-56 + 44 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
+                transform: `translateY(${window.innerWidth < 768 ? '45%' : '-50%'}) translateX(${(-56 + 44 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
                 opacity: Math.min(1, Math.max(0, scrollProgress))
               }}
               loading="lazy"
@@ -362,14 +365,13 @@ const ProductShowcase: React.FC = () => {
               const empanadaX = -56 + 44 * scrollProgress; // posición de la empanada (más cerca del contador)
               // Los tubitos empiezan detrás de la empanada y solo se asoman ligeramente hacia la izquierda
               const tubitosX = empanadaX - (5 * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
-              const tubitosY = -50 - 2 * Math.max(0, reveal); // ligera subida
               return (
                 <img
                   src="/TubitoDinamita.png"
                   alt="Doritos Dinamita"
-                  className="pointer-events-none hidden md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-56 lg:w-64 will-change-transform z-[2]"
+                  className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-32 md:w-56 lg:w-64 will-change-transform z-[2]"
                   style={{
-                    transform: `translate(-0%, ${tubitosY}%) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
+                    transform: `translateY(${window.innerWidth < 768 ? '45%' : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
                     opacity: Math.max(0, reveal),
                     filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))'
                   }}
@@ -384,15 +386,14 @@ const ProductShowcase: React.FC = () => {
               const flaminX = 52 - 40 * scrollProgress;
               // Los tubitos empiezan detrás del Flamin Hot y solo se asoman ligeramente hacia la derecha
               const tubitosXRight = flaminX + (5 * reveal); // movimiento muy sutil, solo para asomarse
-              const tubitosYRight = -50 - 2 * reveal;
               const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
               return (
                 <img
                   src="/TubitoDinamita2.png"
                   alt="Tubito Dinamita"
-                  className="pointer-events-none hidden md:block absolute -right-6 md:-right-16 top-1/2 w-36 md:w-44 lg:w-56 will-change-transform z-[2]"
+                  className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-28 md:w-44 lg:w-56 will-change-transform z-[2]"
                   style={{
-                    transform: `translate(-0%, ${tubitosYRight}%) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
+                    transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
                     opacity: Math.max(0, reveal),
                     filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))'
                   }}
@@ -401,21 +402,21 @@ const ProductShowcase: React.FC = () => {
               );
             })()}
             
-            {/* Imagen derecha - Flamin Hot */}
+            {/* Imagen derecha - Flamin Hot - Visible en mobile */}
             <img
               src="/FlaminHot.png"
               alt="Doritos Flamin' Hot"
-              className="pointer-events-none hidden md:block absolute -right-6 md:-right-16 top-1/2 w-72 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
+              className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
-                transform: `translateY(-50%) translateX(${(52 - 40 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
+                transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${(52 - 40 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
                 opacity: Math.min(1, Math.max(0, scrollProgress))
               }}
               loading="lazy"
             />
             {/* Countdown movido aquí - Optimizado para mobile */}
             <Reveal effect="slide-up">
-              <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+              <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
                 {[
                   { value: timeLeft.days, label: 'DÍAS' },
                   { value: timeLeft.hours, label: 'HORAS' },
@@ -423,8 +424,8 @@ const ProductShowcase: React.FC = () => {
                   { value: timeLeft.seconds, label: 'SEGUNDOS' }
                 ].map((item, index) => (
                   <div key={index} className="text-center">
-                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-3 sm:mb-4 pulse-glow">
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
+                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-2xl p-3 sm:p-6 md:p-8 mb-2 sm:mb-4 pulse-glow">
+                      <div className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
                         {item.value.toString().padStart(2, '0')}
                       </div>
                     </div>
