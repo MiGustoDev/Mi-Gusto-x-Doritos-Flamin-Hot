@@ -114,8 +114,8 @@ body {
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.5); }
-  100% { box-shadow: 0 0 40px rgba(255, 0, 128, 0.9); }
+  0% { box-shadow: 0 0 10px rgba(255, 0, 128, 0.2); }
+  100% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.4); }
 }
 
 .floating {
