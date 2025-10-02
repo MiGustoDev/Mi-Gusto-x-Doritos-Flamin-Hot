@@ -39,7 +39,7 @@ const TikTokIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 const CallToAction: React.FC = () => {
   return (
-    <section className="py-24 md:py-28 relative overflow-hidden">
+    <section className="py-8 sm:py-24 md:py-28 relative overflow-hidden">
       {/* Background con efecto de llamas intensificado */}
       <FlameCanvas className="absolute inset-0 z-50 pointer-events-none" density={3.0} colorAlpha={1.5} shadowBlur={35} />
       {/* Overlay más intenso para reforzar contraste */}
@@ -51,35 +51,101 @@ const CallToAction: React.FC = () => {
 
         {/* Footer */}
         <div className="relative z-10 max-w-6xl mx-auto px-4">
-          <div className="border-t border-gray-800 pt-12 md:pt-14">
-            <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 md:gap-8">
+          <div className="border-t border-gray-800 pt-6 sm:pt-12 md:pt-14">
+            {/* Mobile Layout - Simplificado */}
+            <div className="md:hidden">
+              {/* Logos */}
+              <div className="text-left mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <img
+                    src="/Logo Mi Gusto 2025.png"
+                    alt="Mi Gusto"
+                    className="h-8 w-auto object-contain"
+                    loading="lazy"
+                  />
+                  <span className="text-white font-bold text-lg">×</span>
+                  <img
+                    src="/pngegg.png"
+                    alt="Doritos"
+                    className="h-8 w-auto object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="text-sm flame-text-inline">Flamin' Hot Experience</div>
+              </div>
+              
+              {/* Redes Sociales */}
+              <div className="text-right mb-3">
+                <h4 className="text-white font-bold text-sm mb-3 flex items-center justify-end gap-2">
+                  <Instagram className="w-4 h-4" style={{ stroke: 'url(#flame-stroke)', fill: 'none', strokeWidth: 2 }} />
+                  Síguenos en Redes
+                </h4>
+                <div className="flex gap-3 justify-end">
+                  <a
+                    href="https://www.instagram.com/migustoar/?hl=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="Instagram"
+                  >
+                    <Instagram className="w-6 h-6 text-white" />
+                  </a>
+                  <a
+                    href="https://x.com/migustoar?lang=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="X (Twitter)"
+                  >
+                    <XTwitterIcon className="w-6 h-6 text-white" />
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@migustoar?lang=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="TikTok"
+                  >
+                    <TikTokIcon className="w-6 h-6 text-white" />
+                  </a>
+                </div>
+              </div>
+              
+              {/* Copyright */}
+              <div className="text-center">
+                <p className="text-purple-400 text-sm">© 2025 Mi Gusto. Todos los derechos reservados.</p>
+                <p className="text-purple-400 text-xs mt-1">Doritos es una marca registrada de PepsiCo.</p>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:grid grid-cols-3 items-center gap-8">
               <div className="flex items-center gap-4 justify-self-start">
                 <div className="text-left">
                   <div className="flex items-center gap-2">
                     <img
                       src="/Logo Mi Gusto 2025.png"
                       alt="Mi Gusto"
-                      className="h-8 md:h-10 w-auto object-contain"
+                      className="h-10 w-auto object-contain"
                       loading="lazy"
                     />
                     <span className="text-white font-bold text-lg">×</span>
                     <img
                       src="/pngegg.png"
                       alt="Doritos"
-                      className="h-8 md:h-10 w-auto object-contain"
+                      className="h-10 w-auto object-contain"
                       loading="lazy"
                     />
                   </div>
-                  <div className="text-sm md:text-base flame-text-inline">Flamin' Hot Experience</div>
+                  <div className="text-base flame-text-inline">Flamin' Hot Experience</div>
                 </div>
               </div>
               
-              <Reveal effect="fade" delay={1} className="text-purple-400 text-sm md:text-base text-center justify-self-center">
+              <Reveal effect="fade" delay={1} className="text-purple-400 text-base text-center justify-self-center">
                 <p>© 2025 Mi Gusto. Todos los derechos reservados.</p>
                 <p className="text-xs mt-1">Doritos es una marca registrada de PepsiCo.</p>
               </Reveal>
 
-              {/* Redes en el lado derecho del footer */}
               <div className="justify-self-end text-right">
                 <Reveal effect="slide-up" className="text-right">
                   <h4 className="text-white font-bold text-sm md:text-base mb-3 flex items-center gap-2 justify-end md:justify-end">
