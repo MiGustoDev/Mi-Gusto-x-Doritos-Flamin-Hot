@@ -120,9 +120,10 @@ const ProductShowcase: React.FC = () => {
 
       // progreso adicional una vez que rect.top pasó por debajo de "end" (empanada ya llegó)
       // En mobile, activar más temprano para que los TubitosDinamita aparezcan antes
+      // En desktop, también activar más temprano para que aparezcan antes
       const isMobile = window.innerWidth < 768;
-      const overshootMultiplier = isMobile ? 0.2 : 0.35; // En mobile, activar con menos scroll
-      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport en mobile
+      const overshootMultiplier = isMobile ? 0.2 : 0.15; // En desktop, activar con menos scroll (0.15 vs 0.35)
+      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport
       const overshootClamped = Math.max(0, Math.min(1, overshoot));
       setPostArrivalProgress(overshootClamped);
 
