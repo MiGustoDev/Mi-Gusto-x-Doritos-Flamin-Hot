@@ -167,25 +167,25 @@ const ProductShowcase: React.FC = () => {
         {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) - Optimizado para mobile */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           {/* Logo grande arriba del título - Optimizado para mobile */}
-          <div ref={logoRef} className="mb-2 -mt-8 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-4">
+          <div ref={logoRef} className="mb-12 sm:mb-2 -mt-20 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-0 sm:px-4">
             <img
               src="/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
-              className={`mx-auto w-72 sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
+              className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
                 logoRevealed ? 'opacity-100 translate-y-0 scale-100 shine logo-float' : 'opacity-0 translate-y-10 scale-95'
               } ${logoFlash ? 'logo-flash' : ''}`}
             />
             <ConfettiFromLogo trigger={logoRevealed} duration={5000} />
             {/* Imágenes a bordes de pantalla que aparecen tras el logo */}
             <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 w-screen -z-[1]">
-              {/* Izquierda: TubitoDinamita2 */}
-              <Reveal effect="fade" className="hidden md:block absolute left-0 -translate-y-1/2">
+              {/* Izquierda: TubitoDinamita2 (visible en mobile) */}
+              <Reveal effect="fade" className="block md:block absolute left-0 -translate-y-1/2">
                 <div className="relative">
                   <img
                     src="/TubitoDinamita2.png"
                     alt="Tubito Dinamita (izquierda)"
-                    className="w-40 md:w-48 lg:w-56 will-change-transform"
+                    className="w-32 md:w-48 lg:w-56 will-change-transform"
                     style={{
                       filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))',
                       transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
@@ -196,13 +196,13 @@ const ProductShowcase: React.FC = () => {
                   />
                 </div>
               </Reveal>
-              {/* Derecha: TubitoDinamita */}
-              <Reveal effect="fade" delay={1} className="hidden md:block absolute right-0 -translate-y-1/2">
+              {/* Derecha: TubitoDinamita (visible en mobile) */}
+              <Reveal effect="fade" delay={1} className="block md:block absolute right-0 -translate-y-1/2">
                 <div className="relative">
                   <img
                     src="/TubitoDinamita.png"
                     alt="Tubito Dinamita (derecha)"
-                    className="w-44 md:w-52 lg:w-60 will-change-transform"
+                    className="w-36 md:w-52 lg:w-60 will-change-transform"
                     style={{
                       filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))',
                       transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
