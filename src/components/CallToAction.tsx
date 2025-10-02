@@ -58,14 +58,14 @@ const CallToAction: React.FC = () => {
               <div className="text-left mb-6">
                 <div className="flex items-center gap-2 mb-2">
                   <img
-                    src="/Logo Mi Gusto 2025.png"
+                    src="/crunchy/Logo Mi Gusto 2025.png"
                     alt="Mi Gusto"
                     className="h-8 w-auto object-contain"
                     loading="lazy"
                   />
                   <span className="text-white font-bold text-lg">×</span>
                   <img
-                    src="/pngegg.png"
+                    src="/crunchy/pngegg.png"
                     alt="Doritos"
                     className="h-8 w-auto object-contain"
                     loading="lazy"
@@ -124,14 +124,14 @@ const CallToAction: React.FC = () => {
                 <div className="text-left">
                   <div className="flex items-center gap-2">
                     <img
-                      src="/Logo Mi Gusto 2025.png"
+                      src="/crunchy/Logo Mi Gusto 2025.png"
                       alt="Mi Gusto"
                       className="h-10 w-auto object-contain"
                       loading="lazy"
                     />
                     <span className="text-white font-bold text-lg">×</span>
                     <img
-                      src="/pngegg.png"
+                      src="/crunchy/pngegg.png"
                       alt="Doritos"
                       className="h-10 w-auto object-contain"
                       loading="lazy"

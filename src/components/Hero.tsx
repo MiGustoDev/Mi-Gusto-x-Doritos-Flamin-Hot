@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-75"
-          src="/Main-video.mov"
+          src="/crunchy/Main-video.mov"
           autoPlay
           muted
           loop
@@ -277,7 +277,7 @@ const Hero: React.FC = () => {
               {/* Imagen principal del Tubito - Optimizada para mobile (ligeramente más grande) */}
               <div className="relative z-10">
                 <img 
-                  src="/Tubito.png" 
+                  src="/crunchy/Tubito.png" 
                   alt="Descubrir Ahora" 
                   className="w-48 h-48 sm:w-48 sm:h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
                   style={{ 

@@ -172,7 +172,7 @@ const ProductShowcase: React.FC = () => {
           {/* Logo grande arriba del título - Optimizado para mobile */}
           <div ref={logoRef} className="mb-12 sm:mb-2 -mt-20 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-0 sm:px-4">
             <img
-              src="/LogoEmp.png"
+              src="/crunchy/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
               className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
@@ -186,7 +186,7 @@ const ProductShowcase: React.FC = () => {
               <Reveal effect="fade" className="block md:block absolute left-0 -translate-y-1/2">
                 <div className="relative">
                   <img
-                    src="/TubitoDinamita2.png"
+                    src="/crunchy/TubitoDinamita2.png"
                     alt="Tubito Dinamita (izquierda)"
                     className="w-32 md:w-48 lg:w-56 will-change-transform"
                     style={{
@@ -203,7 +203,7 @@ const ProductShowcase: React.FC = () => {
               <Reveal effect="fade" delay={1} className="block md:block absolute right-0 -translate-y-1/2">
                 <div className="relative">
                   <img
-                    src="/TubitoDinamita.png"
+                    src="/crunchy/TubitoDinamita.png"
                     alt="Tubito Dinamita (derecha)"
                     className="w-36 md:w-52 lg:w-60 will-change-transform"
                     style={{
@@ -311,7 +311,7 @@ const ProductShowcase: React.FC = () => {
                 description: "Doritos Flamin' Hot molidos incorporados para un contraste de texturas único",
                 icon: (
                   <img
-                    src="/dorito.png"
+                    src="/crunchy/dorito.png"
                     alt="Dorito"
                     className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 inline-block"
                     loading="lazy"
@@ -348,7 +348,7 @@ const ProductShowcase: React.FC = () => {
             </h3>
             {/* Imagen izquierda - Visible en mobile */}
             <img
-              src="/CRUNCHY.png"
+              src="/crunchy/CRUNCHY.png"
               alt="Empanada abierta"
               className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
@@ -367,7 +367,7 @@ const ProductShowcase: React.FC = () => {
               const tubitosX = empanadaX - (5 * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
               return (
                 <img
-                  src="/TubitoDinamita.png"
+                  src="/crunchy/TubitoDinamita.png"
                   alt="Doritos Dinamita"
                   className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-32 md:w-56 lg:w-64 will-change-transform z-[2]"
                   style={{
@@ -389,7 +389,7 @@ const ProductShowcase: React.FC = () => {
               const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
               return (
                 <img
-                  src="/TubitoDinamita2.png"
+                  src="/crunchy/TubitoDinamita2.png"
                   alt="Tubito Dinamita"
                   className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-28 md:w-44 lg:w-56 will-change-transform z-[2]"
                   style={{
@@ -404,7 +404,7 @@ const ProductShowcase: React.FC = () => {
             
             {/* Imagen derecha - Flamin Hot - Visible en mobile */}
             <img
-              src="/FlaminHot.png"
+              src="/crunchy/FlaminHot.png"
               alt="Doritos Flamin' Hot"
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{

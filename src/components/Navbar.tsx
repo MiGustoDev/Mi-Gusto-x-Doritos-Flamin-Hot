@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Navbar: React.FC = () => {
-  const logoSrc = '/Logo%20Mi%20Gusto%202025.png';
+  const logoSrc = '/crunchy/Logo%20Mi%20Gusto%202025.png';
 
   return (
     <nav

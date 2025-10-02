@@ -23,7 +23,7 @@ interface Particle {
 const ConfettiFromLogo: React.FC<ConfettiFromLogoProps> = ({
   trigger,
   duration = 5000,
-  imageSrc = '/Tubito.png',
+  imageSrc = '/crunchy/Tubito.png',
   count = 10,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -160,3 +160,5 @@ const ConfettiFromLogo: React.FC<ConfettiFromLogoProps> = ({
 };
 
 export default ConfettiFromLogo;
+
+

@@ -28,7 +28,7 @@ const Collaboration: React.FC = () => {
             <div className="mb-8">
               <div className="inline-block hover-lift no-shadow mx-auto lg:ml-auto lg:mr-0 logo-shake logo-glow">
                 <img
-                  src="/Logo Mi Gusto 2025.png"
+                  src="/crunchy/Logo Mi Gusto 2025.png"
                   alt="Logo Mi Gusto 2025"
                   className="h-28 md:h-32 w-auto object-contain logo-drift"
                   loading="lazy"
@@ -50,7 +50,7 @@ const Collaboration: React.FC = () => {
             <div className="mb-8">
               <div className="inline-block hover-lift no-shadow logo-shake logo-glow">
                 <img
-                  src="/pngegg.png"
+                  src="/crunchy/pngegg.png"
                   alt="Doritos Flamin' Hot"
                   className="h-28 md:h-32 w-auto object-contain logo-drift-2"
                   loading="lazy"
