@@ -156,6 +156,22 @@ const ProductShowcase: React.FC = () => {
     };
   }, []);
 
+  // Agregar hook para detectar mobile
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Estado para animar tubitos en mobile
+  const [tubitosIn, setTubitosIn] = useState(false);
+  useEffect(() => {
+    if (isMobile) {
+      setTimeout(() => setTubitosIn(true), 300);
+    }
+  }, [isMobile]);
+
   return (
     <section ref={sectionRef} className="py-24 md:py-28 relative overflow-hidden">
       {(() => { /* easing precomputado para transiciones suaves en bordes */ return null; })()}
@@ -165,7 +181,13 @@ const ProductShowcase: React.FC = () => {
       {/* Fade superior para fusionar con el video */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 via-black/40 to-transparent" />
       {/* Fade inferior para transición hacia CTA */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      {/* Elimina el fade en mobile para que no tape el FlameCanvas */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent hidden sm:block" />
+
+      {/* FlameCanvas de fondo para mobile, cubriendo ProductShowcase y footer */}
+      {isMobile && (
+        <FlameCanvas className="absolute left-0 right-0 bottom-0 top-0 z-0 pointer-events-none" density={2.5} colorAlpha={1.2} shadowBlur={25} />
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) - Optimizado para mobile */}
@@ -238,9 +260,9 @@ const ProductShowcase: React.FC = () => {
             <div className="relative">
               <div className="relative rounded-2xl sm:rounded-3xl p-2 md:p-4 border border-fuchsia-500/20 overflow-visible bg-transparent">
                 {/* FlameCanvas de toda la card (único, desde el borde inferior) */}
-                <div className="absolute inset-0 z-0 pointer-events-none">
+                {isMobile && (
                   <FlameCanvas className="absolute inset-0" density={2.5} colorAlpha={1.2} shadowBlur={25} />
-                </div>
+                )}
                 
                 {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
                 <div className="relative z-5 w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[800px] -m-2 md:-m-4">
@@ -249,7 +271,7 @@ const ProductShowcase: React.FC = () => {
                     <SteamOverlay intensity={0.85} className="absolute inset-0" />
                   </div>
                   <model-viewer
-                    src="/Doritos-3D.glb"
+                    src="/crunchy/Doritos-3D.glb"
                     alt="Empanada Premium con Doritos Flamin' Hot"
                     camera-controls
                     auto-rotate
@@ -374,7 +396,7 @@ const ProductShowcase: React.FC = () => {
                   style={{
                     transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
                     opacity: Math.max(0, reveal),
-                    filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))'
+                    filter: window.innerWidth < 768 ? 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))' : 'none'
                   }}
                   loading="lazy"
                 />
@@ -396,7 +418,7 @@ const ProductShowcase: React.FC = () => {
                   style={{
                     transform: `translateY(${window.innerWidth < 768 ? '65%' : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
                     opacity: Math.max(0, reveal),
-                    filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))'
+                    filter: window.innerWidth < 768 ? 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))' : 'none'
                   }}
                   loading="lazy"
                 />
@@ -417,6 +439,33 @@ const ProductShowcase: React.FC = () => {
             {/* Countdown movido aquí - Optimizado para mobile */}
             <Reveal effect="slide-up">
               <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
+                {/* Tubitos Dinamita SOLO MOBILE, a la altura del contador */}
+                {isMobile && (
+                  <>
+                    {/* TubitoDinamita2: IZQUIERDA, esquina inferior izquierda */}
+                    <img
+                      src="/crunchy/TubitoDinamita2.png"
+                      alt="Tubito Dinamita Izquierda"
+                      className="block sm:hidden absolute left-0 bottom-0 w-24 z-30 drop-shadow-2xl"
+                      style={{
+                        transform: `translateX(-30%) translateY(30%)`,
+                        transition: 'transform 0.8s cubic-bezier(.22,.61,.36,1)',
+                      }}
+                      loading="lazy"
+                    />
+                    {/* TubitoDinamita: DERECHA, esquina inferior derecha */}
+                    <img
+                      src="/crunchy/TubitoDinamita.png"
+                      alt="Tubito Dinamita Derecha"
+                      className="block sm:hidden absolute right-0 bottom-0 w-24 z-30 drop-shadow-2xl"
+                      style={{
+                        transform: `translateX(30%) translateY(30%)`,
+                        transition: 'transform 0.8s cubic-bezier(.22,.61,.36,1)',
+                      }}
+                      loading="lazy"
+                    />
+                  </>
+                )}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
                 {[
                   { value: timeLeft.days, label: 'DÍAS' },
@@ -426,7 +475,7 @@ const ProductShowcase: React.FC = () => {
                 ].map((item, index) => (
                   <div key={index} className="text-center">
                     <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-2xl p-3 sm:p-6 md:p-8 mb-2 sm:mb-4 pulse-glow">
-                      <div className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-white font-['Bebas_Neue']">
+                      <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white font-['Bebas_Neue']">
                         {item.value.toString().padStart(2, '0')}
                       </div>
                     </div>
@@ -474,14 +523,38 @@ const ProductShowcase: React.FC = () => {
         </div>
 
       {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) - Optimizado para mobile */}
-      <div className="relative z-10 mt-4 sm:mt-6">
-        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-6 md:py-7">
+      <div className="relative z-10 mt-20 sm:mt-6">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-8 sm:py-6 md:py-7">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-            <span className="text-2xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
-            <span className="text-2xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
           </div>
         </div>
       </div>
+
+      {/* Tubitos Dinamita a la altura del contador solo en mobile */}
+      {isMobile && (
+        <>
+          <img
+            src="/crunchy/TubitoDinamita2.png"
+            alt="Tubito Dinamita Izquierda"
+            className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 w-20 z-30"
+            style={{
+              transform: 'translateY(-50%) translateX(-40%)',
+            }}
+            loading="lazy"
+          />
+          <img
+            src="/crunchy/TubitoDinamita.png"
+            alt="Tubito Dinamita Derecha"
+            className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-24 z-30"
+            style={{
+              transform: 'translateY(-50%) translateX(40%)',
+            }}
+            loading="lazy"
+          />
+        </>
+      )}
 
 
       </div>

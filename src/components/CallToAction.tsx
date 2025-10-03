@@ -40,12 +40,18 @@ const TikTokIcon: React.FC<{ className?: string }> = ({ className }) => (
 const CallToAction: React.FC = () => {
   return (
     <section className="py-8 sm:py-24 md:py-28 relative overflow-hidden">
-      {/* Background con efecto de llamas intensificado */}
-      <FlameCanvas className="absolute inset-0 z-50 pointer-events-none" density={3.0} colorAlpha={1.5} shadowBlur={35} />
+      {/* Background con efecto de llamas intensificado solo en mobile, cubriendo desde el footer hacia arriba */}
+      <div className="relative w-full">
+        <FlameCanvas className="absolute left-0 right-0 bottom-0 h-80 z-0 pointer-events-none block sm:hidden" density={0.4} colorAlpha={1.5} shadowBlur={35} />
+      </div>
       {/* Overlay más intenso para reforzar contraste */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-purple-950/90 via-black/50 to-black/20" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-purple-950/90 via-black/50 to-black/20 hidden sm:block" />
       {/* Fade inferior para fusionar con el final de la página */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-black/40 to-black/90" />
+      {/* Gradiente superior para suavizar el corte entre el footer y el fondo superior en mobile */}
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-16 z-10 block sm:hidden" style={{
+        background: 'linear-gradient(to bottom, #1a0020 0%, rgba(26,0,32,0.0) 100%)'
+      }} />
       
       {/* Sección de Newsletter eliminada por solicitud */}
 
