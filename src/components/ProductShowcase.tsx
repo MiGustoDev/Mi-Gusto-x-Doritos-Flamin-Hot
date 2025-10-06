@@ -164,13 +164,7 @@ const ProductShowcase: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Estado para animar tubitos en mobile
-  const [tubitosIn, setTubitosIn] = useState(false);
-  useEffect(() => {
-    if (isMobile) {
-      setTimeout(() => setTubitosIn(true), 300);
-    }
-  }, [isMobile]);
+  // Estado eliminado: no se usa animación específica para tubitos en mobile
 
   return (
     <section ref={sectionRef} className="py-24 md:py-28 relative overflow-hidden">
@@ -327,46 +321,75 @@ const ProductShowcase: React.FC = () => {
               {
                 title: "Relleno Intenso",
                 description: "Carne premium sazonada con especias que complementan el Flamin' Hot",
-                icon: "🔥"
+                icon: "🥩"
               },
               {
                 title: "Topping Crujiente",
-                description: "Doritos Flamin' Hot molidos incorporados para un contraste de texturas único",
+                description: "Flamin' Hot Dinamita molidos, incorporados para un contraste de textura picante único",
                 icon: (
                   <img
-                    src="/crunchy/dorito.png"
-                    alt="Dorito"
-                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 inline-block"
-                    loading="lazy"
+                    src="/crunchy/Tubito.png?v=1"
+                    alt="Tubito"
+                    className="h-10 w-auto sm:h-12 md:h-14 inline-block object-contain drop-shadow-[0_6px_18px_rgba(255,0,128,0.45)]"
+                    loading="eager"
+                    decoding="async"
                   />
                 )
               }
-            ].map((item, index) => (
-              <Reveal key={index} effect="scale" delay={(index % 3) as 0 | 1 | 2}>
-                <div className="feature-card-pro">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="feature-icon-pro">
-                    {typeof item.icon === 'string' ? (
-                      <span className="text-2xl sm:text-3xl md:text-4xl">{item.icon}</span>
-                    ) : (
-                      item.icon
+            ].map((item, index) => {
+              const key = item.title.trim().toLowerCase();
+              const BASE = import.meta.env.BASE_URL || '/';
+              const map: Record<string, string> = {
+                'masa artesanal': `${BASE}${encodeURIComponent('Masa Artesanal.png')}`,
+                'relleno intenso': `${BASE}${encodeURIComponent('Relleno Intenso.png')}`,
+                'topping crujiente': `${BASE}${encodeURIComponent('Topping Crujiente.jpeg')}`,
+              };
+              const encoded = map[key];
+              return (
+                <Reveal key={index} effect="scale" delay={(index % 3) as 0 | 1 | 2}>
+                  <div className="feature-card-pro relative overflow-hidden" style={encoded ? { background: 'transparent' } : undefined}>
+                    {encoded && (
+                      <>
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 bg-center bg-cover opacity-100"
+                          style={{ backgroundImage: `url(${encoded})`, filter: 'brightness(0.8) saturate(0.95)' }}
+                        />
+                        {/* Capa de opacidad uniforme muy sutil para contraste de texto */}
+                        <div aria-hidden className="absolute inset-0 bg-black/25" />
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 pointer-events-none"
+                          style={{
+                            background: 'radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.10) 35%, rgba(0,0,0,0.04) 55%, rgba(0,0,0,0.0) 80%)'
+                          }}
+                        />
+                      </>
                     )}
+                    <div className="flex items-start gap-3 sm:gap-4 relative z-10">
+                    <div className="feature-icon-pro">
+                      {typeof item.icon === 'string' ? (
+                        <span className="text-2xl sm:text-3xl md:text-4xl">{item.icon}</span>
+                      ) : (
+                        item.icon
+                      )}
+                    </div>
+                    <div className="relative z-10">
+                      <h4 className="text-white font-bold text-base sm:text-lg md:text-xl mb-1 leading-tight tracking-wide">{item.title}</h4>
+                      <p className="text-purple-200 leading-relaxed text-xs sm:text-sm md:text-base max-w-sm">{item.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-white font-bold text-base sm:text-lg md:text-xl mb-1 leading-tight tracking-wide">{item.title}</h4>
-                    <p className="text-purple-200 leading-relaxed text-xs sm:text-sm md:text-base max-w-sm">{item.description}</p>
                   </div>
-                </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
 
         {/* Section Header (badge removido) - Optimizado para mobile */}
-        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <div ref={epicRef} className="relative inline-block">
-            <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl leading-none tracking-wide font-black flame-text text-shadow-glow font-['Bebas_Neue'] mb-6 sm:mb-8 px-4">
+            <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl leading-none tracking-wide font-black flame-text font-['Bebas_Neue'] mb-6 sm:mb-8 px-4">
               ALGO EPICO ESTA LLEGANDO
             </h3>
             {/* Imagen izquierda - Visible en mobile */}
@@ -407,8 +430,8 @@ const ProductShowcase: React.FC = () => {
               const reveal = Math.max(0, Math.min(1, (postArrivalProgress - 0.05) / 0.95));
               // Posición de referencia para el lado derecho (espejo del cálculo de la empanada izquierda)
               const flaminX = 52 - 40 * scrollProgress;
-              // Los tubitos empiezan detrás del Flamin Hot y solo se asoman ligeramente hacia la derecha
-              const tubitosXRight = flaminX + (5 * reveal); // movimiento muy sutil, solo para asomarse
+              // Espejo del izquierdo: partir detrás del Flamin Hot y asomar levemente hacia la derecha
+              const tubitosXRight = flaminX + (4 * reveal);
               const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
               return (
                 <img
@@ -427,7 +450,7 @@ const ProductShowcase: React.FC = () => {
             
             {/* Imagen derecha - Flamin Hot - Visible en mobile */}
             <img
-              src="/crunchy/FlaminHot.png"
+              src="/crunchy/CRUNCHY2.png"
               alt="Doritos Flamin' Hot"
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
@@ -523,7 +546,7 @@ const ProductShowcase: React.FC = () => {
         </div>
 
       {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) - Optimizado para mobile */}
-      <div className="relative z-10 mt-20 sm:mt-6">
+      <div className="relative z-[5] mt-20 sm:mt-6">
         <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-8 sm:py-6 md:py-7">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
             <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>

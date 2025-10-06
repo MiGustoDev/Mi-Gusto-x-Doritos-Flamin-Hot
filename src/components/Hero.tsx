@@ -214,7 +214,7 @@ const Hero: React.FC = () => {
           {/* Subtitle - CON DEGRADADO - Optimizado para mobile */}
           <div className="mb-8 sm:mb-10 relative z-50 px-4">
             <h2 className="relative z-50 text-2xl sm:text-4xl md:text-4xl font-bold text-white mb-3 sm:mb-4 tracking-wide leading-tight whitespace-nowrap">
-              EMPANADA <span 
+              EXPERIENCIA <span 
                 className="flame-fire"
                 style={{
                   background: 'linear-gradient(45deg, #FF0040, #FF6B00, #FFFF00, #FF0080)',

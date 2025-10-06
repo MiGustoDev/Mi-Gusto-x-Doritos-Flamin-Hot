@@ -39,25 +39,24 @@ const TikTokIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 const CallToAction: React.FC = () => {
   return (
-    <section className="py-8 sm:py-24 md:py-28 relative overflow-hidden">
-      {/* Background con efecto de llamas intensificado solo en mobile, cubriendo desde el footer hacia arriba */}
-      <div className="relative w-full">
-        <FlameCanvas className="absolute left-0 right-0 bottom-0 h-80 z-0 pointer-events-none block sm:hidden" density={0.4} colorAlpha={1.5} shadowBlur={35} />
+    <section className="py-8 sm:py-24 md:py-28 relative overflow-visible">
+      
+      {/* Background con efecto de llamas MÁS INTENSO que pasa por encima de la pasarela */}
+      <div className="absolute left-0 right-0 bottom-0 w-full h-[760px] sm:h-[880px] z-[15] pointer-events-none">
+        <FlameCanvas className="w-full h-full" density={1.2} colorAlpha={1.8} shadowBlur={40} />
       </div>
-      {/* Overlay más intenso para reforzar contraste */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-purple-950/90 via-black/50 to-black/20 hidden sm:block" />
-      {/* Fade inferior para fusionar con el final de la página */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-black/40 to-black/90" />
+      
+      
       {/* Gradiente superior para suavizar el corte entre el footer y el fondo superior en mobile */}
-      <div className="pointer-events-none absolute left-0 right-0 top-0 h-16 z-10 block sm:hidden" style={{
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-16 z-[3] block sm:hidden" style={{
         background: 'linear-gradient(to bottom, #1a0020 0%, rgba(26,0,32,0.0) 100%)'
       }} />
       
       {/* Sección de Newsletter eliminada por solicitud */}
 
         {/* Footer */}
-        <div className="relative z-10 max-w-6xl mx-auto px-4">
-          <div className="border-t border-gray-800 pt-6 sm:pt-12 md:pt-14">
+        <div className="relative z-[20] max-w-6xl mx-auto px-4">
+          <div className="pt-6 sm:pt-12 md:pt-14">
             {/* Mobile Layout - Simplificado */}
             <div className="md:hidden">
               {/* Logos */}
@@ -120,7 +119,7 @@ const CallToAction: React.FC = () => {
               {/* Copyright */}
               <div className="text-center mt-8">
                 <p className="text-purple-400 text-sm">© 2025 Mi Gusto. Todos los derechos reservados.</p>
-                <p className="text-purple-400 text-xs mt-1">Doritos es una marca registrada de PepsiCo.</p>
+                
               </div>
             </div>
 
@@ -149,7 +148,7 @@ const CallToAction: React.FC = () => {
               
               <Reveal effect="fade" delay={1} className="text-purple-400 text-base text-center justify-self-center">
                 <p>© 2025 Mi Gusto. Todos los derechos reservados.</p>
-                <p className="text-xs mt-1">Doritos es una marca registrada de PepsiCo.</p>
+                
               </Reveal>
 
               <div className="justify-self-end text-right">
