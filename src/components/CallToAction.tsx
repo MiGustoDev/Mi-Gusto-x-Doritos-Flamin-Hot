@@ -2,6 +2,8 @@ import React from 'react';
 import FlameCanvas from './FlameCanvas';
 import Reveal from './Reveal';
 import { Instagram } from 'lucide-react';
+import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
+import { trackEvent } from '../analytics';
 
 // Iconos inline con estilo de trazo para que coincidan con Lucide
 // Icono oficial de X (Twitter) basado en Simple Icons, con relleno para buena legibilidad
@@ -38,8 +40,9 @@ const TikTokIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const CallToAction: React.FC = () => {
+  const ref = useComponentAnalytics('CallToAction');
   return (
-    <section className="py-8 sm:py-24 md:py-28 relative overflow-visible">
+    <section ref={ref as any} data-section="cta" className="py-4 sm:py-12 md:py-16 relative overflow-visible">
       
       {/* Background con efecto de llamas MÁS INTENSO que pasa por encima de la pasarela */}
       <div className="absolute left-0 right-0 bottom-0 w-full h-[760px] sm:h-[880px] z-[15] pointer-events-none">
@@ -56,11 +59,11 @@ const CallToAction: React.FC = () => {
 
         {/* Footer */}
         <div className="relative z-[20] max-w-6xl mx-auto px-4">
-          <div className="pt-6 sm:pt-12 md:pt-14">
+          <div className="pt-2 sm:pt-6 md:pt-8">
             {/* Mobile Layout - Simplificado */}
             <div className="md:hidden">
               {/* Logos */}
-              <div className="text-left mb-6">
+              <div className="text-left mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <img
                     src="/crunchy/Logo Mi Gusto 2025.png"
@@ -80,7 +83,7 @@ const CallToAction: React.FC = () => {
               </div>
               
               {/* Redes Sociales */}
-              <div className="text-right mb-2 -mt-20">
+              <div className="text-right mb-2 -mt-16">
                 <h4 className="text-white font-bold text-sm mb-2 flex items-center justify-end gap-2">
                   <Instagram className="w-4 h-4" style={{ stroke: 'url(#flame-stroke)', fill: 'none', strokeWidth: 2 }} />
                   Síguenos en Redes
@@ -92,6 +95,7 @@ const CallToAction: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
                     title="Instagram"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://www.instagram.com/migustoar/?hl=es', link_domain: 'instagram.com', location: 'footer', outbound: true, network: 'instagram' })}
                   >
                     <Instagram className="w-6 h-6 text-white" />
                   </a>
@@ -101,6 +105,7 @@ const CallToAction: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
                     title="X (Twitter)"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://x.com/migustoar?lang=es', link_domain: 'x.com', location: 'footer', outbound: true, network: 'x' })}
                   >
                     <XTwitterIcon className="w-6 h-6 text-white" />
                   </a>
@@ -110,6 +115,7 @@ const CallToAction: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
                     title="TikTok"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://www.tiktok.com/@migustoar?lang=es', link_domain: 'tiktok.com', location: 'footer', outbound: true, network: 'tiktok' })}
                   >
                     <TikTokIcon className="w-6 h-6 text-white" />
                   </a>
@@ -117,14 +123,14 @@ const CallToAction: React.FC = () => {
               </div>
               
               {/* Copyright */}
-              <div className="text-center mt-8">
+              <div className="text-center mt-4">
                 <p className="text-purple-400 text-sm">© 2025 Mi Gusto. Todos los derechos reservados.</p>
                 
               </div>
             </div>
 
             {/* Desktop Layout */}
-            <div className="hidden md:grid grid-cols-3 items-center gap-8">
+            <div className="hidden md:grid grid-cols-3 items-center gap-6">
               <div className="flex items-center gap-4 justify-self-start">
                 <div className="text-left">
                   <div className="flex items-center gap-2">

@@ -3,12 +3,29 @@ import Reveal from './Reveal';
 import SteamOverlay from './SteamOverlay';
 import FlameCanvas from './FlameCanvas';
 import ConfettiFromLogo from './ConfettiFromLogo';
+import { trackEvent } from '../analytics';
 // import { Bell } from 'lucide-react';
+import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 
 const ProductShowcase: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useComponentAnalytics('ProductShowcase') as any;
   const epicRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  
+  // Constantes para ajustar posiciones finales de animaciones
+  const FINAL_LEFT = 42;        // Posición final empanada izquierda (CRUNCHY.png) - más alto = más al centro
+  const FINAL_RIGHT = 38;       // Posición final empanada derecha (CRUNCHY2.png) - más alto = más al centro
+  const TUBITO_LEFT_PEEK = 5;   // Cuánto "asoma" el tubito izquierdo tras la empanada
+  const TUBITO_RIGHT_PEEK = 4;  // Cuánto "asoma" el tubito derecho tras Flamin Hot
+  
+  // Constantes específicas para mobile (más al centro para evitar cortes)
+  const FINAL_LEFT_MOBILE = 50;  // Posición final empanada izquierda en mobile
+  const FINAL_RIGHT_MOBILE = 46; // Posición final empanada derecha en mobile
+  
+  // Constantes para alineación vertical de las empanadas
+  const LEFT_VERTICAL_OFFSET = '75%';   // Offset vertical para empanada izquierda
+  const RIGHT_VERTICAL_OFFSET = '75%';  // Offset vertical para empanada derecha
+  
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -18,11 +35,16 @@ const ProductShowcase: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [postArrivalProgress, setPostArrivalProgress] = useState(0); // progreso extra luego de que la empanada llega al contador
   const [edgeProgress, setEdgeProgress] = useState(0); // progreso para imágenes a los bordes tras el logo
+  // Desactivar parallax/scroll-animations si es necesario
+  const DISABLE_PARALLAX = false;
   // Notificaciones eliminadas por solicitud
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error' | 'loading'>('idle');
   const [logoRevealed, setLogoRevealed] = useState(false);
   const [logoFlash, setLogoFlash] = useState(false);
+  // Animación de caída + trigger de explosión
+  const [logoDropEnded, setLogoDropEnded] = useState(false);
+  const [explosionTrigger, setExplosionTrigger] = useState(false);
   // Elimina toda la lógica de showConfetti en useEffect, IntersectionObserver, y renders
 
   useEffect(() => {
@@ -75,6 +97,16 @@ const ProductShowcase: React.FC = () => {
   const handleLogoClick = () => {
     setLogoFlash(true);
     setTimeout(() => setLogoFlash(false), 2000); // Reset después de 2 segundos
+    trackEvent('select_promotion', { promotion_id: 'product_logo', promotion_name: 'Logo Empanada', location_id: 'product_showcase' });
+  };
+
+  // Cuando termina la animación de caída del logo, disparamos la explosión
+  const handleLogoAnimationEnd = (e: React.AnimationEvent<HTMLImageElement>) => {
+    if ((e as any).animationName === 'logoDropIn' || (e as any).nativeEvent?.animationName === 'logoDropIn') {
+      setLogoDropEnded(true);
+      // Leve delay para que coincida con el "impacto"
+      setTimeout(() => setExplosionTrigger(true), 80);
+    }
   };
 
   const handleNewsletter = async () => {
@@ -82,6 +114,7 @@ const ProductShowcase: React.FC = () => {
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isEmailValid) {
       setNewsletterStatus('error');
+      trackEvent('newsletter_submit', { status: 'invalid' });
       return;
     }
     setNewsletterStatus('loading');
@@ -98,22 +131,30 @@ const ProductShowcase: React.FC = () => {
       if (res.ok) {
         setNewsletterStatus('success');
         setNewsletterEmail('');
+        trackEvent('generate_lead', { method: 'newsletter', status: 'success' });
       } else {
         setNewsletterStatus('error');
+        trackEvent('generate_lead', { method: 'newsletter', status: 'error', http: res.status });
       }
     } catch (e) {
       setNewsletterStatus('error');
+      trackEvent('generate_lead', { method: 'newsletter', status: 'network_error' });
     }
   };
 
   useEffect(() => {
+    if (DISABLE_PARALLAX) return; // no calcular nada si se desactiva el parallax
     const update = () => {
       const target = epicRef.current;
       if (!target) return;
       const rect = target.getBoundingClientRect();
       const vh = window.innerHeight || 1;
-      const start = vh;           // cuando el top del bloque está en la parte baja de la pantalla
-      const end = vh * 0.35;      // hasta que llega a 35% de la pantalla
+      const isMobile = window.innerWidth < 768;
+      
+      // Valores diferentes para mobile y desktop
+      const start = isMobile ? vh * 1.3 : vh;           // mobile: activa antes (1.3vh), desktop: normal
+      const end = isMobile ? vh * 0.5 : vh * 0.35;      // mobile: termina más abajo (50%), desktop: 35%
+      
       const raw = 1 - (rect.top - end) / (start - end);
       const clamped = Math.max(0, Math.min(1, raw));
       setScrollProgress(clamped);
@@ -121,7 +162,6 @@ const ProductShowcase: React.FC = () => {
       // progreso adicional una vez que rect.top pasó por debajo de "end" (empanada ya llegó)
       // En mobile, activar más temprano para que los TubitosDinamita aparezcan antes
       // En desktop, también activar más temprano para que aparezcan antes
-      const isMobile = window.innerWidth < 768;
       const overshootMultiplier = isMobile ? 0.2 : 0.15; // En desktop, activar con menos scroll (0.15 vs 0.35)
       const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport
       const overshootClamped = Math.max(0, Math.min(1, overshoot));
@@ -154,7 +194,7 @@ const ProductShowcase: React.FC = () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, []);
+  }, [DISABLE_PARALLAX]);
 
   // Agregar hook para detectar mobile
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -166,8 +206,13 @@ const ProductShowcase: React.FC = () => {
 
   // Estado eliminado: no se usa animación específica para tubitos en mobile
 
+  // Valores usados en estilos con parallax opcionalmente desactivado
+  const progress = DISABLE_PARALLAX ? 1 : scrollProgress;
+  const postProgressVal = DISABLE_PARALLAX ? 1 : postArrivalProgress;
+  const edge = DISABLE_PARALLAX ? 1 : edgeProgress;
+
   return (
-    <section ref={sectionRef} className="py-24 md:py-28 relative overflow-hidden">
+    <section ref={sectionRef} data-section="product" className="py-24 md:py-28 relative overflow-hidden">
       {(() => { /* easing precomputado para transiciones suaves en bordes */ return null; })()}
       {/* Background más intenso */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/70 to-black" />
@@ -185,18 +230,19 @@ const ProductShowcase: React.FC = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) - Optimizado para mobile */}
-        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
           {/* Logo grande arriba del título - Optimizado para mobile */}
           <div ref={logoRef} className="mb-12 sm:mb-2 -mt-20 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-0 sm:px-4">
             <img
               src="/crunchy/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
-              className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer transition-all duration-1000 ${
-                logoRevealed ? 'opacity-100 translate-y-0 scale-100 shine logo-float' : 'opacity-0 translate-y-10 scale-95'
+                onAnimationEnd={handleLogoAnimationEnd}
+                className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer ${
+                logoRevealed ? (logoDropEnded ? 'shine logo-float' : 'logo-drop-in') : 'opacity-0'
               } ${logoFlash ? 'logo-flash' : ''}`}
             />
-            <ConfettiFromLogo trigger={logoRevealed} duration={5000} />
+            <ConfettiFromLogo trigger={explosionTrigger} duration={5000} />
             {/* Imágenes a bordes de pantalla que aparecen tras el logo */}
             <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 w-screen -z-[1]">
               {/* Izquierda: TubitoDinamita2 (visible en mobile) */}
@@ -209,8 +255,8 @@ const ProductShowcase: React.FC = () => {
                     style={{
                       filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))',
                       transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
-                      opacity: 0.1 + edgeProgress * 0.9,
-                      transform: `translateX(${(-120 + edgeProgress * 90)}%)`
+                      opacity: 0.1 + edge * 0.9,
+                      transform: `translateX(${(-120 + edge * 90)}%)`
                     }}
                     loading="lazy"
                   />
@@ -226,8 +272,8 @@ const ProductShowcase: React.FC = () => {
                     style={{
                       filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))',
                       transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
-                      opacity: 0.1 + edgeProgress * 0.9,
-                      transform: `translateX(${(120 - edgeProgress * 90)}%)`
+                      opacity: 0.1 + edge * 0.9,
+                      transform: `translateX(${(120 - edge * 90)}%)`
                     }}
                     loading="lazy"
                   />
@@ -398,8 +444,8 @@ const ProductShowcase: React.FC = () => {
               alt="Empanada abierta"
               className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
-                transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${(-56 + 44 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
-                opacity: Math.min(1, Math.max(0, scrollProgress))
+                transform: `translateY(${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}) translateX(${(-56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress)}vw) scale(${0.9 + 0.25 * progress})`,
+                opacity: Math.min(1, Math.max(0, progress))
               }}
               loading="lazy"
             />
@@ -407,19 +453,19 @@ const ProductShowcase: React.FC = () => {
             {(() => {
               // Revelar solo después de que la empanada llegue al contador
               // Al inicio (reveal=0) quedan exactamente DETRÁS de la empanada y no se ven
-              const reveal = Math.max(0, Math.min(1, (postArrivalProgress - 0.05) / 0.95));
-              const empanadaX = -56 + 44 * scrollProgress; // posición de la empanada (más cerca del contador)
+              const reveal = Math.max(0, Math.min(1, (postProgressVal - 0.05) / 0.95));
+              const empanadaX = -56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress; // posición de la empanada (más cerca del contador)
               // Los tubitos empiezan detrás de la empanada y solo se asoman ligeramente hacia la izquierda
-              const tubitosX = empanadaX - (5 * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
+              const tubitosX = empanadaX - (TUBITO_LEFT_PEEK * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
               return (
                 <img
                   src="/crunchy/TubitoDinamita.png"
                   alt="Doritos Dinamita"
                   className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-32 md:w-56 lg:w-64 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${window.innerWidth < 768 ? '55%' : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
+                    transform: `translateY(${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
                     opacity: Math.max(0, reveal),
-                    filter: window.innerWidth < 768 ? 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))' : 'none'
+                    filter: isMobile ? 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))' : 'none'
                   }}
                   loading="lazy"
                 />
@@ -427,11 +473,11 @@ const ProductShowcase: React.FC = () => {
             })()}
             {/* Tubito Dinamita derecho: coreografía espejada del izquierdo, tamaño menor y detrás del Flamin Hot */}
             {(() => {
-              const reveal = Math.max(0, Math.min(1, (postArrivalProgress - 0.05) / 0.95));
+              const reveal = Math.max(0, Math.min(1, (postProgressVal - 0.05) / 0.95));
               // Posición de referencia para el lado derecho (espejo del cálculo de la empanada izquierda)
-              const flaminX = 52 - 40 * scrollProgress;
+              const flaminX = 52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress;
               // Espejo del izquierdo: partir detrás del Flamin Hot y asomar levemente hacia la derecha
-              const tubitosXRight = flaminX + (4 * reveal);
+              const tubitosXRight = flaminX + (TUBITO_RIGHT_PEEK * reveal);
               const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
               return (
                 <img
@@ -439,9 +485,9 @@ const ProductShowcase: React.FC = () => {
                   alt="Tubito Dinamita"
                   className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-28 md:w-44 lg:w-56 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${window.innerWidth < 768 ? '65%' : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
+                    transform: `translateY(${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
                     opacity: Math.max(0, reveal),
-                    filter: window.innerWidth < 768 ? 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))' : 'none'
+                    filter: isMobile ? 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))' : 'none'
                   }}
                   loading="lazy"
                 />
@@ -454,8 +500,8 @@ const ProductShowcase: React.FC = () => {
               alt="Doritos Flamin' Hot"
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
-                transform: `translateY(${window.innerWidth < 768 ? '65%' : '-50%'}) translateX(${(52 - 40 * scrollProgress)}vw) scale(${0.9 + 0.25 * scrollProgress})`,
-                opacity: Math.min(1, Math.max(0, scrollProgress))
+                transform: `translateY(${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}) translateX(${(52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress)}vw) scale(${0.9 + 0.25 * progress})`,
+                opacity: Math.min(1, Math.max(0, progress))
               }}
               loading="lazy"
             />
@@ -546,7 +592,7 @@ const ProductShowcase: React.FC = () => {
         </div>
 
       {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) - Optimizado para mobile */}
-      <div className="relative z-[5] mt-20 sm:mt-6">
+      <div className="relative z-[5] mt-32 sm:mt-6">
         <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-8 sm:py-6 md:py-7">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
             <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>

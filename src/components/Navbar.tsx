@@ -1,10 +1,14 @@
 import React from 'react';
+import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
+import { trackEvent } from '../analytics';
 
 const Navbar: React.FC = () => {
+  const navRef = useComponentAnalytics('Navbar');
   const logoSrc = '/crunchy/Logo%20Mi%20Gusto%202025.png';
 
   return (
     <nav
+      ref={navRef as any}
       className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-center bg-black/60 backdrop-blur-md supports-[backdrop-filter]:bg-black/50 border-b border-white/10"
       aria-label="Barra de navegación"
     >
@@ -14,6 +18,7 @@ const Navbar: React.FC = () => {
         rel="noopener noreferrer"
         aria-label="Ir a Mi Gusto"
         className="inline-flex items-center justify-center"
+        onClick={() => trackEvent('link_click', { link_url: 'https://www.migusto.com.ar/', link_domain: 'migusto.com.ar', location: 'navbar', outbound: true })}
       >
         <img
           src={logoSrc}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 import FlameCanvas from './FlameCanvas';
+import { trackEvent } from '../analytics';
 
 const Hero: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -9,7 +11,7 @@ const Hero: React.FC = () => {
   const [videoTime, setVideoTime] = useState(0);
   const [diagonalAngle, setDiagonalAngle] = useState<number>(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
+  const heroRef = useComponentAnalytics('Hero');
 
   useEffect(() => {
     setIsLoaded(true);
@@ -83,7 +85,7 @@ const Hero: React.FC = () => {
   const showMarquees = false; // bandera para ocultar/mostrar las franjas
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pb-16 md:pb-24">
+    <section ref={heroRef as any} data-section="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pb-16 md:pb-24">
       {/* Video de fondo con parallax */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <video
@@ -260,9 +262,12 @@ const Hero: React.FC = () => {
 
           {/* CTA Button - Tubito con efectos impresionantes */}
           <div className="relative flex flex-col items-center gap-4">
-            <button 
-              className="group relative transition-all duration-500 transform hover:scale-110 hover:rotate-3 focus:outline-none focus:ring-4 focus:ring-fuchsia-500/50 rounded-full"
-              onClick={() => window.open('https://pedir.migusto.com.ar/index.php', '_blank')}
+            <a 
+              className="group relative transition-all duration-500 transform hover:scale-110 hover:rotate-3 focus:outline-none rounded-full"
+              href="https://pedir.migusto.com.ar/index.php"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => { trackEvent('select_promotion', { promotion_id: 'hero_cta', promotion_name: 'Hero CTA Descubrir', creative_name: 'Tubito', location_id: 'hero' }); }}
             >
               {/* Efectos de fondo muy reducidos */}
               <div className="absolute inset-0 -m-2 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-500">
@@ -346,7 +351,7 @@ const Hero: React.FC = () => {
                      style={{ animationDelay: '0.5s', animationDuration: '2s' }}
                 />
               </div>
-            </button>
+            </a>
           </div>
         </div>
       </div>

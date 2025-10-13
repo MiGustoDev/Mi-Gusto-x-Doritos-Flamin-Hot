@@ -1,9 +1,11 @@
 import React from 'react';
 import { Users, Heart, Trophy } from 'lucide-react';
+import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 
 const Collaboration: React.FC = () => {
+  const ref = useComponentAnalytics('Collaboration');
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section ref={ref as any} data-section="collab" className="py-20 relative overflow-hidden">
       {/* Background removido para evitar cuadro negro detrás de las imágenes */}
       
       <div className="relative z-10 max-w-7xl mx-auto px-4">
