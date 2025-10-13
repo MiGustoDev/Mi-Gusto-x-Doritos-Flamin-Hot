@@ -83,7 +83,7 @@ const SteamOverlay: React.FC<SteamOverlayProps> = ({ className, intensity = 0.7 
       particles.length = 0;
       const area = canvas.width * canvas.height;
       const baseArea = 1280 * 720;
-      const count = Math.max(40, Math.floor(120 * (area / baseArea) * intensity));
+      const count = Math.max(25, Math.floor(60 * (area / baseArea) * intensity));
       for (let i = 0; i < count; i++) particles.push(new SteamParticle());
     };
 

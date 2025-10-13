@@ -88,10 +88,10 @@ const FlameCanvas: React.FC<FlameCanvasProps> = ({ className, colorAlpha = 0.7, 
     const init = () => {
       sizeCanvasToContainer();
       particles = [];
-      // Escala simple de densidad basada en el área (referencia 1920x1080)
+      // Escala simple de densidad basada en el área (referencia 1920x1080) - MÁS INTENSO
       const area = canvas.width * canvas.height;
       const baseArea = 1920 * 1080;
-      const numberOfParticles = Math.max(80, Math.floor(300 * density * (area / baseArea)));
+      const numberOfParticles = Math.max(100, Math.floor(250 * density * (area / baseArea)));
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new FlameParticle());
       }

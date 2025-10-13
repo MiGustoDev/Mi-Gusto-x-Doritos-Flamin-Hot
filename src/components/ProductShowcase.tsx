@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import Reveal from './Reveal';
 import SteamOverlay from './SteamOverlay';
 import FlameCanvas from './FlameCanvas';
@@ -94,11 +94,11 @@ const ProductShowcase: React.FC = () => {
   }, [logoRevealed]); // Eliminado showConfetti
 
   // Función para el click del logo
-  const handleLogoClick = () => {
+  const handleLogoClick = useCallback(() => {
     setLogoFlash(true);
     setTimeout(() => setLogoFlash(false), 2000); // Reset después de 2 segundos
     trackEvent('select_promotion', { promotion_id: 'product_logo', promotion_name: 'Logo Empanada', location_id: 'product_showcase' });
-  };
+  }, []);
 
   // Cuando termina la animación de caída del logo, disparamos la explosión
   const handleLogoAnimationEnd = (e: React.AnimationEvent<HTMLImageElement>) => {
@@ -142,66 +142,94 @@ const ProductShowcase: React.FC = () => {
     }
   };
 
+  // OPTIMIZADO: Scroll handler con throttling para mejor performance
+  const updateScroll = useCallback(() => {
+    if (DISABLE_PARALLAX) return;
+    const target = epicRef.current;
+    if (!target) return;
+    
+    const rect = target.getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    const isMobile = window.innerWidth < 768;
+    
+    // Valores diferentes para mobile y desktop
+    const start = isMobile ? vh * 0.8 : vh;
+    const end = isMobile ? vh * -0.2 : vh * 0.35;
+    
+    const raw = 1 - (rect.top - end) / (start - end);
+    const clamped = Math.max(0, Math.min(1, raw));
+    
+    // Solo actualizar si el cambio es significativo (evita micro-updates)
+    setScrollProgress(prev => {
+      const diff = Math.abs(prev - clamped);
+      return diff > 0.01 ? clamped : prev;
+    });
+
+    const overshootMultiplier = isMobile ? 0.2 : 0.15;
+    const overshoot = (end - rect.top) / (vh * overshootMultiplier);
+    const overshootClamped = Math.max(0, Math.min(1, overshoot));
+    
+    setPostArrivalProgress(prev => {
+      const diff = Math.abs(prev - overshootClamped);
+      return diff > 0.01 ? overshootClamped : prev;
+    });
+
+    const logo = logoRef.current;
+    if (logo) {
+      const logoRect = logo.getBoundingClientRect();
+      const startLogo = vh;
+      const endLogo = vh * 0.45;
+      const rawLogo = 1 - (logoRect.top - endLogo) / (startLogo - endLogo);
+      const gated = Math.max(0, Math.min(1, (rawLogo - 0.8) / 0.2));
+      
+      setEdgeProgress(prev => {
+        const diff = Math.abs(prev - gated);
+        return diff > 0.01 ? gated : prev;
+      });
+    }
+  }, [DISABLE_PARALLAX]);
+
   useEffect(() => {
-    if (DISABLE_PARALLAX) return; // no calcular nada si se desactiva el parallax
-    const update = () => {
-      const target = epicRef.current;
-      if (!target) return;
-      const rect = target.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const isMobile = window.innerWidth < 768;
+    if (DISABLE_PARALLAX) return;
+    
+    let rafId: number;
+    let lastScrollTime = 0;
+    const SCROLL_THROTTLE = 16; // ~60fps max
+    
+    const onScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollTime < SCROLL_THROTTLE) return;
+      lastScrollTime = now;
       
-      // Valores diferentes para mobile y desktop
-      const start = isMobile ? vh * 1.3 : vh;           // mobile: activa antes (1.3vh), desktop: normal
-      const end = isMobile ? vh * 0.5 : vh * 0.35;      // mobile: termina más abajo (50%), desktop: 35%
-      
-      const raw = 1 - (rect.top - end) / (start - end);
-      const clamped = Math.max(0, Math.min(1, raw));
-      setScrollProgress(clamped);
-
-      // progreso adicional una vez que rect.top pasó por debajo de "end" (empanada ya llegó)
-      // En mobile, activar más temprano para que los TubitosDinamita aparezcan antes
-      // En desktop, también activar más temprano para que aparezcan antes
-      const overshootMultiplier = isMobile ? 0.2 : 0.15; // En desktop, activar con menos scroll (0.15 vs 0.35)
-      const overshoot = (end - rect.top) / (vh * overshootMultiplier); // 0→1 en menos viewport
-      const overshootClamped = Math.max(0, Math.min(1, overshoot));
-      setPostArrivalProgress(overshootClamped);
-
-      // Progreso para las imágenes a los bordes tras el LogoEmp
-      const logo = logoRef.current;
-      if (logo) {
-        const logoRect = logo.getBoundingClientRect();
-        const startLogo = vh;        // top del bloque en la parte baja
-        const endLogo = vh * 0.45;   // hasta que llega cerca de la mitad superior
-        const rawLogo = 1 - (logoRect.top - endLogo) / (startLogo - endLogo);
-        // Gate: que empiece a 0 y recién se active cerca del LogoEmp
-        const gated = Math.max(0, Math.min(1, (rawLogo - 0.8) / 0.2)); // activa ~80%→100%
-        setEdgeProgress(gated);
-        
-        // Disparar confetti cuando los tubitos laterales aparezcan
-        // if (gated > 0.3 && !showConfetti) { // Eliminado
-        //   setShowConfetti(true); // Eliminado
-        //   // Reset confetti después de 4 segundos // Eliminado
-        //   setTimeout(() => setShowConfetti(false), 4000); // Eliminado
-        // } // Eliminado
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateScroll);
     };
-    const onScroll = () => requestAnimationFrame(update);
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true } as any);
-    window.addEventListener('resize', onScroll);
+    
+    updateScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [DISABLE_PARALLAX]);
+  }, [updateScroll, DISABLE_PARALLAX]);
 
-  // Agregar hook para detectar mobile
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  // Memoizar detección de mobile para evitar re-renders innecesarios
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => setIsMobile(window.innerWidth < 768), 100);
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Estado eliminado: no se usa animación específica para tubitos en mobile
@@ -223,9 +251,9 @@ const ProductShowcase: React.FC = () => {
       {/* Elimina el fade en mobile para que no tape el FlameCanvas */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent hidden sm:block" />
 
-      {/* FlameCanvas de fondo para mobile, cubriendo ProductShowcase y footer */}
+      {/* FlameCanvas de fondo para mobile, cubriendo ProductShowcase y footer - OPTIMIZADO */}
       {isMobile && (
-        <FlameCanvas className="absolute left-0 right-0 bottom-0 top-0 z-0 pointer-events-none" density={2.5} colorAlpha={1.2} shadowBlur={25} />
+        <FlameCanvas className="absolute left-0 right-0 bottom-0 top-0 z-0 pointer-events-none" density={1.2} colorAlpha={0.8} shadowBlur={15} />
       )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4">
@@ -299,16 +327,13 @@ const ProductShowcase: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="relative">
               <div className="relative rounded-2xl sm:rounded-3xl p-2 md:p-4 border border-fuchsia-500/20 overflow-visible bg-transparent">
-                {/* FlameCanvas de toda la card (único, desde el borde inferior) */}
-                {isMobile && (
-                  <FlameCanvas className="absolute inset-0" density={2.5} colorAlpha={1.2} shadowBlur={25} />
-                )}
+                {/* FlameCanvas removido en mobile para mejor rendimiento */}
                 
                 {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
                 <div className="relative z-5 w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[800px] -m-2 md:-m-4">
                   {/* Vapor detras */}
                   <div className="pointer-events-none absolute inset-0 z-0">
-                    <SteamOverlay intensity={0.85} className="absolute inset-0" />
+                    <SteamOverlay intensity={0.6} className="absolute inset-0" />
                   </div>
                   <model-viewer
                     src="/crunchy/Doritos-3D.glb"
@@ -444,50 +469,48 @@ const ProductShowcase: React.FC = () => {
               alt="Empanada abierta"
               className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
-                transform: `translateY(${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}) translateX(${(-56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress)}vw) scale(${0.9 + 0.25 * progress})`,
+                transform: `translate3d(${(-56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress)}vw, ${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
                 opacity: Math.min(1, Math.max(0, progress))
               }}
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
             />
-            {/* Doritos Tubito Dinamita detrás de la empanada izquierda */}
+            {/* Doritos Tubito Dinamita detrás de la empanada izquierda - VISIBLE EN MOBILE */}
             {(() => {
-              // Revelar solo después de que la empanada llegue al contador
-              // Al inicio (reveal=0) quedan exactamente DETRÁS de la empanada y no se ven
               const reveal = Math.max(0, Math.min(1, (postProgressVal - 0.05) / 0.95));
-              const empanadaX = -56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress; // posición de la empanada (más cerca del contador)
-              // Los tubitos empiezan detrás de la empanada y solo se asoman ligeramente hacia la izquierda
-              const tubitosX = empanadaX - (TUBITO_LEFT_PEEK * Math.max(0, reveal)); // movimiento muy sutil, solo para asomarse
+              const empanadaX = -56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress;
+              const tubitosX = empanadaX - 5; // Posición fija visible
               return (
                 <img
                   src="/crunchy/TubitoDinamita.png"
                   alt="Doritos Dinamita"
-                  className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-32 md:w-56 lg:w-64 will-change-transform z-[2]"
+                  className="pointer-events-none block absolute -left-6 top-1/2 w-32 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}) translateX(${tubitosX}vw) rotate(-10deg) scale(${0.82 + 0.16 * Math.max(0, reveal)})`,
-                    opacity: Math.max(0, reveal),
-                    filter: isMobile ? 'drop-shadow(0 12px 24px rgba(255,0,64,0.35))' : 'none'
+                    transform: `translate3d(${tubitosX}vw, ${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}, 0) rotate(-10deg) scale(${0.8 + 0.3 * reveal})`,
+                    opacity: isMobile ? Math.max(0.5, reveal) : Math.max(0, reveal),
+                    filter: 'drop-shadow(0 15px 30px rgba(255,0,64,0.8))',
+                    display: 'block'
                   }}
                   loading="lazy"
                 />
               );
             })()}
-            {/* Tubito Dinamita derecho: coreografía espejada del izquierdo, tamaño menor y detrás del Flamin Hot */}
+            {/* Tubito Dinamita derecho: VISIBLE EN MOBILE - IGUAL QUE IZQUIERDA */}
             {(() => {
               const reveal = Math.max(0, Math.min(1, (postProgressVal - 0.05) / 0.95));
-              // Posición de referencia para el lado derecho (espejo del cálculo de la empanada izquierda)
               const flaminX = 52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress;
-              // Espejo del izquierdo: partir detrás del Flamin Hot y asomar levemente hacia la derecha
-              const tubitosXRight = flaminX + (TUBITO_RIGHT_PEEK * reveal);
-              const scaleRight = 0.82 + 0.16 * reveal; // misma curva de escala
+              const tubitosXRight = flaminX + 2; // Posición fija visible - UN POCO MÁS A LA DERECHA
               return (
                 <img
                   src="/crunchy/TubitoDinamita2.png"
                   alt="Tubito Dinamita"
-                  className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-28 md:w-44 lg:w-56 will-change-transform z-[2]"
+                  className="pointer-events-none block absolute -right-6 top-1/2 w-32 will-change-transform z-[2]"
                   style={{
-                    transform: `translateY(${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}) translateX(${tubitosXRight}vw) rotate(10deg) scale(${scaleRight})`,
-                    opacity: Math.max(0, reveal),
-                    filter: isMobile ? 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))' : 'none'
+                    transform: `translate3d(${tubitosXRight}vw, ${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}, 0) rotate(10deg) scale(${0.8 + 0.3 * reveal})`,
+                    opacity: isMobile ? Math.max(0.5, reveal) : Math.max(0, reveal),
+                    filter: 'drop-shadow(0 15px 30px rgba(255,0,64,0.8))',
+                    display: 'block'
                   }}
                   loading="lazy"
                 />
@@ -500,41 +523,51 @@ const ProductShowcase: React.FC = () => {
               alt="Doritos Flamin' Hot"
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
-                transform: `translateY(${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}) translateX(${(52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress)}vw) scale(${0.9 + 0.25 * progress})`,
+                transform: `translate3d(${(52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress)}vw, ${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
                 opacity: Math.min(1, Math.max(0, progress))
               }}
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
             />
             {/* Countdown movido aquí - Optimizado para mobile */}
             <Reveal effect="slide-up">
               <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
-                {/* Tubitos Dinamita SOLO MOBILE, a la altura del contador */}
-                {isMobile && (
-                  <>
-                    {/* TubitoDinamita2: IZQUIERDA, esquina inferior izquierda */}
-                    <img
-                      src="/crunchy/TubitoDinamita2.png"
-                      alt="Tubito Dinamita Izquierda"
-                      className="block sm:hidden absolute left-0 bottom-0 w-24 z-30 drop-shadow-2xl"
-                      style={{
-                        transform: `translateX(-30%) translateY(30%)`,
-                        transition: 'transform 0.8s cubic-bezier(.22,.61,.36,1)',
-                      }}
-                      loading="lazy"
-                    />
-                    {/* TubitoDinamita: DERECHA, esquina inferior derecha */}
-                    <img
-                      src="/crunchy/TubitoDinamita.png"
-                      alt="Tubito Dinamita Derecha"
-                      className="block sm:hidden absolute right-0 bottom-0 w-24 z-30 drop-shadow-2xl"
-                      style={{
-                        transform: `translateX(30%) translateY(30%)`,
-                        transition: 'transform 0.8s cubic-bezier(.22,.61,.36,1)',
-                      }}
-                      loading="lazy"
-                    />
-                  </>
-                )}
+                {/* Tubitos Dinamita asomándose desde adentro de la empanada en mobile */}
+                {(() => {
+                  // Revelar solo después de que la empanada llegue al contador (mismo comportamiento que PC)
+                  const reveal = Math.max(0, Math.min(1, (postProgressVal - 0.05) / 0.95));
+                  return (
+                    <>
+                      {/* TubitoDinamita2: IZQUIERDA, asomándose desde adentro de la empanada */}
+                      <img
+                        src="/crunchy/TubitoDinamita2.png"
+                        alt="Tubito Dinamita Izquierda"
+                        className="block sm:hidden absolute left-0 bottom-0 w-20 z-30 drop-shadow-2xl will-change-transform"
+                        style={{
+                          transform: `translateX(${(-30 + reveal * 25)}%) translateY(${(30 - reveal * 20)}%) rotate(-10deg) scale(${0.8 + 0.2 * reveal})`,
+                          opacity: Math.max(0, reveal),
+                          transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
+                          filter: 'drop-shadow(0 10px 20px rgba(255,0,64,0.25))'
+                        }}
+                        loading="lazy"
+                      />
+                      {/* TubitoDinamita: DERECHA, asomándose desde adentro de la empanada */}
+                      <img
+                        src="/crunchy/TubitoDinamita.png"
+                        alt="Tubito Dinamita Derecha"
+                        className="block sm:hidden absolute right-0 bottom-0 w-24 z-30 drop-shadow-2xl will-change-transform"
+                        style={{
+                          transform: `translateX(${(30 - reveal * 25)}%) translateY(${(30 - reveal * 20)}%) rotate(10deg) scale(${0.8 + 0.2 * reveal})`,
+                          opacity: Math.max(0, reveal),
+                          transition: 'transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease',
+                          filter: 'drop-shadow(0 12px 24px rgba(255,0,64,0.3))'
+                        }}
+                        loading="lazy"
+                      />
+                    </>
+                  );
+                })()}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
                 {[
                   { value: timeLeft.days, label: 'DÍAS' },
@@ -601,29 +634,7 @@ const ProductShowcase: React.FC = () => {
         </div>
       </div>
 
-      {/* Tubitos Dinamita a la altura del contador solo en mobile */}
-      {isMobile && (
-        <>
-          <img
-            src="/crunchy/TubitoDinamita2.png"
-            alt="Tubito Dinamita Izquierda"
-            className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 w-20 z-30"
-            style={{
-              transform: 'translateY(-50%) translateX(-40%)',
-            }}
-            loading="lazy"
-          />
-          <img
-            src="/crunchy/TubitoDinamita.png"
-            alt="Tubito Dinamita Derecha"
-            className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-24 z-30"
-            style={{
-              transform: 'translateY(-50%) translateX(40%)',
-            }}
-            loading="lazy"
-          />
-        </>
-      )}
+      {/* Tubitos Dinamita removidos - ahora están animados en el contador */}
 
 
       </div>

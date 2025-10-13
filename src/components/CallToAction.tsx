@@ -1,6 +1,5 @@
 import React from 'react';
 import FlameCanvas from './FlameCanvas';
-import Reveal from './Reveal';
 import { Instagram } from 'lucide-react';
 import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 import { trackEvent } from '../analytics';
@@ -44,10 +43,37 @@ const CallToAction: React.FC = () => {
   return (
     <section ref={ref as any} data-section="cta" className="py-4 sm:py-12 md:py-16 relative overflow-visible">
       
-      {/* Background con efecto de llamas MÁS INTENSO que pasa por encima de la pasarela */}
-      <div className="absolute left-0 right-0 bottom-0 w-full h-[760px] sm:h-[880px] z-[15] pointer-events-none">
-        <FlameCanvas className="w-full h-full" density={1.2} colorAlpha={1.8} shadowBlur={40} />
+      {/* Background con efecto de llamas ÉPICO que pasa por encima de la pasarela */}
+      <div 
+        className="absolute left-0 right-0 bottom-0 w-full h-[760px] sm:h-[880px] z-[15] pointer-events-none"
+        style={{
+          animation: 'flameFlicker 2s ease-in-out infinite alternate, flameIntensity 3s ease-in-out infinite'
+        }}
+      >
+        <FlameCanvas 
+          className="w-full h-full animate-pulse" 
+          density={1.5} 
+          colorAlpha={1.5} 
+          shadowBlur={40}
+        />
       </div>
+      
+      {/* CSS para animación épica de fuego */}
+      <style>{`
+        @keyframes flameFlicker {
+          0% { filter: brightness(1) hue-rotate(0deg); }
+          25% { filter: brightness(1.2) hue-rotate(5deg); }
+          50% { filter: brightness(0.9) hue-rotate(-3deg); }
+          75% { filter: brightness(1.1) hue-rotate(2deg); }
+          100% { filter: brightness(1) hue-rotate(0deg); }
+        }
+        
+        @keyframes flameIntensity {
+          0% { transform: scaleY(1) scaleX(1); }
+          50% { transform: scaleY(1.05) scaleX(0.98); }
+          100% { transform: scaleY(1) scaleX(1); }
+        }
+      `}</style>
       
       
       {/* Gradiente superior para suavizar el corte entre el footer y el fondo superior en mobile */}
@@ -130,58 +156,71 @@ const CallToAction: React.FC = () => {
             </div>
 
             {/* Desktop Layout */}
-            <div className="hidden md:grid grid-cols-3 items-center gap-6">
-              <div className="flex items-center gap-4 justify-self-start">
-                <div className="text-left">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/crunchy/Logo Mi Gusto 2025.png"
-                      alt="Mi Gusto"
-                      className="h-10 w-auto object-contain"
-                      loading="lazy"
-                    />
-                    <span className="text-white font-bold text-lg">×</span>
-                    <img
-                      src="/crunchy/pngegg.png"
-                      alt="Doritos"
-                      className="h-10 w-auto object-contain"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="text-base flame-text-inline">Flamin' Hot Experience</div>
+            <div className="hidden md:flex items-center justify-between w-full">
+              {/* Logos izquierda */}
+              <div className="flex flex-col items-start">
+                <div className="flex items-center gap-2 mb-1">
+                  <img
+                    src="/crunchy/Logo Mi Gusto 2025.png"
+                    alt="Mi Gusto"
+                    className="h-10 w-auto object-contain"
+                    loading="lazy"
+                  />
+                  <span className="text-white font-bold text-lg">×</span>
+                  <img
+                    src="/crunchy/pngegg.png"
+                    alt="Doritos"
+                    className="h-10 w-auto object-contain"
+                    loading="lazy"
+                  />
                 </div>
+                <div className="text-base flame-text-inline">Flamin' Hot Experience</div>
               </div>
               
-              <Reveal effect="fade" delay={1} className="text-purple-400 text-base text-center justify-self-center">
-                <p>© 2025 Mi Gusto. Todos los derechos reservados.</p>
-                
-              </Reveal>
+              {/* Copyright centro */}
+              <div className="text-purple-400 text-base text-center">
+                <p>© 2025 Mi Gusto.</p>
+                <p>Todos los derechos reservados.</p>
+              </div>
 
-              <div className="justify-self-end text-right">
-                <Reveal effect="slide-up" className="text-right">
-                  <h4 className="text-white font-bold text-sm md:text-base mb-3 flex items-center gap-2 justify-end md:justify-end">
-                    <Instagram className="w-4 h-4" style={{ stroke: 'url(#flame-stroke)', fill: 'none', strokeWidth: 2 }} />
-                    Síguenos en Redes
-                  </h4>
-                </Reveal>
-                <Reveal effect="slide-up" className="flex gap-3 md:gap-4 justify-end">
-                  {[
-                    { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/migustoar/?hl=es' },
-                    { icon: XTwitterIcon, label: 'X (Twitter)', href: 'https://x.com/migustoar?lang=es' },
-                    { icon: TikTokIcon, label: 'TikTok', href: 'https://www.tiktok.com/@migustoar?lang=es' }
-                  ].map((social, index) => (
-                    <a
-                      key={index}
-                      href={social.href || '#'}
-                      target={social.href ? '_blank' : undefined}
-                      rel={social.href ? 'noopener noreferrer' : undefined}
-                      className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
-                      title={social.label}
-                    >
-                      <social.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                    </a>
-                  ))}
-                </Reveal>
+              {/* Redes sociales derecha */}
+              <div className="text-right">
+                <h4 className="text-white font-bold text-base mb-3 flex items-center gap-2 justify-end">
+                  <Instagram className="w-4 h-4" style={{ stroke: 'url(#flame-stroke)', fill: 'none', strokeWidth: 2 }} />
+                  Síguenos en Redes
+                </h4>
+                <div className="flex gap-4 justify-end">
+                  <a
+                    href="https://www.instagram.com/migustoar/?hl=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="Instagram"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://www.instagram.com/migustoar/?hl=es', link_domain: 'instagram.com', location: 'footer', outbound: true, network: 'instagram' })}
+                  >
+                    <Instagram className="w-7 h-7 text-white" />
+                  </a>
+                  <a
+                    href="https://x.com/migustoar?lang=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="X (Twitter)"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://x.com/migustoar?lang=es', link_domain: 'x.com', location: 'footer', outbound: true, network: 'x' })}
+                  >
+                    <XTwitterIcon className="w-7 h-7 text-white" />
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@migustoar?lang=es"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center hover:scale-110 transition-transform duration-200 text-white hover:text-fuchsia-400"
+                    title="TikTok"
+                    onClick={() => trackEvent('link_click', { link_url: 'https://www.tiktok.com/@migustoar?lang=es', link_domain: 'tiktok.com', location: 'footer', outbound: true, network: 'tiktok' })}
+                  >
+                    <TikTokIcon className="w-7 h-7 text-white" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

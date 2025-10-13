@@ -24,7 +24,7 @@ const ConfettiFromLogo: React.FC<ConfettiFromLogoProps> = ({
   trigger,
   duration = 5000,
   imageSrc = '/crunchy/Tubito.png',
-  count = 10,
+  count = 6,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [particles, setParticles] = useState<Particle[]>([]);
