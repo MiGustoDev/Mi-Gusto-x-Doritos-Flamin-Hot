@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 type SteamOverlayProps = {
   className?: string;
@@ -9,6 +9,7 @@ type SteamOverlayProps = {
 const SteamOverlay: React.FC<SteamOverlayProps> = ({ className, intensity = 0.7 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -88,6 +89,8 @@ const SteamOverlay: React.FC<SteamOverlayProps> = ({ className, intensity = 0.7 
     };
 
     const animate = () => {
+      if (!shouldAnimate) return;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.globalCompositeOperation = 'lighter';
       for (const p of particles) {
@@ -98,16 +101,38 @@ const SteamOverlay: React.FC<SteamOverlayProps> = ({ className, intensity = 0.7 
       animationId = requestAnimationFrame(animate);
     };
 
-    init();
-    animate();
+    // Intersection Observer para activar animación solo cuando es visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldAnimate(true);
+            init();
+            animate();
+          } else {
+            setShouldAnimate(false);
+            if (animationId) {
+              cancelAnimationFrame(animationId);
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (container) {
+      observer.observe(container);
+    }
 
     const onResize = () => init();
     window.addEventListener('resize', onResize);
+    
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', onResize);
+      observer.disconnect();
     };
-  }, [intensity]);
+  }, [intensity, shouldAnimate]);
 
   return (
     <div ref={containerRef} className={className}>

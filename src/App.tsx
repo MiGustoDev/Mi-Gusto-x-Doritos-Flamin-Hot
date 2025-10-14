@@ -1,8 +1,11 @@
-import Hero from './components/Hero';
-import ProductShowcase from './components/ProductShowcase';
-import CallToAction from './components/CallToAction';
+import React, { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import './App.css';
+
+// Lazy load de componentes pesados
+const Hero = lazy(() => import('./components/Hero'));
+const ProductShowcase = lazy(() => import('./components/ProductShowcase'));
+const CallToAction = lazy(() => import('./components/CallToAction'));
 
 function App() {
   return (
@@ -26,9 +29,18 @@ function App() {
 
       <Navbar />
       <div className="pt-16 relative">
-        <Hero />
-        <ProductShowcase />
-        <CallToAction />
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-black">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-fuchsia-500 mx-auto mb-4"></div>
+              <p className="text-white text-lg">Cargando experiencia épica...</p>
+            </div>
+          </div>
+        }>
+          <Hero />
+          <ProductShowcase />
+          <CallToAction />
+        </Suspense>
       </div>
     </div>
   );

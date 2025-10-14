@@ -3,6 +3,37 @@ import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 import FlameCanvas from './FlameCanvas';
 import { trackEvent } from '../analytics';
 
+// 🔥 CONFIGURACIÓN DEL EFECTO DE FUEGO - FÁCIL DE MODIFICAR
+const FIRE_EFFECT_CONFIG = {
+  // Posición vertical del efecto (top)
+  position: {
+    mobile: '-top-16',     // -64px desde arriba (más sobre el logo)
+    small: 'sm:-top-20',   // -80px desde arriba (más sobre el logo)
+    medium: 'md:-top-28'   // -112px desde arriba (más sobre el logo)
+  },
+  
+  // Ancho del efecto (el doble de ancho)
+  width: {
+    mobile: 'w-40',        // 160px de ancho (el doble de w-20)
+    small: 'sm:w-48',      // 192px de ancho (el doble de w-24)
+    medium: 'md:w-56'      // 224px de ancho (el doble de w-28)
+  },
+  
+  // Altura del efecto
+  height: {
+    mobile: 'h-12',      // 48px de altura
+    small: 'sm:h-16',    // 64px de altura
+    medium: 'md:h-20'    // 80px de altura
+  },
+  
+  // Configuración del FlameCanvas
+  flameCanvas: {
+    density: 0.8,
+    colorAlpha: 0.8,
+    shadowBlur: 20
+  }
+};
+
 const Hero: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [scrollFade, setScrollFade] = useState(0); // 0: sin fade, 1: full fade
@@ -197,60 +228,42 @@ const Hero: React.FC = () => {
               Mi Gusto
             </span>
             <span className="block text-white font-['Bebas_Neue'] text-6xl sm:text-7xl md:text-6xl">×</span>
-            <span 
-              className="block font-['Bebas_Neue']"
+            <img
+              src="/crunchy/FlaminHotLogo.png"
+              alt="Flamin' Hot"
+              className="block mx-auto h-16 sm:h-20 md:h-24 lg:h-28 w-auto"
               style={{
-                background: 'linear-gradient(45deg, #FF0040, #FF6B00, #FFFF00, #FF0080)',
-                backgroundSize: '400% 400%',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: '#ffffff', // fallback
-                animation: 'flameGradient 3s ease-in-out infinite'
+                filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 145, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 0, 64, 0.3))',
+                animation: 'flameGradient 2s ease-in-out infinite, fireFlicker 0.1s ease-in-out infinite alternate',
+                textShadow: `
+                  0 0 5px rgba(255, 0, 64, 0.8),
+                  0 0 10px rgba(255, 94, 0, 0.7),
+                  0 0 15px rgba(255, 145, 0, 0.6),
+                  0 0 20px rgba(255, 0, 128, 0.5),
+                  0 0 30px rgba(255, 94, 0, 0.4),
+                  0 0 40px rgba(255, 0, 64, 0.3)
+                `,
+                transform: 'scale(1.02)',
+                position: 'relative',
+                zIndex: 10
               }}
-            >
-              DORITOS
-            </span>
+            />
           </h1>
 
-          {/* Subtitle - CON DEGRADADO - Optimizado para mobile */}
+          {/* Fuego saliendo desde el logo FlaminHot - Optimizado para mobile */}
           <div className="mb-8 sm:mb-10 relative z-50 px-4">
-            <h2 className="relative z-50 text-2xl sm:text-4xl md:text-4xl font-bold text-white mb-3 sm:mb-4 tracking-wide leading-tight whitespace-nowrap">
-              EXPERIENCIA <span 
-                className="flame-fire"
-                style={{
-                  background: 'linear-gradient(45deg, #FF0040, #FF6B00, #FFFF00, #FF0080)',
-                  backgroundSize: '400% 400%',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: '#ffffff', // fallback
-                  animation: 'flameGradient 2s ease-in-out infinite, fireFlicker 0.1s ease-in-out infinite alternate',
-                  textShadow: `
-                    0 0 5px rgba(255, 0, 64, 0.8),
-                    0 0 10px rgba(255, 94, 0, 0.7),
-                    0 0 15px rgba(255, 145, 0, 0.6),
-                    0 0 20px rgba(255, 0, 128, 0.5),
-                    0 0 30px rgba(255, 94, 0, 0.4),
-                    0 0 40px rgba(255, 0, 64, 0.3)
-                  `,
-                  position: 'relative',
-                  filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6))',
-                  transform: 'scale(1.02)',
-                  zIndex: 10
-                }}
-              >
-                FLAMIN' HOT
-              </span>
-            </h2>
-            {/* Fuego saliendo desde el subtítulo - Optimizado para mobile */}
-            <div className="pointer-events-none absolute inset-x-0 -bottom-1 h-12 sm:h-16 md:h-20">
-              <FlameCanvas className="absolute inset-0" density={0.8} colorAlpha={0.8} shadowBlur={20} />
+            <div className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} left-1/2 transform -translate-x-1/2`}>
+              <FlameCanvas 
+                className="absolute inset-0" 
+                density={FIRE_EFFECT_CONFIG.flameCanvas.density} 
+                colorAlpha={FIRE_EFFECT_CONFIG.flameCanvas.colorAlpha} 
+                shadowBlur={FIRE_EFFECT_CONFIG.flameCanvas.shadowBlur} 
+              />
             </div>
             
-            {/* Efecto de fuego adicional para FLAMIN' HOT - Optimizado para mobile */}
+            {/* Efecto de fuego adicional para el logo FlaminHot - Optimizado para mobile */}
             <div 
-              className="pointer-events-none absolute inset-0"
+              className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} left-1/2 transform -translate-x-1/2`}
               style={{
                 background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.2) 0%, rgba(255, 0, 64, 0.15) 30%, transparent 70%)',
                 filter: 'blur(6px)',

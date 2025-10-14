@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 type FlameCanvasProps = {
   className?: string;
@@ -10,6 +10,8 @@ type FlameCanvasProps = {
 const FlameCanvas: React.FC<FlameCanvasProps> = ({ className, colorAlpha = 0.7, density = 1, shadowBlur = 15 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -98,6 +100,8 @@ const FlameCanvas: React.FC<FlameCanvasProps> = ({ className, colorAlpha = 0.7, 
     };
 
     const animate = () => {
+      if (!shouldAnimate) return;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const particle of particles) {
         particle.update();
@@ -110,15 +114,38 @@ const FlameCanvas: React.FC<FlameCanvasProps> = ({ className, colorAlpha = 0.7, 
       init();
     };
 
-    init();
-    animate();
+    // Intersection Observer para activar animación solo cuando es visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            setShouldAnimate(true);
+            init();
+            animate();
+          } else {
+            setShouldAnimate(false);
+            if (animationId) {
+              cancelAnimationFrame(animationId);
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (container) {
+      observer.observe(container);
+    }
+
     window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      observer.disconnect();
     };
-  }, [colorAlpha, density, shadowBlur]);
+  }, [colorAlpha, density, shadowBlur, shouldAnimate]);
 
   return (
     <div ref={containerRef} className={className}>
