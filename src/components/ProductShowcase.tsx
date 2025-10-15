@@ -9,10 +9,26 @@ import { trackEvent } from '../analytics';
 // import { Bell } from 'lucide-react';
 import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
 
+// Componente optimizado para elementos del contador
+const CountdownItem = memo(({ value, label }: { value: number; label: string }) => (
+  <div className="text-center">
+    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-2xl p-3 sm:p-6 md:p-8 mb-2 sm:mb-4 pulse-glow">
+      <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white font-['Bebas_Neue']">
+        {value.toString().padStart(2, '0')}
+      </div>
+    </div>
+    <div className="text-fuchsia-300 font-semibold text-xs sm:text-sm md:text-base tracking-wider">
+      {label}
+    </div>
+  </div>
+));
+
 const ProductShowcase: React.FC = () => {
   const sectionRef = useComponentAnalytics('ProductShowcase') as any;
   const epicRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const ingredientsRef = useRef<HTMLImageElement>(null);
+  const chipsExplosionRef = useRef<HTMLImageElement>(null);
   
   // Constantes para ajustar posiciones finales de animaciones
   const FINAL_LEFT = 38;        // Posición final empanada izquierda (CRUNCHY.png) - más alto = más al centro
@@ -49,19 +65,51 @@ const ProductShowcase: React.FC = () => {
 
   useEffect(() => {
     const launchDate = new Date('2025-11-06T00:00:00');
-    const timer = setInterval(() => {
+    
+    // Función optimizada para actualizar el contador
+    const updateCountdown = () => {
       const now = new Date().getTime();
       const distance = launchDate.getTime() - now;
       if (distance > 0) {
-        setTimeLeft({
+        const newTimeLeft = {
           days: Math.floor(distance / (1000 * 60 * 60 * 24)),
           hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        };
+        
+        // Solo actualizar si hay cambios significativos
+        setTimeLeft(prev => {
+          if (prev.days !== newTimeLeft.days || prev.hours !== newTimeLeft.hours || 
+              prev.minutes !== newTimeLeft.minutes || prev.seconds !== newTimeLeft.seconds) {
+            return newTimeLeft;
+          }
+          return prev;
         });
       }
-    }, 1000);
-    return () => clearInterval(timer);
+    };
+    
+    // Actualizar inmediatamente
+    updateCountdown();
+    
+    // Timer optimizado con requestAnimationFrame
+    let rafId: number;
+    let lastUpdate = 0;
+    const UPDATE_INTERVAL = 1000; // 1 segundo
+    
+    const timerLoop = (timestamp: number) => {
+      if (timestamp - lastUpdate >= UPDATE_INTERVAL) {
+        updateCountdown();
+        lastUpdate = timestamp;
+      }
+      rafId = requestAnimationFrame(timerLoop);
+    };
+    
+    rafId = requestAnimationFrame(timerLoop);
+    
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Intersection Observer para el logo reveal
@@ -91,7 +139,61 @@ const ProductShowcase: React.FC = () => {
         observer.unobserve(logoRef.current);
       }
     };
-  }, [logoRevealed]); // Eliminado showConfetti
+  }, [logoRevealed]);
+
+  // Intersection Observer para el efecto de ingredientes
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -100px 0px'
+      }
+    );
+
+    if (ingredientsRef.current) {
+      observer.observe(ingredientsRef.current);
+    }
+
+    return () => {
+      if (ingredientsRef.current) {
+        observer.unobserve(ingredientsRef.current);
+      }
+    };
+  }, []); // Eliminado showConfetti
+
+  // Intersection Observer para el efecto de explosión de chips
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    if (chipsExplosionRef.current) {
+      observer.observe(chipsExplosionRef.current);
+    }
+
+    return () => {
+      if (chipsExplosionRef.current) {
+        observer.unobserve(chipsExplosionRef.current);
+      }
+    };
+  }, []);
 
   // Función para el click del logo
   const handleLogoClick = useCallback(() => {
@@ -194,7 +296,7 @@ const ProductShowcase: React.FC = () => {
     
     let rafId: number;
     let lastScrollTime = 0;
-    const SCROLL_THROTTLE = 16; // ~60fps max
+    const SCROLL_THROTTLE = 33; // ~30fps para mejor performance
     
     const onScroll = () => {
       const now = Date.now();
@@ -233,13 +335,13 @@ const ProductShowcase: React.FC = () => {
   }, []);
 
 
-  // Memoizar countdown items
+  // Memoizar countdown items con optimización adicional
   const countdownItems = useMemo(() => [
     { value: timeLeft.days, label: 'DÍAS' },
     { value: timeLeft.hours, label: 'HORAS' },
     { value: timeLeft.minutes, label: 'MINUTOS' },
     { value: timeLeft.seconds, label: 'SEGUNDOS' }
-  ], [timeLeft]);
+  ], [timeLeft.days, timeLeft.hours, timeLeft.minutes, timeLeft.seconds]);
 
   // Estado eliminado: no se usa animación específica para tubitos en mobile
 
@@ -256,13 +358,11 @@ const ProductShowcase: React.FC = () => {
       <div className="absolute inset-0 gradient-bg opacity-80" />
       {/* Fade superior para fusionar con el video */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 via-black/40 to-transparent" />
-      {/* Fade inferior para transición hacia CTA */}
-      {/* Elimina el fade en mobile para que no tape el FlameCanvas */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent hidden sm:block" />
+      {/* Fade inferior eliminado para permitir que el FlameCanvas del footer llegue hasta arriba */}
 
       {/* FlameCanvas de fondo para mobile, cubriendo ProductShowcase y footer - OPTIMIZADO */}
       {isMobile && (
-        <FlameCanvas className="absolute left-0 right-0 bottom-0 top-0 z-0 pointer-events-none" density={1.2} colorAlpha={0.8} shadowBlur={15} />
+        <FlameCanvas className="absolute left-0 right-0 bottom-0 top-0 z-0 pointer-events-none" density={1.5} colorAlpha={1.0} shadowBlur={20} />
       )}
 
       <div className="relative z-10 max-w-none mx-auto px-2 sm:px-4 md:px-8 lg:px-12 xl:px-16">
@@ -276,12 +376,26 @@ const ProductShowcase: React.FC = () => {
               intensity={0.5}
               speed={1.0}
             />
+            {/* Imagen de explosión de chips como fondo */}
+            <div className="absolute inset-0 z-5 flex items-center justify-center pointer-events-none">
+              <img
+                ref={chipsExplosionRef}
+                src="/crunchy/Explosión de Chips Suaves y Crocantes.png"
+                alt="Explosión de Chips"
+                className="absolute w-full h-full object-contain opacity-70 chips-explosion-reveal"
+                style={{
+                  animation: 'chipExplosion1 4s ease-in-out infinite alternate',
+                  zIndex: 5
+                }}
+              />
+            </div>
+            
             <img
               src="/crunchy/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
                 onAnimationEnd={handleLogoAnimationEnd}
-                className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer relative z-10 ${
+                className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer relative z-20 ${
                 logoRevealed ? (logoDropEnded ? 'shine logo-float' : 'logo-drop-in') : 'opacity-0'
               } ${logoFlash ? 'logo-flash' : ''}`}
             />
@@ -337,7 +451,7 @@ const ProductShowcase: React.FC = () => {
         </div>
 
         {/* Product Grid - Optimizado para mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 xl:gap-20 items-center mb-16 sm:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 xl:gap-24 items-center mb-16 sm:mb-20">
           {/* Main Product 3D - Optimizado para mobile */}
           <div className="lg:col-span-1">
             <div className="relative">
@@ -372,16 +486,28 @@ const ProductShowcase: React.FC = () => {
           </div>
 
           {/* Imagen de ingredientes a la derecha del 3D - Optimizado para mobile */}
-          <div className="lg:mt-0 lg:flex lg:items-center lg:justify-center px-2 sm:px-4">
-            <Reveal effect="fade" delay={1}>
+          <div className="lg:mt-0 lg:flex lg:items-center lg:justify-center px-6 sm:px-6 lg:px-8">
+            <div className="relative overflow-visible">
               <img
+                ref={ingredientsRef}
                 src="/crunchy/Ingredientes.png"
                 alt="Ingredientes de la Empanada Premium"
-                className="w-full max-w-none scale-105 lg:scale-110 xl:scale-120"
+                className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
+                style={{
+                  width: '600px !important',
+                  height: '500px !important',
+                  maxWidth: 'none !important',
+                  maxHeight: 'none !important',
+                  minWidth: '600px !important',
+                  minHeight: '500px !important',
+                  objectFit: 'contain',
+                  zoom: '1.0',
+                  fontSize: '20px'
+                }}
                 loading="lazy"
                 decoding="async"
               />
-            </Reveal>
+            </div>
           </div>
         </div>
 
@@ -398,7 +524,9 @@ const ProductShowcase: React.FC = () => {
               className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
                 transform: `translate3d(${(-56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress)}vw, ${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
-                opacity: Math.min(1, Math.max(0, progress))
+                opacity: Math.min(1, Math.max(0, progress)),
+                backfaceVisibility: 'hidden',
+                perspective: '1000px'
               }}
               loading="lazy"
               decoding="async"
@@ -412,7 +540,9 @@ const ProductShowcase: React.FC = () => {
               className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
                 transform: `translate3d(${(52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress)}vw, ${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
-                opacity: Math.min(1, Math.max(0, progress))
+                opacity: Math.min(1, Math.max(0, progress)),
+                backfaceVisibility: 'hidden',
+                perspective: '1000px'
               }}
               loading="lazy"
               decoding="async"
@@ -423,16 +553,7 @@ const ProductShowcase: React.FC = () => {
               <div className="relative z-20 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-14 border border-fuchsia-500/20 mb-12 sm:mb-16 inline-block">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
                 {countdownItems.map((item, index) => (
-                  <div key={index} className="text-center">
-                    <div className="bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-2xl p-3 sm:p-6 md:p-8 mb-2 sm:mb-4 pulse-glow">
-                      <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white font-['Bebas_Neue']">
-                        {item.value.toString().padStart(2, '0')}
-                      </div>
-                    </div>
-                    <div className="text-fuchsia-300 font-semibold text-xs sm:text-sm md:text-base tracking-wider">
-                      {item.label}
-                    </div>
-                  </div>
+                  <CountdownItem key={index} value={item.value} label={item.label} />
                 ))}
               </div>
               {/* Newsletter: suscripción para recibir novedades y notificaciones - Optimizado para mobile */}
@@ -476,8 +597,8 @@ const ProductShowcase: React.FC = () => {
       <div className="relative z-[5] mt-32 sm:mt-6">
         <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-8 sm:py-6 md:py-7">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
-            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">Pican, pero rico! — Pican, pero rico! — Pican, pero rico! — Pican, pero rico!</span>
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
           </div>
         </div>
       </div>

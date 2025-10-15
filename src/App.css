@@ -11,6 +11,7 @@ body {
   /* Fondo base oscuro, los degradés principales se aplican en .page-bg */
   background: #000;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .flame-text {
@@ -84,7 +85,8 @@ body {
 .flame-fire {
   position: relative;
   text-shadow: 0 0 8px rgba(255, 94, 0, 0.6), 0 0 16px rgba(255, 145, 0, 0.45), 0 0 28px rgba(255, 0, 128, 0.35);
-  animation: fireFlicker 120ms ease-in-out infinite alternate;
+  animation: fireFlicker 200ms ease-in-out infinite alternate;
+  will-change: text-shadow;
 }
 
 .flame-fire::after {
@@ -98,7 +100,7 @@ body {
   filter: blur(8px);
   opacity: 0.65;
   pointer-events: none;
-  animation: firePulse 1.6s ease-in-out infinite;
+  animation: firePulse 2.4s ease-in-out infinite;
 }
 
 @keyframes fireFlicker {
@@ -147,7 +149,8 @@ body {
 }
 
 .pulse-glow {
-  animation: pulseGlow 2s ease-in-out infinite alternate;
+  animation: pulseGlow 3s ease-in-out infinite alternate;
+  will-change: box-shadow;
 }
 
 @keyframes pulseGlow {
@@ -470,7 +473,7 @@ body::-webkit-scrollbar {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marquee-loop var(--marquee-duration, 18s) linear infinite;
+  animation: marquee-loop var(--marquee-duration, 25s) linear infinite;
   transform: translateZ(0);
 }
 
@@ -716,4 +719,140 @@ body::-webkit-scrollbar {
     transform: translate3d(0, 0, 0) scale(1, 1);
     filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
   }
+}
+
+/* 🍽️ ANIMACIONES PARA IMAGEN DE INGREDIENTES - REVEAL DESDE DERECHA + IMPACTO */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+    filter: blur(4px);
+  }
+  50% {
+    transform: translateX(20%) scale(0.95);
+    opacity: 0.7;
+    filter: blur(2px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes impactBounce {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.15);
+  }
+  30% {
+    transform: scale(0.95);
+  }
+  45% {
+    transform: scale(1.05);
+  }
+  60% {
+    transform: scale(0.98);
+  }
+  75% {
+    transform: scale(1.02);
+  }
+  90% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animación de rebote simple y efectiva para ingredientes */
+@keyframes ingredientsBounce {
+  0% {
+    transform: translateX(0) scale(1.4);
+  }
+  20% {
+    transform: translateX(0) scale(1.6);
+  }
+  40% {
+    transform: translateX(0) scale(1.2);
+  }
+  60% {
+    transform: translateX(0) scale(1.5);
+  }
+  80% {
+    transform: translateX(0) scale(1.35);
+  }
+  100% {
+    transform: translateX(0) scale(1.4);
+  }
+}
+
+/* Efecto de resplandor al llegar */
+@keyframes ingredientGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 145, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 145, 0, 0.6), 0 0 60px rgba(255, 94, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 145, 0, 0);
+  }
+}
+
+/* Efecto reveal de ingredientes - NUEVO DESDE CERO */
+.ingredients-reveal {
+  transform: translateX(100%) scale(0.8);
+  opacity: 0;
+  transition: all 0.8s ease-out;
+}
+
+.ingredients-reveal.in-view {
+  transform: translateX(0) scale(1.4);
+  opacity: 1;
+  animation: ingredientsBounce 1s ease-out 0.5s forwards;
+}
+
+/* Responsive scaling para imagen de ingredientes */
+.ingredients-responsive {
+  transform: scale(1.1) !important; /* Mobile: 10% más grande */
+  max-width: 90vw !important; /* Evita que se corte en los costados */
+  max-height: 60vh !important; /* Controla la altura máxima */
+  width: auto !important;
+  height: auto !important;
+  margin-top: 20px !important; /* Mueve hacia abajo en mobile */
+}
+
+@media (min-width: 640px) {
+  .ingredients-responsive {
+    transform: scale(1.3) !important; /* SM: 30% más grande */
+    max-width: none !important;
+    max-height: none !important;
+    margin-top: 0 !important; /* Resetea el margen en pantallas más grandes */
+  }
+}
+
+@media (min-width: 1024px) {
+  .ingredients-responsive {
+    transform: scale(1.4) !important; /* LG: 40% más grande */
+    max-width: none !important;
+    max-height: none !important;
+    margin-top: 0 !important; /* Resetea el margen en desktop */
+  }
+}
+
+/* Efecto reveal simple para explosión de chips */
+.chips-explosion-reveal {
+  transform: scale(0.8);
+  opacity: 0;
+  filter: blur(20px);
+  transition: all 1s ease-out;
+}
+
+.chips-explosion-reveal.in-view {
+  transform: scale(1);
+  opacity: 0.7;
+  filter: blur(0);
 }

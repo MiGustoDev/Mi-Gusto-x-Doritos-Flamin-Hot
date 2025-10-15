@@ -31,6 +31,12 @@ const FIRE_EFFECT_CONFIG = {
     density: 0.8,
     colorAlpha: 0.8,
     shadowBlur: 20
+  },
+  
+  // Forma del efecto (redondeado)
+  shape: {
+    borderRadius: 'rounded-full',  // Forma completamente redonda
+    overflow: 'overflow-hidden'    // Para que el contenido respete los bordes redondeados
   }
 };
 
@@ -50,34 +56,49 @@ const Hero: React.FC = () => {
 
   // Efectos cinematográficos avanzados: parallax, curtain reveal y sincronización con video
   useEffect(() => {
+    let rafId: number;
+    let lastScrollTime = 0;
+    const SCROLL_THROTTLE = 33; // ~30fps para mejor performance
+    
     const handleScroll = () => {
-      const vh = window.innerHeight || 1;
-      const y = window.scrollY || window.pageYOffset || 0;
+      const now = Date.now();
+      if (now - lastScrollTime < SCROLL_THROTTLE) return;
+      lastScrollTime = now;
       
-      // Parallax: el video se mueve más lento que el scroll
-      const parallaxFactor = 0.5;
-      setParallaxOffset(y * parallaxFactor);
-      
-      // Curtain reveal: barra negra que sube desde abajo
-      const curtainStart = vh * 0.3;
-      const curtainEnd = vh * 0.8;
-      const curtainRaw = (y - curtainStart) / Math.max(1, (curtainEnd - curtainStart));
-      const curtainClamped = Math.max(0, Math.min(1, curtainRaw));
-      setCurtainProgress(curtainClamped);
-      
-      // Fade del video con curva más suave
-      const fadeStart = vh * 0.2;
-      const fadeEnd = vh * 0.7;
-      const fadeRaw = (y - fadeStart) / Math.max(1, (fadeEnd - fadeStart));
-      const fadeClamped = Math.max(0, Math.min(1, fadeRaw));
-      setScrollFade(fadeClamped);
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const vh = window.innerHeight || 1;
+        const y = window.scrollY || window.pageYOffset || 0;
+        
+        // Parallax: el video se mueve más lento que el scroll
+        const parallaxFactor = 0.5;
+        setParallaxOffset(y * parallaxFactor);
+        
+        // Curtain reveal: barra negra que sube desde abajo
+        const curtainStart = vh * 0.3;
+        const curtainEnd = vh * 0.8;
+        const curtainRaw = (y - curtainStart) / Math.max(1, (curtainEnd - curtainStart));
+        const curtainClamped = Math.max(0, Math.min(1, curtainRaw));
+        setCurtainProgress(curtainClamped);
+        
+        // Fade del video con curva más suave
+        const fadeStart = vh * 0.2;
+        const fadeEnd = vh * 0.7;
+        const fadeRaw = (y - fadeStart) / Math.max(1, (fadeEnd - fadeStart));
+        const fadeClamped = Math.max(0, Math.min(1, fadeRaw));
+        setScrollFade(fadeClamped);
+      });
     };
     
-    // Sincronización con el video para efectos dinámicos
+    // Sincronización con el video para efectos dinámicos - OPTIMIZADO
+    let videoUpdateId: number;
     const handleVideoTimeUpdate = () => {
-      if (videoRef.current) {
-        setVideoTime(videoRef.current.currentTime);
-      }
+      if (videoUpdateId) cancelAnimationFrame(videoUpdateId);
+      videoUpdateId = requestAnimationFrame(() => {
+        if (videoRef.current) {
+          setVideoTime(videoRef.current.currentTime);
+        }
+      });
     };
     
     handleScroll();
@@ -89,6 +110,8 @@ const Hero: React.FC = () => {
     }
     
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (videoUpdateId) cancelAnimationFrame(videoUpdateId);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
       if (videoRef.current) {
@@ -127,9 +150,11 @@ const Hero: React.FC = () => {
           muted
           loop
           playsInline
+          preload="metadata"
           style={{
             transform: `translateY(${parallaxOffset}px) scale(1.1)`,
-            filter: `brightness(${1 - scrollFade * 0.3}) contrast(${1 + scrollFade * 0.2})`
+            filter: `brightness(${1 - scrollFade * 0.3}) contrast(${1 + scrollFade * 0.2})`,
+            willChange: 'transform, filter'
           }}
         />
         
@@ -252,7 +277,7 @@ const Hero: React.FC = () => {
 
           {/* Fuego saliendo desde el logo FlaminHot - Optimizado para mobile */}
           <div className="mb-8 sm:mb-10 relative z-50 px-4">
-            <div className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} left-1/2 transform -translate-x-1/2`}>
+            <div className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} ${FIRE_EFFECT_CONFIG.shape.borderRadius} ${FIRE_EFFECT_CONFIG.shape.overflow} left-1/2 transform -translate-x-1/2`}>
               <FlameCanvas 
                 className="absolute inset-0" 
                 density={FIRE_EFFECT_CONFIG.flameCanvas.density} 
@@ -263,10 +288,10 @@ const Hero: React.FC = () => {
             
             {/* Efecto de fuego adicional para el logo FlaminHot - Optimizado para mobile */}
             <div 
-              className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} left-1/2 transform -translate-x-1/2`}
+              className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} ${FIRE_EFFECT_CONFIG.shape.borderRadius} ${FIRE_EFFECT_CONFIG.shape.overflow} left-1/2 transform -translate-x-1/2`}
               style={{
-                background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.2) 0%, rgba(255, 0, 64, 0.15) 30%, transparent 70%)',
-                filter: 'blur(6px)',
+                background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.3) 0%, rgba(255, 94, 0, 0.2) 20%, rgba(255, 0, 64, 0.1) 50%, rgba(255, 145, 0, 0.05) 70%, transparent 85%)',
+                filter: 'blur(8px)',
                 animation: 'firePulse 1.5s ease-in-out infinite alternate',
                 zIndex: 5
               }}

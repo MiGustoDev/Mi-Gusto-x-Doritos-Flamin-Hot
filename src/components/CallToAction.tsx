@@ -43,11 +43,11 @@ const CallToAction: React.FC = () => {
   return (
     <section ref={ref as any} data-section="cta" className="py-4 sm:py-12 md:py-16 relative overflow-visible">
       
-      {/* Background con efecto de llamas ÉPICO que pasa por encima de la pasarela */}
+      {/* Background con efecto de llamas ÉPICO que se extiende hasta arriba cubriendo ProductShowcase */}
       <div 
-        className="absolute left-0 right-0 bottom-0 w-full h-[760px] sm:h-[880px] z-[15] pointer-events-none"
+        className="absolute left-0 right-0 bottom-0 w-full h-[150vh] z-[99999] pointer-events-none"
         style={{
-          animation: 'flameFlicker 2s ease-in-out infinite alternate, flameIntensity 3s ease-in-out infinite'
+          animation: 'flameFlicker 3s ease-in-out infinite alternate, flameIntensity 4s ease-in-out infinite'
         }}
       >
         <FlameCanvas 
@@ -76,11 +76,6 @@ const CallToAction: React.FC = () => {
       `}</style>
       
       
-      {/* Gradiente superior para suavizar el corte entre el footer y el fondo superior en mobile */}
-      <div className="pointer-events-none absolute left-0 right-0 top-0 h-16 z-[3] block sm:hidden" style={{
-        background: 'linear-gradient(to bottom, #1a0020 0%, rgba(26,0,32,0.0) 100%)'
-      }} />
-      
       {/* Sección de Newsletter eliminada por solicitud */}
 
         {/* Footer */}
@@ -99,8 +94,8 @@ const CallToAction: React.FC = () => {
                   />
                   <span className="text-white font-bold text-lg">×</span>
                   <img
-                    src="/crunchy/pngegg.png"
-                    alt="Doritos"
+                    src="/crunchy/FlaminHotLogo.png"
+                    alt="Doritos Flamin' Hot"
                     className="h-8 w-auto object-contain"
                     loading="lazy"
                   />
@@ -168,8 +163,8 @@ const CallToAction: React.FC = () => {
                   />
                   <span className="text-white font-bold text-lg">×</span>
                   <img
-                    src="/crunchy/pngegg.png"
-                    alt="Doritos"
+                    src="/crunchy/FlaminHotLogo.png"
+                    alt="Doritos Flamin' Hot"
                     className="h-10 w-auto object-contain"
                     loading="lazy"
                   />
