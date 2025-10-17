@@ -188,3 +188,4 @@ const AnimatedLinesBackground: React.FC<AnimatedLinesBackgroundProps> = ({
 };
 
 export default AnimatedLinesBackground;
+

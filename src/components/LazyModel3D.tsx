@@ -30,3 +30,4 @@ const LazyModel3D: React.FC<LazyModel3DProps> = ({ className }) => {
 };
 
 export default LazyModel3D;
+

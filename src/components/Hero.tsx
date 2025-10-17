@@ -145,7 +145,7 @@ const Hero: React.FC = () => {
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-75"
-          src="/crunchy/Main-video.mov"
+          src="/crunchy/Main-video.mp4"
           autoPlay
           muted
           loop
@@ -237,22 +237,81 @@ const Hero: React.FC = () => {
         <div className={`transition-all duration-1000 ${isLoaded ? 'fade-in-up' : 'opacity-0 translate-y-10'}`}>
 
           {/* Main Title - CON DEGRADADO - Optimizado para mobile */}
-          <h1 className="relative z-50 font-black text-7xl sm:text-8xl md:text-8xl lg:text-9xl mb-6 sm:mb-8 leading-none tracking-wide px-4">
-            <span 
-              className="block font-['Bebas_Neue']"
-              style={{
-                background: 'linear-gradient(45deg, #FF0040, #FF6B00, #FFFF00, #FF0080)',
-                backgroundSize: '400% 400%',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: '#ffffff', // fallback
-                animation: 'flameGradient 3s ease-in-out infinite'
-              }}
-            >
-              Mi Gusto
-            </span>
-            <span className="block text-white font-['Bebas_Neue'] text-6xl sm:text-7xl md:text-6xl">×</span>
+          <div className="relative z-50 mb-6 sm:mb-8 px-4">
+            {/* Logo Mi Gusto - EFECTOS ÉPICOS OPTIMIZADOS */}
+            <div className="relative mb-4">
+              {/* Efecto de fuego principal optimizado */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div 
+                  className="w-40 h-20 sm:w-48 sm:h-24 md:w-56 md:h-28 lg:w-64 lg:h-32 xl:w-72 xl:h-36 rounded-full"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, rgba(255, 0, 0, 0.5) 0%, rgba(255, 94, 0, 0.4) 20%, rgba(255, 145, 0, 0.3) 40%, rgba(255, 200, 0, 0.2) 60%, transparent 80%)',
+                    filter: 'blur(12px)',
+                    animation: 'optimizedFireGlow 2s ease-in-out infinite alternate',
+                    willChange: 'opacity, filter, transform',
+                    zIndex: 1
+                  }}
+                />
+                
+                {/* Núcleo de fuego optimizado */}
+                <div 
+                  className="absolute w-28 h-14 sm:w-32 sm:h-16 md:w-36 md:h-18 lg:w-40 lg:h-20 xl:w-44 xl:h-22 rounded-full"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, rgba(255, 0, 0, 0.7) 0%, rgba(255, 94, 0, 0.6) 30%, rgba(255, 145, 0, 0.4) 60%, transparent 80%)',
+                    filter: 'blur(8px)',
+                    animation: 'optimizedFireCore 1.5s ease-in-out infinite alternate',
+                    willChange: 'opacity, filter',
+                    zIndex: 2
+                  }}
+                />
+              </div>
+
+              {/* Solo 2 partículas optimizadas */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div 
+                  className="absolute w-1.5 h-1.5 rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 100, 0, 0.8) 0%, transparent 70%)',
+                    left: '25%',
+                    top: '35%',
+                    animation: 'optimizedParticle1 2.5s ease-in-out infinite',
+                    willChange: 'transform, opacity',
+                    zIndex: 3
+                  }}
+                />
+                <div 
+                  className="absolute w-1 h-1 rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 200, 0, 0.8) 0%, transparent 70%)',
+                    right: '30%',
+                    bottom: '30%',
+                    animation: 'optimizedParticle2 2.8s ease-in-out infinite',
+                    willChange: 'transform, opacity',
+                    zIndex: 3
+                  }}
+                />
+              </div>
+
+              {/* Logo principal optimizado */}
+              <img
+                src="/crunchy/Logo Mi Gusto 2025.png"
+                alt="Mi Gusto"
+                className="block mx-auto h-28 sm:h-32 md:h-40 lg:h-48 xl:h-56 w-auto relative z-10"
+                style={{
+                  filter: `
+                    drop-shadow(0 0 20px rgba(255, 0, 0, 0.8))
+                    drop-shadow(0 0 35px rgba(255, 94, 0, 0.6))
+                    drop-shadow(0 0 50px rgba(255, 145, 0, 0.4))
+                  `,
+                  animation: 'optimizedLogoGlow 2s ease-in-out infinite alternate',
+                  transform: 'scale(1.05) translateZ(0)',
+                  willChange: 'filter, transform',
+                  position: 'relative',
+                  zIndex: 10
+                }}
+              />
+            </div>
+            {/* Logo FlaminHot */}
             <img
               src="/crunchy/FlaminHotLogo.png"
               alt="Flamin' Hot"
@@ -260,20 +319,12 @@ const Hero: React.FC = () => {
               style={{
                 filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 145, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 0, 64, 0.3))',
                 animation: 'flameGradient 2s ease-in-out infinite, fireFlicker 0.1s ease-in-out infinite alternate',
-                textShadow: `
-                  0 0 5px rgba(255, 0, 64, 0.8),
-                  0 0 10px rgba(255, 94, 0, 0.7),
-                  0 0 15px rgba(255, 145, 0, 0.6),
-                  0 0 20px rgba(255, 0, 128, 0.5),
-                  0 0 30px rgba(255, 94, 0, 0.4),
-                  0 0 40px rgba(255, 0, 64, 0.3)
-                `,
                 transform: 'scale(1.02)',
                 position: 'relative',
                 zIndex: 10
               }}
             />
-          </h1>
+          </div>
 
           {/* Fuego saliendo desde el logo FlaminHot - Optimizado para mobile */}
           <div className="mb-8 sm:mb-10 relative z-50 px-4">

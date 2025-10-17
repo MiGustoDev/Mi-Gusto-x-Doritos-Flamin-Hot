@@ -28,7 +28,7 @@ function App() {
       </svg>
 
       <Navbar />
-      <div className="pt-16 relative">
+      <div className="relative">
         <Suspense fallback={
           <div className="min-h-screen flex items-center justify-center bg-black">
             <div className="text-center">

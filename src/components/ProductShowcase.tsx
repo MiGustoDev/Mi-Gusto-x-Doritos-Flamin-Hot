@@ -558,6 +558,12 @@ const ProductShowcase: React.FC = () => {
               </div>
               {/* Newsletter: suscripción para recibir novedades y notificaciones - Optimizado para mobile */}
               <div className="mt-8 sm:mt-10 md:mt-14 max-w-xl mx-auto px-4">
+                {/* Texto increíble */}
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-fuchsia-400 font-['Bebas_Neue'] tracking-wide animate-pulse">
+                    ¡ENTÉRATE ANTES QUE NADIE!
+                  </h2>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="email"
@@ -595,7 +601,7 @@ const ProductShowcase: React.FC = () => {
 
       {/* Marquee: Pican, pero rico! (debajo del contador, ancho completo) - Optimizado para mobile */}
       <div className="relative z-[5] mt-32 sm:mt-6">
-        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-8 sm:py-6 md:py-7">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-3 md:py-4">
           <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
             <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
             <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
