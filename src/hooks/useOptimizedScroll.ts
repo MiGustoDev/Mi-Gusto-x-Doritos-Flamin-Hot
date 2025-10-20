@@ -46,3 +46,5 @@ export const useOptimizedScroll = (options: UseOptimizedScrollOptions = {}) => {
   return { scrollY, scrollProgress };
 };
 
+
+

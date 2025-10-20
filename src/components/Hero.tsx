@@ -240,57 +240,7 @@ const Hero: React.FC = () => {
           <div className="relative z-50 mb-6 sm:mb-8 px-4">
             {/* Logo Mi Gusto - EFECTOS ÉPICOS OPTIMIZADOS */}
             <div className="relative mb-4">
-              {/* Efecto de fuego principal optimizado */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div 
-                  className="w-40 h-20 sm:w-48 sm:h-24 md:w-56 md:h-28 lg:w-64 lg:h-32 xl:w-72 xl:h-36 rounded-full"
-                  style={{
-                    background: 'radial-gradient(ellipse at center, rgba(255, 0, 0, 0.5) 0%, rgba(255, 94, 0, 0.4) 20%, rgba(255, 145, 0, 0.3) 40%, rgba(255, 200, 0, 0.2) 60%, transparent 80%)',
-                    filter: 'blur(12px)',
-                    animation: 'optimizedFireGlow 2s ease-in-out infinite alternate',
-                    willChange: 'opacity, filter, transform',
-                    zIndex: 1
-                  }}
-                />
-                
-                {/* Núcleo de fuego optimizado */}
-                <div 
-                  className="absolute w-28 h-14 sm:w-32 sm:h-16 md:w-36 md:h-18 lg:w-40 lg:h-20 xl:w-44 xl:h-22 rounded-full"
-                  style={{
-                    background: 'radial-gradient(ellipse at center, rgba(255, 0, 0, 0.7) 0%, rgba(255, 94, 0, 0.6) 30%, rgba(255, 145, 0, 0.4) 60%, transparent 80%)',
-                    filter: 'blur(8px)',
-                    animation: 'optimizedFireCore 1.5s ease-in-out infinite alternate',
-                    willChange: 'opacity, filter',
-                    zIndex: 2
-                  }}
-                />
-              </div>
-
-              {/* Solo 2 partículas optimizadas */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div 
-                  className="absolute w-1.5 h-1.5 rounded-full"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(255, 100, 0, 0.8) 0%, transparent 70%)',
-                    left: '25%',
-                    top: '35%',
-                    animation: 'optimizedParticle1 2.5s ease-in-out infinite',
-                    willChange: 'transform, opacity',
-                    zIndex: 3
-                  }}
-                />
-                <div 
-                  className="absolute w-1 h-1 rounded-full"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(255, 200, 0, 0.8) 0%, transparent 70%)',
-                    right: '30%',
-                    bottom: '30%',
-                    animation: 'optimizedParticle2 2.8s ease-in-out infinite',
-                    willChange: 'transform, opacity',
-                    zIndex: 3
-                  }}
-                />
-              </div>
+              {/* Efectos de fuego removidos por solicitud de marketing */}
 
               {/* Logo principal optimizado */}
               <img
@@ -298,14 +248,6 @@ const Hero: React.FC = () => {
                 alt="Mi Gusto"
                 className="block mx-auto h-28 sm:h-32 md:h-40 lg:h-48 xl:h-56 w-auto relative z-10"
                 style={{
-                  filter: `
-                    drop-shadow(0 0 20px rgba(255, 0, 0, 0.8))
-                    drop-shadow(0 0 35px rgba(255, 94, 0, 0.6))
-                    drop-shadow(0 0 50px rgba(255, 145, 0, 0.4))
-                  `,
-                  animation: 'optimizedLogoGlow 2s ease-in-out infinite alternate',
-                  transform: 'scale(1.05) translateZ(0)',
-                  willChange: 'filter, transform',
                   position: 'relative',
                   zIndex: 10
                 }}
@@ -315,89 +257,50 @@ const Hero: React.FC = () => {
             <img
               src="/crunchy/FlaminHotLogo.png"
               alt="Flamin' Hot"
-              className="block mx-auto h-16 sm:h-20 md:h-24 lg:h-28 w-auto"
+              className="block mx-auto h-12 sm:h-16 md:h-20 lg:h-24 w-auto"
               style={{
-                filter: 'drop-shadow(0 0 20px rgba(255, 94, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 145, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 0, 64, 0.3))',
-                animation: 'flameGradient 2s ease-in-out infinite, fireFlicker 0.1s ease-in-out infinite alternate',
-                transform: 'scale(1.02)',
                 position: 'relative',
                 zIndex: 10
               }}
             />
           </div>
 
-          {/* Fuego saliendo desde el logo FlaminHot - Optimizado para mobile */}
-          <div className="mb-8 sm:mb-10 relative z-50 px-4">
-            <div className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} ${FIRE_EFFECT_CONFIG.shape.borderRadius} ${FIRE_EFFECT_CONFIG.shape.overflow} left-1/2 transform -translate-x-1/2`}>
-              <FlameCanvas 
-                className="absolute inset-0" 
-                density={FIRE_EFFECT_CONFIG.flameCanvas.density} 
-                colorAlpha={FIRE_EFFECT_CONFIG.flameCanvas.colorAlpha} 
-                shadowBlur={FIRE_EFFECT_CONFIG.flameCanvas.shadowBlur} 
-              />
-            </div>
-            
-            {/* Efecto de fuego adicional para el logo FlaminHot - Optimizado para mobile */}
-            <div 
-              className={`pointer-events-none absolute ${FIRE_EFFECT_CONFIG.width.mobile} ${FIRE_EFFECT_CONFIG.width.small} ${FIRE_EFFECT_CONFIG.width.medium} ${FIRE_EFFECT_CONFIG.position.mobile} ${FIRE_EFFECT_CONFIG.position.small} ${FIRE_EFFECT_CONFIG.position.medium} ${FIRE_EFFECT_CONFIG.height.mobile} ${FIRE_EFFECT_CONFIG.height.small} ${FIRE_EFFECT_CONFIG.height.medium} ${FIRE_EFFECT_CONFIG.shape.borderRadius} ${FIRE_EFFECT_CONFIG.shape.overflow} left-1/2 transform -translate-x-1/2`}
-              style={{
-                background: 'radial-gradient(ellipse at center, rgba(255, 145, 0, 0.3) 0%, rgba(255, 94, 0, 0.2) 20%, rgba(255, 0, 64, 0.1) 50%, rgba(255, 145, 0, 0.05) 70%, transparent 85%)',
-                filter: 'blur(8px)',
-                animation: 'firePulse 1.5s ease-in-out infinite alternate',
-                zIndex: 5
-              }}
-            />
-          </div>
+          {/* Efectos de fuego removidos por solicitud de marketing */}
 
           {/* CTA Button - Tubito con efectos impresionantes */}
           <div className="relative flex flex-col items-center gap-4">
-            <a 
-              className="group relative transition-all duration-500 transform hover:scale-110 hover:rotate-3 focus:outline-none rounded-full"
-              href="https://pedir.migusto.com.ar/index.php"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => { trackEvent('select_promotion', { promotion_id: 'hero_cta', promotion_name: 'Hero CTA Descubrir', creative_name: 'Tubito', location_id: 'hero' }); }}
+            <button 
+              className="group relative focus:outline-none rounded-full transition-transform duration-300 hover:scale-105 active:scale-95"
+              onClick={() => { 
+                trackEvent('select_promotion', { promotion_id: 'hero_cta', promotion_name: 'Hero CTA Descubrir', creative_name: 'Tubito', location_id: 'hero' });
+                // Scroll suave a la sección del contador
+                const countdownSection = document.getElementById('countdown-section');
+                if (countdownSection) {
+                  countdownSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                  });
+                }
+              }}
             >
-              {/* Efectos de fondo muy reducidos */}
-              <div className="absolute inset-0 -m-2 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-500">
-                {/* Glow muy sutil */}
-                <div className="absolute inset-0 rounded-full blur-md" 
-                     style={{
-                       background: 'radial-gradient(circle, rgba(255,0,128,0.08) 0%, rgba(255,0,64,0.05) 40%, transparent 70%)'
-                     }}
-                />
-              </div>
+              {/* Efectos removidos por solicitud de marketing */}
 
               {/* Imagen principal del Tubito - Optimizada para mobile (ligeramente más grande) */}
               <div className="relative z-10">
                 <img 
                   src="/crunchy/Tubito.png" 
                   alt="Descubrir Ahora" 
-                  className="w-48 h-48 sm:w-48 sm:h-48 md:w-64 md:h-64 transition-all duration-500 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-110"
+                  className="w-48 h-48 sm:w-48 sm:h-48 md:w-64 md:h-64"
                   style={{ 
-                    filter: `
-                      brightness(1.1) 
-                      contrast(1.2) 
-                      saturate(1.2)
-                      drop-shadow(0 0 15px rgba(255,0,64,0.4))
-                      drop-shadow(0 0 25px rgba(255,94,0,0.3))
-                      drop-shadow(0 0 35px rgba(255,0,128,0.2))
-                    `,
                     cursor: 'pointer'
                   }}
                   title="Descubrir Ahora"
                 />
                 
-                {/* Efecto de resplandor interno reducido */}
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-70 transition-opacity duration-500"
-                     style={{
-                       background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,0,64,0.2) 50%, transparent 70%)',
-                       filter: 'blur(6px)'
-                     }}
-                />
+                {/* Efectos de resplandor removidos por solicitud de marketing */}
 
-                {/* Texto posicionado más a la izquierda y más grande - Optimizado para mobile */}
-                <span className="absolute text-white font-bold text-lg sm:text-xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none transition-all duration-300 group-hover:scale-110 font-['Bebas_Neue'] z-50 flame-fire"
+                {/* Texto con efectos flame - Optimizado para mobile */}
+                <span className="absolute text-white font-bold text-lg sm:text-xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none font-['Bebas_Neue'] z-50 flame-fire"
                       style={{
                         top: '55%',
                         left: '15%',
@@ -431,16 +334,8 @@ const Hero: React.FC = () => {
               </div>
 
 
-              {/* Efecto de ondas concéntricas al hacer hover */}
-              <div className="absolute inset-0 -m-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className="absolute inset-0 border-2 border-fuchsia-500/30 rounded-full animate-ping" 
-                     style={{ animationDuration: '2s' }}
-                />
-                <div className="absolute inset-0 border border-orange-400/20 rounded-full animate-ping" 
-                     style={{ animationDelay: '0.5s', animationDuration: '2s' }}
-                />
-              </div>
-            </a>
+              {/* Efectos de ondas removidos por solicitud de marketing */}
+            </button>
           </div>
         </div>
       </div>

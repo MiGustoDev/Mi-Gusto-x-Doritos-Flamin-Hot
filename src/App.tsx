@@ -4,6 +4,7 @@ import './App.css';
 
 // Lazy load de componentes pesados
 const Hero = lazy(() => import('./components/Hero'));
+const CountdownSection = lazy(() => import('./components/CountdownSection'));
 const ProductShowcase = lazy(() => import('./components/ProductShowcase'));
 const CallToAction = lazy(() => import('./components/CallToAction'));
 
@@ -38,6 +39,7 @@ function App() {
           </div>
         }>
           <Hero />
+          <CountdownSection />
           <ProductShowcase />
           <CallToAction />
         </Suspense>

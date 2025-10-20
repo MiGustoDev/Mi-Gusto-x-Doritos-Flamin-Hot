@@ -81,7 +81,7 @@ body {
   -webkit-mask-composite: source-in;
 }
 
-/* Efecto de fuego extra para palabras destacadas */
+/* Efecto de fuego extra para palabras destacadas - ACTIVADO SOLO PARA TEXTO DESCUBRILA */
 .flame-fire {
   position: relative;
   text-shadow: 0 0 8px rgba(255, 94, 0, 0.6), 0 0 16px rgba(255, 145, 0, 0.45), 0 0 28px rgba(255, 0, 128, 0.35);
@@ -265,7 +265,8 @@ body {
   }
 }
 
-/* Logo principal con efectos épicos */
+/* Logo principal con efectos épicos - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes epicLogoFlame {
   0% { 
     filter: drop-shadow(0 0 30px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 94, 0, 0.8)) drop-shadow(0 0 70px rgba(255, 145, 0, 0.6)) drop-shadow(0 0 90px rgba(255, 200, 0, 0.4)) drop-shadow(0 0 110px rgba(255, 255, 0, 0.3));
@@ -283,8 +284,10 @@ body {
     filter: drop-shadow(0 0 30px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 94, 0, 0.8)) drop-shadow(0 0 70px rgba(255, 145, 0, 0.6)) drop-shadow(0 0 90px rgba(255, 200, 0, 0.4)) drop-shadow(0 0 110px rgba(255, 255, 0, 0.3));
   }
 }
+*/
 
-/* Parpadeo épico del logo */
+/* Parpadeo épico del logo - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes epicLogoFlicker {
   0% { 
     filter: drop-shadow(0 0 30px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 94, 0, 0.8));
@@ -295,8 +298,10 @@ body {
     transform: scale(1.09);
   }
 }
+*/
 
-/* Pulso épico del logo */
+/* Pulso épico del logo - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes epicLogoPulse {
   0% { 
     transform: scale(1.08);
@@ -319,8 +324,10 @@ body {
     filter: brightness(1);
   }
 }
+*/
 
-/* Resplandor épico adicional */
+/* Resplandor épico adicional - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes epicGlowPulse {
   0% { 
     opacity: 0.6; 
@@ -335,10 +342,12 @@ body {
     filter: blur(20px) scale(0.9);
   }
 }
+*/
 
 /* 🔥🔥🔥 ANIMACIONES OPTIMIZADAS PARA MEJOR RENDIMIENTO 🔥🔥🔥 */
 
-/* Efecto de fuego optimizado */
+/* Efecto de fuego optimizado - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes optimizedFireGlow {
   0% { 
     opacity: 0.4; 
@@ -353,8 +362,10 @@ body {
     filter: blur(10px) scale(0.98);
   }
 }
+*/
 
-/* Núcleo de fuego optimizado */
+/* Núcleo de fuego optimizado - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes optimizedFireCore {
   0% { 
     opacity: 0.6; 
@@ -369,8 +380,10 @@ body {
     filter: blur(6px);
   }
 }
+*/
 
-/* Partículas optimizadas */
+/* Partículas optimizadas - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes optimizedParticle1 {
   0% { 
     opacity: 0; 
@@ -400,8 +413,10 @@ body {
     transform: translate(20px, -20px) scale(0.4);
   }
 }
+*/
 
-/* Logo optimizado */
+/* Logo optimizado - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 @keyframes optimizedLogoGlow {
   0% { 
     filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(255, 94, 0, 0.6)) drop-shadow(0 0 50px rgba(255, 145, 0, 0.4));
@@ -413,6 +428,7 @@ body {
     filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(255, 94, 0, 0.6)) drop-shadow(0 0 50px rgba(255, 145, 0, 0.4));
   }
 }
+*/
 
 @keyframes flameGradient {
   0%, 100% { background-position: 0% 50%; }
@@ -824,7 +840,8 @@ body::-webkit-scrollbar {
 .reveal-delay-4 { animation-delay: 0.50s; }
 .reveal-delay-5 { animation-delay: 0.70s; }
 
-/* Shine sweep across the word after reveal */
+/* Shine sweep across the word after reveal - DESACTIVADO POR SOLICITUD DE MARKETING */
+/*
 .shine {
   position: relative;
   display: inline-block;
@@ -843,6 +860,7 @@ body::-webkit-scrollbar {
 @keyframes shineSweep {
   to { transform: translateX(120%); }
 }
+*/
 
 /* ---------- Logo reveal effect por 3 partes ---------- */
 .reveal-logo-parts {
@@ -927,7 +945,8 @@ body::-webkit-scrollbar {
   animation-delay: 0.3s;
 }
 
-/* ---------- Animación de movimiento continuo para el logo ---------- */
+/* ---------- Animación de movimiento continuo para el logo - DESACTIVADO POR SOLICITUD DE MARKETING ---------- */
+/*
 .logo-float {
   animation: logoFloat 4s ease-in-out infinite;
 }
@@ -946,6 +965,7 @@ body::-webkit-scrollbar {
     transform: translateY(-6px) rotate(-1deg);
   }
 }
+*/
 
 /* ---------- Animación de destello impresionante para el logo ---------- */
 .logo-flash {
