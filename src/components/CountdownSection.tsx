@@ -34,12 +34,12 @@ const CountdownSection: React.FC = () => {
   const FINAL_RIGHT = 34;       // Posición final empanada derecha (CRUNCHY2.png)
   
   // Constantes específicas para mobile
-  const FINAL_LEFT_MOBILE = 48;
-  const FINAL_RIGHT_MOBILE = 44;
+  const FINAL_LEFT_MOBILE = 55;
+  const FINAL_RIGHT_MOBILE = 55;
   
   // Constantes para alineación vertical de las empanadas
-  const LEFT_VERTICAL_OFFSET = '75%';
-  const RIGHT_VERTICAL_OFFSET = '75%';
+  const LEFT_VERTICAL_OFFSET = '110%';
+  const RIGHT_VERTICAL_OFFSET = '110%';
   
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error' | 'loading'>('idle');
@@ -230,7 +230,7 @@ const CountdownSection: React.FC = () => {
             <img
               src="/crunchy/CRUNCHY.png"
               alt="Empanada abierta"
-              className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
+              className="pointer-events-none block md:block absolute -left-6 md:-left-16 top-1/2 w-36 md:w-96 lg:w-[28rem] drop-shadow-2xl z-30 will-change-transform"
               style={{
                 transform: `translate3d(${(-56 + (isMobile ? FINAL_LEFT_MOBILE : FINAL_LEFT) * progress)}vw, ${isMobile ? LEFT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
                 opacity: Math.min(1, Math.max(0, progress)),
@@ -246,7 +246,7 @@ const CountdownSection: React.FC = () => {
             <img
               src="/crunchy/CRUNCHY2.png"
               alt="Doritos Flamin' Hot"
-              className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-48 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
+              className="pointer-events-none block md:block absolute -right-6 md:-right-16 top-1/2 w-36 md:w-96 lg:w-[28rem] drop-shadow-2xl z-20 will-change-transform"
               style={{
                 transform: `translate3d(${(52 - (isMobile ? FINAL_RIGHT_MOBILE : FINAL_RIGHT) * progress)}vw, ${isMobile ? RIGHT_VERTICAL_OFFSET : '-50%'}, 0) scale(${0.9 + 0.25 * progress})`,
                 opacity: Math.min(1, Math.max(0, progress)),
@@ -309,15 +309,6 @@ const CountdownSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Marquee */}
-        <div className="relative z-[5] mt-32 sm:mt-6">
-          <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-3 md:py-4">
-            <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-              <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
-              <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

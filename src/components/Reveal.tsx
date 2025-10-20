@@ -1,7 +1,7 @@
 import React from 'react';
 import { useInView } from '../hooks/useInView';
 
-type Effect = 'fade' | 'slide-up' | 'scale';
+type Effect = 'fade' | 'slide-up' | 'scale' | 'bounce';
 
 type RevealProps = {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ const effectToClass: Record<Effect, string> = {
   'fade': 'reveal-fade',
   'slide-up': 'reveal-slide-up',
   'scale': 'reveal-scale',
+  'bounce': 'reveal-bounce',
 };
 
 export const Reveal: React.FC<RevealProps> = ({ children, effect = 'slide-up', delay = 0, className = '', once = true }) => {

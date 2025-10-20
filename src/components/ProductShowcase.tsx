@@ -310,7 +310,7 @@ const ProductShowcase: React.FC = () => {
           </Reveal>
           
           {/* Botón para toggle del modelo 3D - Posicionado debajo del texto descriptivo */}
-          <div className="flex justify-center mt-8 mb-6 relative z-50">
+          <div className="flex justify-center mt-6 mb-4 relative z-50">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -322,11 +322,11 @@ const ProductShowcase: React.FC = () => {
                 e.preventDefault();
                 console.log('Button mouse down!');
               }}
-              className="px-6 py-3 bg-gradient-to-r from-fuchsia-600/80 to-purple-600/80 hover:from-fuchsia-500 hover:to-purple-500 border border-fuchsia-400/40 rounded-xl text-white font-semibold transition-all duration-300 text-base shadow-lg hover:shadow-xl backdrop-blur-sm cursor-pointer relative z-50 pointer-events-auto"
+              className="px-4 py-2 bg-gradient-to-r from-fuchsia-500/30 to-purple-500/30 hover:from-fuchsia-500/50 hover:to-purple-500/50 border border-fuchsia-400/20 rounded-lg text-fuchsia-200 hover:text-fuchsia-100 font-medium transition-all duration-300 text-sm shadow-sm hover:shadow-md backdrop-blur-sm cursor-pointer relative z-50 pointer-events-auto"
               style={{ zIndex: 9999, position: 'relative' }}
               disabled={false}
             >
-              {show3DModel ? 'Cerrar Experiencia 3D' : 'Experiencia 3D'}
+              {show3DModel ? 'Cerrar 3D' : 'Vivila en 3D'}
             </button>
           </div>
         </div>
@@ -362,55 +362,59 @@ const ProductShowcase: React.FC = () => {
               </div>
 
               {/* Imagen de ingredientes a la derecha del 3D - Optimizado para mobile */}
-              <div className="lg:mt-0 lg:flex lg:items-center lg:justify-center px-6 sm:px-6 lg:px-8">
-                <div className="relative overflow-visible">
-                  <img
-                    ref={ingredientsRef3D}
-                    src="/crunchy/Ingredientes.png"
-                    alt="Ingredientes de la Empanada Premium"
-                    className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
-                    style={{
-                      width: '600px !important',
-                      height: '500px !important',
-                      maxWidth: 'none !important',
-                      maxHeight: 'none !important',
-                      minWidth: '600px !important',
-                      minHeight: '500px !important',
-                      objectFit: 'contain',
-                      zoom: '1.0',
-                      fontSize: '20px'
-                    }}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+              <div className="lg:mt-8 lg:flex lg:items-center lg:justify-center px-6 sm:px-6 lg:px-8">
+                <Reveal effect="bounce" delay={1}>
+                  <div className="relative overflow-visible">
+                    <img
+                      ref={ingredientsRef3D}
+                      src="/crunchy/Ingredientes.png"
+                      alt="Ingredientes de la Empanada Premium"
+                      className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
+                      style={{
+                        width: '600px !important',
+                        height: '500px !important',
+                        maxWidth: 'none !important',
+                        maxHeight: 'none !important',
+                        minWidth: '600px !important',
+                        minHeight: '500px !important',
+                        objectFit: 'contain',
+                        zoom: '1.0',
+                        fontSize: '20px'
+                      }}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </Reveal>
               </div>
             </div>
             ) : (
               /* Solo ingredientes centrados cuando el modelo 3D está oculto */
-              <div key="ingredients-only" className="flex items-center justify-center px-6 sm:px-6 lg:px-8">
-              <div className="relative overflow-visible">
-                <img
-                  ref={ingredientsRef}
-                  src="/crunchy/Ingredientes.png"
-                  alt="Ingredientes de la Empanada Premium"
-                  className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
-                  style={{
-                    width: '600px !important',
-                    height: '500px !important',
-                    maxWidth: 'none !important',
-                    maxHeight: 'none !important',
-                    minWidth: '600px !important',
-                    minHeight: '500px !important',
-                    objectFit: 'contain',
-                    zoom: '1.0',
-                    fontSize: '20px'
-                  }}
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div key="ingredients-only" className="flex items-center justify-center px-6 sm:px-6 lg:px-8 lg:mt-8">
+                <Reveal effect="bounce" delay={1}>
+                  <div className="relative overflow-visible">
+                    <img
+                      ref={ingredientsRef}
+                      src="/crunchy/Ingredientes.png"
+                      alt="Ingredientes de la Empanada Premium"
+                      className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
+                      style={{
+                        width: '600px !important',
+                        height: '500px !important',
+                        maxWidth: 'none !important',
+                        maxHeight: 'none !important',
+                        minWidth: '600px !important',
+                        minHeight: '500px !important',
+                        objectFit: 'contain',
+                        zoom: '1.0',
+                        fontSize: '20px'
+                      }}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </Reveal>
               </div>
-            </div>
           )}
           </div>
         </div>
@@ -419,6 +423,25 @@ const ProductShowcase: React.FC = () => {
 
       {/* Tubitos Dinamita removidos - ahora están animados en el contador */}
 
+      {/* Marquee - Mobile entre ingredientes y footer */}
+      <div className="block sm:hidden relative z-[5] mt-8 mb-6">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-3">
+          <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+            <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+            <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Marquee - Desktop entre ingredientes y footer */}
+      <div className="hidden sm:block relative z-[5] mt-16 mb-8">
+        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-3 md:py-4">
+          <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+          </div>
+        </div>
+      </div>
 
       </div>
     </section>
