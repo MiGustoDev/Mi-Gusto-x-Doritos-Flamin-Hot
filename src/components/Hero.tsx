@@ -246,7 +246,7 @@ const Hero: React.FC = () => {
               <img
                 src="/crunchy/Logo Mi Gusto 2025.png"
                 alt="Mi Gusto"
-                className="block mx-auto h-28 sm:h-32 md:h-40 lg:h-48 xl:h-56 w-auto relative z-10"
+                className="block mx-auto h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto relative z-10"
                 style={{
                   position: 'relative',
                   zIndex: 10
@@ -257,7 +257,7 @@ const Hero: React.FC = () => {
             <img
               src="/crunchy/FlaminHotLogo.png"
               alt="Flamin' Hot"
-              className="block mx-auto h-12 sm:h-16 md:h-20 lg:h-24 w-auto"
+              className="block mx-auto h-14 sm:h-20 md:h-24 lg:h-28 w-auto"
               style={{
                 position: 'relative',
                 zIndex: 10
