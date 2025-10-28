@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo, memo } from 'react';
 import Reveal from './Reveal';
 import { trackEvent } from '../analytics';
+import { supabase } from '../lib/supabaseClient';
 
 // Componente optimizado para elementos del contador
 const CountdownItem = memo(({ value, label }: { value: number; label: string }) => (
@@ -188,22 +189,20 @@ const CountdownSection: React.FC = () => {
     }
     setNewsletterStatus('loading');
     try {
-      const res = await fetch('https://sheetdb.io/api/v1/baeccpkjv9yb4', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          data: [
-            { email, fecha: new Date().toISOString() }
-          ]
-        }),
-      });
-      if (res.ok) {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .upsert(
+          [{ email, source: 'website' }],
+          { onConflict: 'email' }
+        );
+
+      if (!error) {
         setNewsletterStatus('success');
         setNewsletterEmail('');
         trackEvent('generate_lead', { method: 'newsletter', status: 'success' });
       } else {
         setNewsletterStatus('error');
-        trackEvent('generate_lead', { method: 'newsletter', status: 'error', http: res.status });
+        trackEvent('generate_lead', { method: 'newsletter', status: 'error' });
       }
     } catch (e) {
       setNewsletterStatus('error');

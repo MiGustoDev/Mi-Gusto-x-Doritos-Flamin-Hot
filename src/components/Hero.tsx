@@ -288,7 +288,7 @@ const Hero: React.FC = () => {
               {/* Imagen principal del Tubito - Optimizada para mobile (ligeramente más grande) */}
               <div className="relative z-10">
                 <img 
-                  src="/crunchy/Tubito.png" 
+                  src="/crunchy/TubitoMecha.png" 
                   alt="Descubrir Ahora" 
                   className="w-48 h-48 sm:w-48 sm:h-48 md:w-64 md:h-64"
                   style={{ 

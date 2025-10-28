@@ -70,7 +70,7 @@ const Model3D: React.FC<Model3DProps> = ({ onLoad }) => {
           position: 'absolute',
           top: '-80px',
           left: '-16px',
-          zIndex: 1,
+          zIndex: 20,
           transform: 'scale(0.95)',
           display: 'flex',
           alignItems: 'center',
@@ -89,6 +89,7 @@ const Model3D: React.FC<Model3DProps> = ({ onLoad }) => {
       alt="Empanada Premium con Doritos Flamin' Hot"
       camera-controls
       auto-rotate
+      auto-rotate-delay="0"
       shadow-intensity="0.6"
       exposure="1.0"
       interaction-prompt="none"
@@ -106,12 +107,15 @@ const Model3D: React.FC<Model3DProps> = ({ onLoad }) => {
         position: 'absolute',
         top: '-80px',
         left: '-16px',
-        zIndex: 1,
-        transform: 'scale(0.95)'
+        zIndex: 20,
+        transform: 'scale(0.95)',
+        ['--progress-bar-height' as any]: '0px',
+        ['--progress-bar-color' as any]: 'transparent'
       }}
       loading="eager"
       reveal="auto"
-      poster="/crunchy/LogoEmp.png"
+      poster="/loading.gif"
+      poster-color="transparent"
     />
   );
 };

@@ -322,11 +322,24 @@ const ProductShowcase: React.FC = () => {
                 e.preventDefault();
                 console.log('Button mouse down!');
               }}
-              className="px-4 py-2 bg-gradient-to-r from-fuchsia-500/30 to-purple-500/30 hover:from-fuchsia-500/50 hover:to-purple-500/50 border border-fuchsia-400/20 rounded-lg text-fuchsia-200 hover:text-fuchsia-100 font-medium transition-all duration-300 text-sm shadow-sm hover:shadow-md backdrop-blur-sm cursor-pointer relative z-50 pointer-events-auto"
-              style={{ zIndex: 9999, position: 'relative' }}
+              className="bg-transparent border-0 p-0 m-0 rounded-none shadow-none hover:shadow-none cursor-pointer relative z-50 pointer-events-auto"
+              style={{ zIndex: 9999, position: 'relative', display: 'inline-block' }}
               disabled={false}
             >
-              {show3DModel ? 'Cerrar 3D' : 'Vivila en 3D'}
+              <iframe
+                src="https://lottie.host/embed/7ae74040-aac6-4c39-9ffa-559e8a1f4c60/ZEdWR7FqTN.lottie"
+                title="Ver en 3D"
+                style={{
+                  width: '240px',
+                  height: '80px',
+                  border: 'none',
+                  pointerEvents: 'none',
+                  background: 'transparent',
+                  display: 'block'
+                }}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
             </button>
           </div>
         </div>
@@ -342,11 +355,11 @@ const ProductShowcase: React.FC = () => {
               {/* Main Product 3D - Optimizado para mobile */}
               <div className="lg:col-span-1">
                 <div className="relative">
-                  <div className="relative rounded-2xl sm:rounded-3xl p-4 md:p-8 lg:p-12 border border-fuchsia-500/20 overflow-visible bg-transparent">
+                  <div className="relative overflow-visible bg-transparent">
                     {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
                     <div className="relative z-5 w-[120%] h-[280px] sm:h-[350px] md:h-[500px] lg:h-[600px] -ml-[10%] -mr-[10%]">
                       {/* Vapor detras */}
-                      <div className="pointer-events-none absolute inset-0 z-0">
+                      <div className="pointer-events-none absolute left-0 right-0 -top-[160px] bottom-0 z-0">
                         <SteamOverlay intensity={0.6} className="absolute inset-0" />
                       </div>
                       <LazyModel3D className="w-full h-full" />
