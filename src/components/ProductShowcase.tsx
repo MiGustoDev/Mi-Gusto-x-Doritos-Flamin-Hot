@@ -400,9 +400,18 @@ const ProductShowcase: React.FC = () => {
                   </div>
                 </Reveal>
               </div>
+              {/* Título después de la imagen de ingredientes (vista 3D) */}
+              <div className="flex justify-center w-full">
+                <Reveal effect="slide-up">
+                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
+                    Elegí tu Local y fecha
+                  </h2>
+                </Reveal>
+              </div>
             </div>
-            ) : (
-              /* Solo ingredientes centrados cuando el modelo 3D está oculto */
+          ) : (
+            <>
+              {/* Solo ingredientes centrados cuando el modelo 3D está oculto */}
               <div key="ingredients-only" className="flex items-center justify-center px-6 sm:px-6 lg:px-8 lg:mt-8">
                 <Reveal effect="bounce" delay={1}>
                   <div className="relative overflow-visible">
@@ -428,6 +437,15 @@ const ProductShowcase: React.FC = () => {
                   </div>
                 </Reveal>
               </div>
+              {/* Título después de la imagen de ingredientes (solo ingredientes) */}
+              <div className="flex justify-center w-full">
+                <Reveal effect="slide-up">
+                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
+                    Elegí tu Local y fecha
+                  </h2>
+                </Reveal>
+              </div>
+            </>
           )}
           </div>
         </div>
