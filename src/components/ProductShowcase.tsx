@@ -412,7 +412,7 @@ const ProductShowcase: React.FC = () => {
               <div className="flex justify-center w-full">
                 <Reveal effect="slide-up">
                   <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
-                    Elegí tu Local y fecha
+                    Completá tus datos
                   </h2>
                 </Reveal>
               </div>
@@ -457,7 +457,7 @@ const ProductShowcase: React.FC = () => {
               <div className="flex justify-center w-full">
                 <Reveal effect="slide-up">
                   <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
-                    Elegí tu Local y fecha
+                    Completá tus datos
                   </h2>
                 </Reveal>
               </div>
