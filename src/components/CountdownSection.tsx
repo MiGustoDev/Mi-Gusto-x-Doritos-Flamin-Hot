@@ -222,7 +222,7 @@ const CountdownSection: React.FC = () => {
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <div ref={epicRef} className="relative inline-block">
             <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl leading-none tracking-wide font-black flame-text-left font-['Bebas_Neue'] mb-6 sm:mb-8 px-4">
-              ALGO EPICO ESTA LLEGANDO
+              ALGO EPICO LLEGÓ
             </h3>
             
             {/* Imagen izquierda */}

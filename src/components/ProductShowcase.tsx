@@ -5,6 +5,7 @@ import FlameCanvas from './FlameCanvas';
 import ConfettiFromLogo from './ConfettiFromLogo';
 import LazyModel3D from './LazyModel3D';
 import AnimatedLinesBackground from './AnimatedLinesBackground';
+import ReservationForm from './ReservationForm';
 import { trackEvent } from '../analytics';
 // import { Bell } from 'lucide-react';
 import { useComponentAnalytics } from '../hooks/useComponentAnalytics';
@@ -400,26 +401,9 @@ const ProductShowcase: React.FC = () => {
                   </div>
                 </Reveal>
               </div>
-              {/* Título antes del título Elegí tu Local y fecha (vista 3D) */}
-              <div className="flex justify-center w-full">
-                <Reveal effect="slide-up">
-                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-2 sm:mb-3 px-4">
-                    Elegí tu sucursal
-                  </h2>
-                </Reveal>
-              </div>
-              {/* Título después de la imagen de ingredientes (vista 3D) */}
-              <div className="flex justify-center w-full">
-                <Reveal effect="slide-up">
-                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
-                    Completá tus datos
-                  </h2>
-                </Reveal>
-              </div>
             </div>
-          ) : (
-            <>
-              {/* Solo ingredientes centrados cuando el modelo 3D está oculto */}
+            ) : (
+              /* Solo ingredientes centrados cuando el modelo 3D está oculto */
               <div key="ingredients-only" className="flex items-center justify-center px-6 sm:px-6 lg:px-8 lg:mt-8">
                 <Reveal effect="bounce" delay={1}>
                   <div className="relative overflow-visible">
@@ -445,26 +429,12 @@ const ProductShowcase: React.FC = () => {
                   </div>
                 </Reveal>
               </div>
-              {/* Título antes del título Elegí tu Local y fecha (solo ingredientes) */}
-              <div className="flex justify-center w-full">
-                <Reveal effect="slide-up">
-                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-2 sm:mb-3 px-4">
-                    Elegí tu sucursal
-                  </h2>
-                </Reveal>
-              </div>
-              {/* Título después de la imagen de ingredientes (solo ingredientes) */}
-              <div className="flex justify-center w-full">
-                <Reveal effect="slide-up">
-                  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black flame-text-right font-['Bebas_Neue'] mb-4 sm:mb-6 px-4">
-                    Completá tus datos
-                  </h2>
-                </Reveal>
-              </div>
-            </>
           )}
           </div>
         </div>
+
+        {/* Componente de Reserva */}
+        <ReservationForm />
 
         {/* Sección del contador movida a CountdownSection.tsx */}
 
