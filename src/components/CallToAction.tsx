@@ -145,7 +145,10 @@ const CallToAction: React.FC = () => {
               
               {/* Copyright */}
               <div className="text-center mt-4">
-                <p className="text-purple-400 text-sm">© 2025 Mi Gusto. Todos los derechos reservados.</p>
+                <p className="text-purple-400 text-sm">
+                  Mi Gusto ® es una empresa de La Honoria Alimentos SA - Argentina - CUIT: 30-71558654-8<br />
+                  Todos los derechos reservados
+                </p>
                 
               </div>
             </div>
@@ -174,8 +177,8 @@ const CallToAction: React.FC = () => {
               
               {/* Copyright centro */}
               <div className="text-purple-400 text-base text-center">
-                <p>© 2025 Mi Gusto.</p>
-                <p>Todos los derechos reservados.</p>
+                <p>Mi Gusto ® es una empresa de La Honoria Alimentos SA - Argentina - CUIT: 30-71558654-8</p>
+                <p>Todos los derechos reservados</p>
               </div>
 
               {/* Redes sociales derecha */}

@@ -19,6 +19,8 @@ const CountdownItem = memo(({ value, label }: { value: number; label: string }) 
 
 const CountdownSection: React.FC = () => {
   const epicRef = useRef<HTMLDivElement>(null);
+  const [seconds, setSeconds] = useState(3);
+  const [started, setStarted] = useState(false);
   
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -35,8 +37,8 @@ const CountdownSection: React.FC = () => {
   const FINAL_RIGHT = 34;       // Posición final empanada derecha (CRUNCHY2.png)
   
   // Constantes específicas para mobile
-  const FINAL_LEFT_MOBILE = 55;
-  const FINAL_RIGHT_MOBILE = 55;
+  const FINAL_LEFT_MOBILE = 50;
+  const FINAL_RIGHT_MOBILE = 50;
   
   // Constantes para alineación vertical de las empanadas
   const LEFT_VERTICAL_OFFSET = '110%';
@@ -89,6 +91,29 @@ const CountdownSection: React.FC = () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
+
+  useEffect(() => {
+    // Observer para iniciar la cuenta regresiva SOLO cuando el contador se ve
+    const ref = epicRef.current;
+    if (!ref) return;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setStarted(true);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    if (seconds === 0) return;
+    const timer = setTimeout(() => setSeconds((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [seconds, started]);
 
   // Scroll handler para animaciones parallax
   const updateScroll = useCallback(() => {
@@ -170,11 +195,11 @@ const CountdownSection: React.FC = () => {
   }, []);
 
   const countdownItems = useMemo(() => [
-    { value: timeLeft.days, label: 'DÍAS' },
-    { value: timeLeft.hours, label: 'HORAS' },
-    { value: timeLeft.minutes, label: 'MINUTOS' },
-    { value: timeLeft.seconds, label: 'SEGUNDOS' }
-  ], [timeLeft.days, timeLeft.hours, timeLeft.minutes, timeLeft.seconds]);
+    { value: 0, label: 'DÍAS' },
+    { value: 0, label: 'HORAS' },
+    { value: 0, label: 'MINUTOS' },
+    { value: seconds, label: 'SEGUNDOS' }
+  ], [seconds]);
 
   const progress = scrollProgress;
   const postProgressVal = postArrivalProgress;
@@ -266,40 +291,25 @@ const CountdownSection: React.FC = () => {
                   ))}
                 </div>
                 
-                {/* Newsletter */}
+                {/* Newsletter (ahora CTA de pedido) */}
                 <div className="mt-8 sm:mt-10 md:mt-14 max-w-xl mx-auto px-4">
                   <div className="text-center mb-6">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-fuchsia-400 font-['Bebas_Neue'] tracking-wide animate-pulse">
-                      ¡ENTÉRATE ANTES QUE NADIE!
+                      ¡Pedí ya tu CRUNCHY!
                     </h2>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <input
-                      type="email"
-                      inputMode="email"
-                      value={newsletterEmail}
-                      onChange={(e) => {
-                        setNewsletterEmail(e.target.value);
-                        if (newsletterStatus !== 'idle') setNewsletterStatus('idle');
-                      }}
-                      placeholder="example@gmail.com"
-                      className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-purple-600/60 rounded-lg sm:rounded-xl text-white placeholder-purple-300 focus:border-fuchsia-500 focus:outline-none text-sm sm:text-base"
-                      disabled={newsletterStatus === 'loading'}
-                    />
-                    <button
-                      onClick={handleNewsletter}
-                      disabled={newsletterStatus === 'loading'}
-                      className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-lg sm:rounded-xl text-white font-semibold shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-colors text-sm sm:text-base"
-                    >
-                      {newsletterStatus === 'loading' ? 'Enviando...' : 'Avisame'}
-                    </button>
-                  </div>
-                  <div className="mt-2 min-h-[1.25rem]">
-                    {newsletterStatus === 'error' && (
-                      <p className="text-xs sm:text-sm text-red-400">Hubo un error. Intenta de nuevo.</p>
-                    )}
-                    {newsletterStatus === 'success' && (
-                      <p className="text-xs sm:text-sm text-fuchsia-300">¡Listo! Te enviaremos un correo cuando sea el lanzamiento.</p>
+                  <div className="flex flex-col items-center">
+                    {seconds > 0 ? (
+                      <div className="h-20" /> // Espaciador mientras el botón está oculto
+                    ) : (
+                      <a
+                        href="https://pedir.migusto.com.ar/index.php"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="crunchy-hover animate-crunchy-pop px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-xl text-white text-lg sm:text-xl md:text-2xl font-bold shadow-2xl hover:from-fuchsia-500 hover:to-purple-500 transition-all duration-700 ease-out uppercase font-['Bebas_Neue'] tracking-wider focus:outline-none"
+                      >
+                        PEDIR
+                      </a>
                     )}
                   </div>
                 </div>

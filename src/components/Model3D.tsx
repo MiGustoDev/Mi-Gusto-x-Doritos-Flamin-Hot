@@ -58,6 +58,61 @@ const Model3D: React.FC<Model3DProps> = ({ onLoad }) => {
     loadModelViewer();
   }, [shouldLoad, onLoad]);
 
+  // Establecer el ángulo de la cámara después de que el modelo cargue
+  useEffect(() => {
+    if (!shouldLoad || !isLoaded) return;
+    
+    const modelViewer = modelRef.current as any;
+    if (!modelViewer) return;
+    
+    // Función para establecer el ángulo de la cámara
+    const setCameraAngle = () => {
+      if (modelViewer && typeof modelViewer.cameraOrbit !== 'undefined') {
+        // Ángulo inicial: "90deg 75deg 140%"
+        // Formato: "azimuth elevation distance"
+        // Puedes modificar estos valores aquí:
+        const azimuth = '55deg';    // Rotación horizontal (0-360deg)
+        const elevation = '60deg';   // Ángulo vertical (-180 a 180deg)
+        const distance = '140%';    // Distancia al modelo
+        
+        modelViewer.cameraOrbit = `${azimuth} ${elevation} ${distance}`;
+      }
+    };
+
+    // También establecer cuando el modelo carga completamente
+    const handleLoad = () => {
+      setTimeout(() => {
+        setCameraAngle();
+      }, 50);
+    };
+
+    // Escuchar el evento de carga del modelo
+    modelViewer.addEventListener('load', handleLoad);
+    modelViewer.addEventListener('model-loaded', handleLoad);
+
+    // Esperar un poco para asegurar que el web component esté completamente inicializado
+    const timeoutId1 = setTimeout(() => {
+      setCameraAngle();
+    }, 200);
+
+    // Si el modelo ya está cargado, establecer el ángulo también
+    let timeoutId2: ReturnType<typeof setTimeout> | null = null;
+    if (modelViewer.loaded) {
+      timeoutId2 = setTimeout(() => {
+        setCameraAngle();
+      }, 100);
+    }
+    
+    return () => {
+      clearTimeout(timeoutId1);
+      if (timeoutId2) clearTimeout(timeoutId2);
+      if (modelViewer) {
+        modelViewer.removeEventListener('load', handleLoad);
+        modelViewer.removeEventListener('model-loaded', handleLoad);
+      }
+    };
+  }, [shouldLoad, isLoaded]);
+
   if (!shouldLoad) {
     return (
       <div 

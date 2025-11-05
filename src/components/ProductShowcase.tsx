@@ -434,7 +434,7 @@ const ProductShowcase: React.FC = () => {
         </div>
 
         {/* Componente de Reserva */}
-        <ReservationForm />
+        {/* <ReservationForm /> */}
 
         {/* Sección del contador movida a CountdownSection.tsx */}
 

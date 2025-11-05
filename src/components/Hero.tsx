@@ -272,15 +272,8 @@ const Hero: React.FC = () => {
             <button 
               className="group relative focus:outline-none rounded-full transition-transform duration-300 hover:scale-105 active:scale-95"
               onClick={() => { 
-                trackEvent('select_promotion', { promotion_id: 'hero_cta', promotion_name: 'Hero CTA Descubrir', creative_name: 'Tubito', location_id: 'hero' });
-                // Scroll suave a la sección del contador
-                const countdownSection = document.getElementById('countdown-section');
-                if (countdownSection) {
-                  countdownSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                  });
-                }
+                trackEvent('select_promotion', { promotion_id: 'hero_cta', promotion_name: 'Hero CTA Pedir', creative_name: 'Tubito', location_id: 'hero' });
+                window.location.href = 'https://pedir.migusto.com.ar/index.php';
               }}
             >
               {/* Efectos removidos por solicitud de marketing */}
@@ -300,7 +293,7 @@ const Hero: React.FC = () => {
                 {/* Efectos de resplandor removidos por solicitud de marketing */}
 
                 {/* Texto con efectos flame - Optimizado para mobile */}
-                <span className="absolute text-white font-bold text-lg sm:text-xl md:text-3xl tracking-tight whitespace-nowrap pointer-events-none font-['Bebas_Neue'] z-50 flame-fire"
+                <span className="absolute text-white font-bold text-4xl sm:text-5xl md:text-5xl tracking-tight whitespace-nowrap pointer-events-none font-['Bebas_Neue'] z-50 flame-fire"
                       style={{
                         top: '55%',
                         left: '15%',
@@ -329,7 +322,7 @@ const Hero: React.FC = () => {
                         textAlign: 'center'
                       }}
                 >
-                  DESCUBRILA
+                  Pedila
                 </span>
               </div>
 
