@@ -3,9 +3,10 @@
 <div align="center">
   <h3>Mi Gusto x Flamin' Hot — CRUNCHY</h3>
   <p>Micrositio promocional responsive para el lanzamiento de la empanada CRUNCHY, con animaciones, modelo 3D, efectos visuales y medición avanzada. Desplegado en:</p>
+  <p>https://migusto.com.ar/crunchy</p>
 
   <a href="https://www.migusto.com.ar/crunchy" target="_blank">
-    <img src="https://img.shields.io/badge/🌐_Demo_Live-FF6B6B?style=for-the-badge" alt="https://migusto.com.ar/crunchy" />
+    <img src="https://img.shields.io/badge/🌐_Demo_Live-FF6B6B?style=for-the-badge" alt="Demo Live" />
   </a>
 </div>
 
