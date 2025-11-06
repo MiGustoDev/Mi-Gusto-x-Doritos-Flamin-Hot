@@ -241,7 +241,7 @@ const ProductShowcase: React.FC = () => {
             <div className="absolute inset-0 z-5 flex items-center justify-center pointer-events-none">
               <img
                 ref={chipsExplosionRef}
-                src="/crunchy/Explosión de Chips Suaves y Crocantes.png"
+                src="/crunchy/CrunchyExplosion.png"
                 alt="Explosión de Chips"
                 className="absolute w-full h-full object-contain opacity-70 chips-explosion-reveal"
                 style={{
@@ -369,7 +369,7 @@ const ProductShowcase: React.FC = () => {
                     {/* Textos superpuestos: el modelo queda por detrás - Optimizado para mobile */}
                     <div className="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 text-center px-4">
                       <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Empanada Premium</h3>
-                      <p className="text-sm sm:text-base text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Doritos Flamin' Hot</p>
+                      <p className="text-sm sm:text-base text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Flamin' Hot</p>
                     </div>
                   </div>
                 </div>

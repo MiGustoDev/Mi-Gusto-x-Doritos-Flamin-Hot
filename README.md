@@ -1,33 +1,71 @@
-## Medición GA4 implementada en el sitio
+## Mi Gusto x Flamin' Hot — CRUNCHY (Micrositio)
 
-Este proyecto integra Google Analytics 4 con auto‑tracking global y métricas por componente/CTA. A continuación el resumen de eventos y disparadores:
+Micrositio promocional responsive para el lanzamiento de la empanada CRUNCHY, con animaciones, modelo 3D, efectos visuales y medición avanzada. Desplegado en `https://migusto.com.ar/crunchy`.
 
-- Pageview
-  - `page_view`: enviado al cargar la página (sin `send_page_view` automático).
+<div align="center">
+  <h3>🎮 GamerTech</h3>
+  <p>E-commerce Moderno sobre Gaming</p>
 
-- Interacciones globales
-  - `link_click`: clics en enlaces/salidas (navbar y redes). Parámetros: `link_url`, `link_domain`, `location`, `outbound`, `network` (si aplica).
-  - `click`: clics genéricos en botones/enlaces detectados por el auto‑tracking global. Parámetros: `element_tag`, `element_id`, `element_text`, `href`, `page_path`.
+  <a href="https://www.migusto.com.ar/crunchy" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Demo_Live-FF6B6B?style=for-the-badge" alt="Demo Live" />
+  </a>
+</div>
+[![Ver demo](https://img.youtube.com/vi/_3uCLLhKz_A/maxresdefault.jpg)](https://www.youtube.com/watch?v=_3uCLLhKz_A)
 
-- Scroll y atención
-  - `scroll_depth`: milestones de scroll 25/50/75/90/100 (%). Parámetros: `percent`, `page_path`.
-  - `first_interaction`: tiempo hasta la primera interacción del usuario. Parámetro: `time_to_first_interaction_ms`.
-  - `engagement_ping`: ping periódico de engagement activo cada 10s. Parámetro: `engagement_time_msec` (acumulado aproximado).
-  - `attention_milestone`: hitos de atención a 10s, 30s, 1m, 2m, 5m. Parámetro: `engagement_time_msec`.
+Durante 1 mes y medio trabajamos en conjunto con el equipo de Marketing, iterando sobre contenido y estética. Hubo intercambio continuo de ideas, pruebas visuales y ajustes finos hasta lograr una experiencia atractiva, coherente con campaña y marca.
 
-- Vistas de secciones y componentes
-  - `section_view`: cuando un elemento con `data-section` es visible ≥50% (hero, product, collab, cta).
-  - `component_mount` / `component_unmount`: ciclo de vida de `Hero`, `Navbar`, `ProductShowcase`, `Collaboration`, `CallToAction`.
-  - `component_view`: componente visible ≥50%.
-  - `component_click`: clics dentro del contenedor del componente.
+---
 
-- CTAs y objetivos
-  - `select_promotion`: CTA principal del hero y logo del producto.
-    - Parámetros (ejemplos): `promotion_id` (p.ej. `hero_cta`, `product_logo`), `promotion_name`, `creative_name`, `location_id`.
-  - `generate_lead`: envío de newsletter en `ProductShowcase`.
-    - Parámetros: `method` = `newsletter`, `status` = `success` | `error` | `invalid` | `network_error`, `http` (si hubo respuesta con error).
+### Características principales
 
-Notas
-- La configuración del ID se realiza con `VITE_GA_ID` en el entorno. Si no está definido, la capa de analytics no se inicializa.
-- Los helpers están en `src/analytics.ts` y se inicializan en `src/main.tsx`.
+- Hero con video/fondos y CTA animado (Lottie embebido)
+- Sección de producto con overlay de explosión de chips, animaciones y efectos de revelado
+- Visualizador 3D del producto con `model-viewer` y carga diferida por visibilidad
+- Sección de ingredientes con animaciones por `IntersectionObserver`
+- Fondo de “llamas” Canvas optimizado para mobile
+- Confetti y líneas animadas para reforzar impacto visual
+- Tracking GA4 integral: vistas de sección, interacciones, atención, CTAs y eventos por componente
+- Construcción optimizada (Vite): code-splitting, vendor chunks, assets inline cuando corresponde
+- Preparado para subcarpeta de deploy (`/crunchy/`)
 
+---
+
+### Tecnologías y librerías
+
+- React 18 + TypeScript
+- Vite 5 (build rápido, `base` configurado a `/crunchy/` para producción)
+- Tailwind CSS 3
+- Google `model-viewer` para el GLB
+- Lottie (iframe embed) para CTA
+- Google Analytics 4 (auto‑tracking y eventos por componente)
+- Herramientas de optimización de imágenes (mozjpeg/pngquant) y `gltf-pipeline`
+
+---
+
+- Carga diferida del modelo 3D con `IntersectionObserver` y script dinámico de `model-viewer`
+- Imágenes optimizadas (uso de WebP/PNG según caso) y nombres ASCII para evitar problemas en CDNs
+- Animaciones CSS/Canvas con manejo de z-index y composición
+- Separación de vendor chunks para mejorar caché en producción
+- Linter/TypeScript para mantener calidad de código
+
+---
+
+### Cronograma y proceso de trabajo
+
+El desarrollo tomó aproximadamente 1 mes y medio. Durante ese tiempo trabajamos iterativamente con el equipo de Marketing, validando dirección de arte, tipografías, paleta, densidad de efectos y animaciones. A través de demos semanales y feedback continuo, evolucionamos la estética y micro‑interacciones hasta lograr un resultado visualmente atractivo y alineado con la campaña.
+
+---
+
+
+### Créditos
+
+- **Facundo Carrizo** — GitHub: [@facu14carrizo](https://github.com/facu14carrizo) · LinkedIn: [facu14carrizo](https://www.linkedin.com/in/facu14carrizo)
+- **Ramiro Lacci** — GitHub: [@ramirolacci19](https://github.com/ramirolacci19) · LinkedIn: [ramiro-lacci](https://www.linkedin.com/in/ramiro-lacci)
+
+---
+
+### Licencia
+
+© 2025 Mi Gusto. Todos los derechos reservados. Proyecto privado para uso comercial de la marca.
+
+Mi Gusto ® es una empresa de La Honoria Alimentos SA - Argentina - CUIT: 30-71558654-8
