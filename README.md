@@ -1,16 +1,14 @@
-## Mi Gusto x Flamin' Hot — CRUNCHY (Micrositio)
 
-Micrositio promocional responsive para el lanzamiento de la empanada CRUNCHY, con animaciones, modelo 3D, efectos visuales y medición avanzada. Desplegado en `https://migusto.com.ar/crunchy`.
 
 <div align="center">
-  <h3>🎮 GamerTech</h3>
-  <p>E-commerce Moderno sobre Gaming</p>
+  <h3>Mi Gusto x Flamin' Hot — CRUNCHY</h3>
+  <p>Micrositio promocional responsive para el lanzamiento de la empanada CRUNCHY, con animaciones, modelo 3D, efectos visuales y medición avanzada. Desplegado en `https://migusto.com.ar/crunchy`.</p>
 
   <a href="https://www.migusto.com.ar/crunchy" target="_blank">
     <img src="https://img.shields.io/badge/🌐_Demo_Live-FF6B6B?style=for-the-badge" alt="Demo Live" />
   </a>
 </div>
-[![Ver demo](https://img.youtube.com/vi/_3uCLLhKz_A/maxresdefault.jpg)](https://www.youtube.com/watch?v=_3uCLLhKz_A)
+[![Alt text](https://img.youtube.com/vi/3uCLLhKz_AA/0.jpg)](https://www.youtube.com/watch?v=_3uCLLhKz_A)
 
 Durante 1 mes y medio trabajamos en conjunto con el equipo de Marketing, iterando sobre contenido y estética. Hubo intercambio continuo de ideas, pruebas visuales y ajustes finos hasta lograr una experiencia atractiva, coherente con campaña y marca.
 
