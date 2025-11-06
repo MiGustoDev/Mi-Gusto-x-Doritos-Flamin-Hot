@@ -8,7 +8,8 @@
     <img src="https://img.shields.io/badge/🌐_Demo_Live-FF6B6B?style=for-the-badge" alt="Demo Live" />
   </a>
 </div>
- [![Demo](https://i.postimg.cc/HxqC3H84/democrunchy.png)](https://www.youtube.com/watch?v=_3uCLLhKz_A)
+
+[![Demo](https://i.postimg.cc/HxqC3H84/democrunchy.png)](https://www.youtube.com/watch?v=_3uCLLhKz_A)
 
 Durante 1 mes y medio trabajamos en conjunto con el equipo de Marketing, iterando sobre contenido y estética. Hubo intercambio continuo de ideas, pruebas visuales y ajustes finos hasta lograr una experiencia atractiva, coherente con campaña y marca.
 
