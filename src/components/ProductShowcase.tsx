@@ -19,9 +19,9 @@ const ProductShowcase: React.FC = () => {
   const ingredientsRef = useRef<HTMLImageElement>(null);
   const ingredientsRef3D = useRef<HTMLImageElement>(null); // Referencia separada para la vista 3D
   const chipsExplosionRef = useRef<HTMLImageElement>(null);
-  
+
   // Constantes movidas a CountdownSection.tsx
-  
+
   // Estados del contador movidos a CountdownSection.tsx
   const [logoRevealed, setLogoRevealed] = useState(false);
   const [logoFlash, setLogoFlash] = useState(false);
@@ -29,7 +29,7 @@ const ProductShowcase: React.FC = () => {
   const [logoDropEnded, setLogoDropEnded] = useState(false);
   const [explosionTrigger, setExplosionTrigger] = useState(false);
   // Estado para controlar la visibilidad del modelo 3D
-  const [show3DModel, setShow3DModel] = useState(false);
+  const [show3DModel, setShow3DModel] = useState(true);
   // Elimina toda la lógica de showConfetti en useEffect, IntersectionObserver, y renders
 
   // useEffect del contador movido a CountdownSection.tsx
@@ -131,16 +131,16 @@ const ProductShowcase: React.FC = () => {
     setShow3DModel(prev => {
       const newState = !prev;
       console.log('Setting new state:', newState);
-      
+
       // Track event con el nuevo estado
       setTimeout(() => {
-        trackEvent('select_promotion', { 
-          promotion_id: 'toggle_3d_model', 
-          promotion_name: `Toggle 3D Model - ${newState ? 'Open' : 'Close'}`, 
-          location_id: 'product_showcase' 
+        trackEvent('select_promotion', {
+          promotion_id: 'toggle_3d_model',
+          promotion_name: `Toggle 3D Model - ${newState ? 'Open' : 'Close'}`,
+          location_id: 'product_showcase'
         });
       }, 100);
-      
+
       return newState;
     });
   }, []);
@@ -194,7 +194,7 @@ const ProductShowcase: React.FC = () => {
       window.removeEventListener('resize', onScroll);
     };
   }, [updateTubitosScroll]);
-  
+
   useEffect(() => {
     let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
@@ -228,11 +228,11 @@ const ProductShowcase: React.FC = () => {
 
       <div className="relative z-10 max-w-none mx-auto px-2 sm:px-4 md:px-8 lg:px-12 xl:px-16">
         {/* Empanada Revolucionaria: mover debajo del video (al inicio de esta sección) - Optimizado para mobile */}
-          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
           {/* Logo grande arriba del título - Optimizado para mobile */}
           <div ref={logoRef} className="mb-12 sm:mb-2 -mt-20 sm:-mt-12 md:-mt-20 lg:-mt-24 relative px-0 sm:px-4">
             {/* Animación de líneas de fondo detrás del LogoEmp.png */}
-            <AnimatedLinesBackground 
+            <AnimatedLinesBackground
               className="absolute inset-0 -z-10"
               intensity={0.5}
               speed={1.0}
@@ -250,15 +250,14 @@ const ProductShowcase: React.FC = () => {
                 }}
               />
             </div>
-            
+
             <img
               src="/crunchy/LogoEmp.png"
               alt="Logo Empanada"
               onClick={handleLogoClick}
-                onAnimationEnd={handleLogoAnimationEnd}
-                className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer relative z-20 ${
-                logoRevealed ? (logoDropEnded ? '' : 'logo-drop-in') : 'opacity-0'
-              } ${logoFlash ? 'logo-flash' : ''}`}
+              onAnimationEnd={handleLogoAnimationEnd}
+              className={`mx-auto w-full sm:w-80 md:w-[28rem] lg:w-[32rem] xl:w-[56rem] h-auto cursor-pointer relative z-20 ${logoRevealed ? (logoDropEnded ? '' : 'logo-drop-in') : 'opacity-0'
+                } ${logoFlash ? 'logo-flash' : ''}`}
             />
             <ConfettiFromLogo trigger={explosionTrigger} duration={5000} />
             {/* Imágenes a bordes de pantalla que aparecen tras el logo */}
@@ -309,7 +308,7 @@ const ProductShowcase: React.FC = () => {
               Cada mordida es una explosión de sabor que combina la tradición argentina con la intensidad única de Doritos Flamin' Hot
             </p>
           </Reveal>
-          
+
           {/* Botón para toggle del modelo 3D - Posicionado debajo del texto descriptivo */}
           <div className="flex justify-center mt-6 mb-4 relative z-50">
             <button
@@ -352,56 +351,56 @@ const ProductShowcase: React.FC = () => {
           {/* Layout condicional basado en show3DModel */}
           <div className={`transition-all duration-500 ease-in-out w-full ${show3DModel ? 'opacity-100' : 'opacity-100'}`}>
             {show3DModel ? (
-            <div key="3d-view" className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 xl:gap-24 items-center w-full">
-              {/* Main Product 3D - Optimizado para mobile */}
-              <div className="lg:col-span-1">
-                <div className="relative">
-                  <div className="relative overflow-visible bg-transparent">
-                    {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
-                    <div className="relative z-5 w-[120%] h-[280px] sm:h-[350px] md:h-[500px] lg:h-[600px] -ml-[10%] -mr-[10%]">
-                      {/* Vapor detras */}
-                      <div className="pointer-events-none absolute left-0 right-0 -top-[160px] bottom-0 z-0">
-                        <SteamOverlay intensity={0.6} className="absolute inset-0" />
+              <div key="3d-view" className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 xl:gap-24 items-center w-full">
+                {/* Main Product 3D - Optimizado para mobile */}
+                <div className="lg:col-span-1">
+                  <div className="relative">
+                    <div className="relative overflow-visible bg-transparent">
+                      {/* Contenedor del modelo 3D - se extiende sin límites - Optimizado para mobile */}
+                      <div className="relative z-5 w-[120%] h-[280px] sm:h-[350px] md:h-[500px] lg:h-[600px] -ml-[10%] -mr-[10%]">
+                        {/* Vapor detras */}
+                        <div className="pointer-events-none absolute left-0 right-0 -top-[160px] bottom-0 z-0">
+                          <SteamOverlay intensity={0.6} className="absolute inset-0" />
+                        </div>
+                        <LazyModel3D className="w-full h-full" />
                       </div>
-                      <LazyModel3D className="w-full h-full" />
-                    </div>
-                    
-                    {/* Textos superpuestos: el modelo queda por detrás - Optimizado para mobile */}
-                    <div className="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 text-center px-4">
-                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Empanada Premium</h3>
-                      <p className="text-sm sm:text-base text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Flamin' Hot</p>
+
+                      {/* Textos superpuestos: el modelo queda por detrás - Optimizado para mobile */}
+                      <div className="absolute left-0 right-0 bottom-4 sm:bottom-6 md:bottom-8 z-20 text-center px-4">
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Empanada Premium</h3>
+                        <p className="text-sm sm:text-base text-fuchsia-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">Con Flamin' Hot</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Imagen de ingredientes a la derecha del 3D - Optimizado para mobile */}
-              <div className="lg:mt-8 lg:flex lg:items-center lg:justify-center px-6 sm:px-6 lg:px-8">
-                <Reveal effect="bounce" delay={1}>
-                  <div className="relative overflow-visible">
-                    <img
-                      ref={ingredientsRef3D}
-                      src="/crunchy/Ingredientes.png"
-                      alt="Ingredientes de la Empanada Premium"
-                      className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
-                      style={{
-                        width: '600px !important',
-                        height: '500px !important',
-                        maxWidth: 'none !important',
-                        maxHeight: 'none !important',
-                        minWidth: '600px !important',
-                        minHeight: '500px !important',
-                        objectFit: 'contain',
-                        zoom: '1.0',
-                        fontSize: '20px'
-                      }}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </Reveal>
+                {/* Imagen de ingredientes a la derecha del 3D - Optimizado para mobile */}
+                <div className="lg:mt-8 lg:flex lg:items-center lg:justify-center px-6 sm:px-6 lg:px-8">
+                  <Reveal effect="bounce" delay={1}>
+                    <div className="relative overflow-visible">
+                      <img
+                        ref={ingredientsRef3D}
+                        src="/crunchy/Ingredientes.png"
+                        alt="Ingredientes de la Empanada Premium"
+                        className="transition-all duration-1000 ease-out transform ingredients-reveal ingredients-responsive"
+                        style={{
+                          width: '600px !important',
+                          height: '500px !important',
+                          maxWidth: 'none !important',
+                          maxHeight: 'none !important',
+                          minWidth: '600px !important',
+                          minHeight: '500px !important',
+                          objectFit: 'contain',
+                          zoom: '1.0',
+                          fontSize: '20px'
+                        }}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  </Reveal>
+                </div>
               </div>
-            </div>
             ) : (
               /* Solo ingredientes centrados cuando el modelo 3D está oculto */
               <div key="ingredients-only" className="flex items-center justify-center px-6 sm:px-6 lg:px-8 lg:mt-8">
@@ -429,7 +428,7 @@ const ProductShowcase: React.FC = () => {
                   </div>
                 </Reveal>
               </div>
-          )}
+            )}
           </div>
         </div>
 
@@ -438,27 +437,27 @@ const ProductShowcase: React.FC = () => {
 
         {/* Sección del contador movida a CountdownSection.tsx */}
 
-      {/* Tubitos Dinamita removidos - ahora están animados en el contador */}
+        {/* Tubitos Dinamita removidos - ahora están animados en el contador */}
 
-      {/* Marquee - Mobile entre ingredientes y footer */}
-      <div className="block sm:hidden relative z-[5] mt-8 mb-6">
-        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-3">
-          <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-            <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
-            <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+        {/* Marquee - Mobile entre ingredientes y footer */}
+        <div className="block sm:hidden relative z-[5] mt-8 mb-6">
+          <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-3">
+            <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+              <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+              <span className="text-3xl font-['Bebas_Neue'] uppercase px-4 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Marquee - Desktop entre ingredientes y footer */}
-      <div className="hidden sm:block relative z-[5] mt-16 mb-8">
-        <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-3 md:py-4">
-          <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
-            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
-            <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+        {/* Marquee - Desktop entre ingredientes y footer */}
+        <div className="hidden sm:block relative z-[5] mt-16 mb-8">
+          <div className="marquee bg-gradient-to-r from-fuchsia-700/80 via-purple-700/80 to-fuchsia-700/80 border-y-2 border-fuchsia-500/50 py-4 sm:py-3 md:py-4">
+            <div className="marquee-track text-black font-extrabold tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+              <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+              <span className="text-6xl sm:text-3xl md:text-5xl lg:text-8xl font-['Bebas_Neue'] uppercase px-4 sm:px-6 md:px-10 whitespace-nowrap">• Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente • Tu antojo Crujiente •</span>
+            </div>
           </div>
         </div>
-      </div>
 
       </div>
     </section>
